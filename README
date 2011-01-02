@@ -1,0 +1,58 @@
+(DRAFT/BRAINDUMP)
+If you read about BPM Systems you probably notice that some of the advantages that they propose are:
+
+1) Automatation of the company processes
+2) Coordination between human tasks and systems
+3) Data handling
+4) Declarative approach of expressing how business works
+5) Performance metrics
+
+When you understand these points you start asking about how your applications will look like. 
+
+One of the biggest abstraction that BPM Systems provide is the unified / task list based User Interface approach.
+
+You will notice that most of the current BPM Systems will generate for you an unified UI that will contain a task list for each user role inside your company. 
+The main idea behind this decision is to be able to guide each user into his/her dialy tasks.
+
+(Image)
+
+We will end up having a main screen that will contain a task list with all the task that the current user must work on.\
+
+Most of the BPM Systems right now allow you to define a Task Form to each different task that you define in your business processes. So, if you have 1000 processes (definitions, not instances) and each of them define two human tasks you will end up defining 2000 different task forms.
+
+Clicking in a Task List entry the user will access to the defined Task Form that will allow him/her to work on that specific task.
+
+The task list will be populated according the process instances that are being created by the company.
+
+ - Smart Task Lists\
+What we provide with this mini framework is a BPM System agnostic implementation for handling Human Tasks. 
+
+Each BPM System provide a way (a set of APIs) to interact with human tasks. There is a good standard that define the Human Task Life Cycle (WS-HT). 
+
+This framework do not try to override each specific Human Task API neither the Human Task Life Cycle.
+
+This framework wraps the Human Task APIs created by different vendors to provide an unified set of abstractions and User Interface components to allow a Rapid Application Development approach.
+
+Other big responsability of the framework is to provide a inteligence and statistical analysis about how the User Interfaces are being used and how different tasks are solved in different situations. This extra intelligence will provide the user a better experience when using the UI based on the following features:
+1) Suggestions
+2) UI Timers
+3) Task trainings
+4) Smart Help Service
+5) "Process Simulation and debugging"
+
+The following section of this document will dive deep into the previously mentioned topics:
+A) Abstract Task Model and Vendor API Wrapper
+The project called Task Model (task-model-api) contains the APIs that will be implemented for each specific vendor that provides a way to interact with Human Tasks. The projects task-model-jbpm5, task-model-activiti, etc will contain vendor specific implementation to deal with transformations between each vendor model and the abstract model provided by the project task-model-api.
+For implementing a new vendor adapter, developers need to implement the following set of interfaces:
+- HumanTaskClientWrapper
+- TaskCollectionAdapter
+ 
+B) Features to create and improve Smart User Interfaces
+The project called Smart Tasks (smart-tasks) uses the task-model-api project to define an abstract model to gather information that will be used by the following projects:
+- task-suggestion
+- task-timers
+- task-guidance
+- task-smart-help
+ 
+
+
