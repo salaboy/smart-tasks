@@ -11,6 +11,7 @@
 		<module>smart-tasks-model</module>
         <module>smart-tasks-api</module>
     <module>smart-tasks-jbpm5-impl</module>
+    <module>smart-task-activiti-impl</module>
   </modules>
     
     <dependencies>

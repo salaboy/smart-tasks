@@ -5,6 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
+import com.wordpress.salaboy.api.TaskDefinitionAdapter;
 import com.worpdress.salaboy.api.TaskDefinition;
 import java.util.ArrayList;
 import java.util.List;
