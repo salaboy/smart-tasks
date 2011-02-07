@@ -26,4 +26,15 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
+	<repositories>
+        <repository>
+        
+            <id>jboss</id>
+            <name>jboss</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>	
+
+
 </project>

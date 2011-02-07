@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+https://www.sdn.sap.com/irj/sdn/go/portal/prtroot/docs/library/uuid/a0c9ce4c-ee02-2a10-4b96-cb205464aa02
+
+© 2007 Active Endpoints Inc., Adobe Systems Inc., BEA Systems Inc., International
+Business Machines Corporation, Oracle Inc., and SAP AG. All rights reserved.
+ -->
+<xsd:schema xmlns:htd="http://www.example.org/WS-HT"
+  xmlns:htda="http://www.example.org/WS-HT/api"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://www.example.org/WS-HT/protocol"
+  targetNamespace="http://www.example.org/WS-HT/protocol"
+  elementFormDefault="qualified" blockDefault="#all">
+  <xsd:import namespace="http://www.w3.org/XML/1998/namespace"
+    schemaLocation="http://www.w3.org/2001/xml.xsd" />
+  <xsd:complexType name="ProtocolMsgType">
+    <xsd:sequence>
+      <xsd:any namespace="##other" processContents="lax" minOccurs="0"
+        maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:anyAttribute namespace="##any" processContents="lax" />
+  </xsd:complexType>
+  <xsd:element name="skipped" type="ProtocolMsgType" />
+  <xsd:element name="exit" type="ProtocolMsgType" />
+  <xsd:element name="fault" type="ProtocolMsgType" />
+</xsd:schema>

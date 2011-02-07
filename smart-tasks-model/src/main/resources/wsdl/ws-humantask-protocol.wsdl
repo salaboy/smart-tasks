@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+https://www.sdn.sap.com/irj/sdn/go/portal/prtroot/docs/library/uuid/a0c9ce4c-ee02-2a10-4b96-cb205464aa02
+
+© 2007 Active Endpoints Inc., Adobe Systems Inc., BEA Systems Inc., International
+Business Machines Corporation, Oracle Inc., and SAP AG. All rights reserved.
+ -->
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:htdp="http://www.example.org/WS-HT/protocol"
+  xmlns:htdpw="http://www.example.org/WS-HT/protocol/wsdl"
+  targetNamespace="http://www.example.org/WS-HT/protocol/wsdl">
+  <wsdl:types>
+    <xsd:schema>
+      <xsd:import namespace="http://www.example.org/WS-HT/protocol"
+        schemaLocation="ws-humantask-protocol.xsd" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="skipped">
+    <wsdl:part name="parameters" element="htdp:skipped" />
+  </wsdl:message>
+  <wsdl:message name="fault">
+    <wsdl:part name="parameters" element="htdp:fault" />
+  </wsdl:message>
+  <wsdl:message name="exit">
+    <wsdl:part name="parameters" element="htdp:exit" />
+  </wsdl:message>
+  <wsdl:portType name="clientParticipantPortType">
+    <wsdl:operation name="skippedOperation">
+      <wsdl:input message="htdpw:skipped" />
+    </wsdl:operation>
+    <wsdl:operation name="faultOperation">
+      <wsdl:input message="htdpw:fault" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="humanTaskParticipantPortType">
+    <wsdl:operation name="exitOperation">
+      <wsdl:input message="htdpw:exit" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

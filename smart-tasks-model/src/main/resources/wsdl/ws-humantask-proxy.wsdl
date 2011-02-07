@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+https://www.sdn.sap.com/irj/sdn/go/portal/prtroot/docs/library/uuid/a0c9ce4c-ee02-2a10-4b96-cb205464aa02
+
+© 2007 Active Endpoints Inc., Adobe Systems Inc., BEA Systems Inc., International
+Business Machines Corporation, Oracle Inc., and SAP AG. All rights reserved.
+ -->
+<definitions name="ws-humantask-proxy" targetNamespace="http://org.apache.hise.proxy/wsdl/ws-humantask-proxy"
+             xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://org.apache.hise.proxy/wsdl/ws-humantask-proxy" 
+             xmlns:ns="http://hise.apache.org/schema/ws-humantask-proxy-api"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+    <types>
+        <xsd:schema targetNamespace="http://org.apache.hise.proxy/wsdl/ws-humantask-proxy">
+            <xsd:import namespace="http://hise.apache.org/schema/ws-humantask-proxy-api" schemaLocation="ws-humantask-proxy.xsd"/>
+            <xsd:import namespace="http://www.example.org/WS-HT/api" schemaLocation="ws-humantask-api.xsd"/>
+        </xsd:schema>
+    </types>
+    
+    <message name="completeRequest">
+        <part name="completeRequestPart" element="ns:completeRequest"/>
+    </message>
+    
+    <message name="completeResponse">
+        <part name="completeResponsePart" element="ns:completeResponse"/>
+    </message>
+    
+    <message name="completeFault">
+        <part name="completeFaultPart" element="ns:standardFault"/>
+    </message>
+    
+    <message name="getTaskRequest">
+        <part name="getTaskRequestPart" element="ns:getTaskRequest"/>
+    </message>
+    
+    <message name="getTaskResponse">
+        <part name="getTaskResponse" element="ns:getTaskResponse"/>
+    </message>
+    
+    <message name="getTaskFault">
+        <part name="getTaskFaultPart" element="ns:standardFault"/>
+    </message>
+    
+    <portType name="ws-humantask-proxyPortType">
+        
+        
+        <operation name="getTask">
+            <input message="tns:getTaskRequest"/>
+            <output message="tns:getTaskResponse"/>
+            <fault name="getTaskFault" message="tns:getTaskFault"/>
+        </operation>
+        
+        <operation name="complete">
+            <input  message="tns:completeRequest"/>
+            <output message="tns:completeResponse"/>
+            <fault name="completeFault" message="tns:completeFault"/>
+        </operation>
+    </portType>
+    
+    <binding name="ws-humantask-proxyBinding" type="tns:ws-humantask-proxyPortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        
+        
+        <operation name="getTask">
+            <soap:operation/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+            <fault name="getTaskFault">
+                <soap:fault use="literal" name="getTaskFault"/>
+            </fault>
+        </operation>
+        
+        
+        <operation name="complete">
+            <soap:operation/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+            <fault name="completeFault">
+                <soap:fault use="literal" name="completeFault"/>
+            </fault>
+        </operation>
+        
+        
+        
+    </binding>
+    
+    <service name="ws-humantask-proxyService">
+        <port name="ws-humantask-proxyPort" binding="tns:ws-humantask-proxyBinding">
+            <soap:address location="http://localhost:18181/ws-humantask-proxyService/ws-humantask-proxyPort"/>
+        </port>
+    </service>
+    <!--plnk:partnerLinkType name="ws-humantask-proxy1">
+        
+        <plnk:role name="ws-humantask-proxyPortTypeRole" portType="tns:ws-humantask-proxyPortType"/>
+        </plnk:partnerLinkType-->
+    </definitions>
+    
