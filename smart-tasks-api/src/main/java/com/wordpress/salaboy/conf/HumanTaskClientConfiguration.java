@@ -10,5 +10,5 @@ package com.wordpress.salaboy.conf;
  * @author salaboy
  */
 public interface HumanTaskClientConfiguration {
-
+    public String getType();
 }
