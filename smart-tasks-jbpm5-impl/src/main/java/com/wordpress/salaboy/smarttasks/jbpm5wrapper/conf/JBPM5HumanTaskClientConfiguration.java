@@ -27,6 +27,10 @@ public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfigu
     public int getPort() {
         return port;
     }
+
+    public String getType() {
+        return "jBPM5";
+    }
     
     
 }
