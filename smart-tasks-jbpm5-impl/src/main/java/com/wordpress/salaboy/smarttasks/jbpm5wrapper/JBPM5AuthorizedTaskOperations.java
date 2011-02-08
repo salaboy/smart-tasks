@@ -3,22 +3,14 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.smarttasks.activiti5wrapper;
+package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
 import com.wordpress.salaboy.api.AuthorizedTaskOperations;
-import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAbstractAdapter;
-import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAdapter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
-import org.activiti.engine.FormService;
-import org.activiti.engine.TaskService;
-import org.activiti.engine.form.FormData;
-import org.activiti.engine.form.FormProperty;
-import org.activiti.engine.task.Task;
 import org.example.ws_ht.TOrganizationalEntity;
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
@@ -33,24 +25,29 @@ import org.example.ws_ht.api.wsdl.IllegalOperationFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.example.ws_ht.api.wsdl.RecipientNotAllowed;
 import org.example.ws_ht.api.xsd.TTime;
+import org.jbpm.task.Attachment;
+import org.jbpm.task.Task;
+import org.jbpm.task.query.TaskSummary;
+import org.jbpm.task.service.ContentData;
+import org.jbpm.task.service.TaskClient;
+import org.jbpm.task.service.responsehandlers.BlockingGetContentResponseHandler;
+import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
+import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
+import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
 
 /**
  *
  * @author salaboy
  */
-public class Activiti5TaskOperations implements AuthorizedTaskOperations{
+public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
 
-    private TaskService taskService;
-    private FormService formService;
-    private TOrganizationalEntity authorizedOrganizationalEntity;
-    
-    public Activiti5TaskOperations(TaskService taskService, FormService formService) {
-        this.taskService = taskService;
-        this.formService = formService;
+    public TaskClient client;
+    private String authorizedEntityId;
+
+    public JBPM5AuthorizedTaskOperations(TaskClient client) {
+        this.client = client;
     }
 
-    
-    
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -88,8 +85,10 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public void start(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        // Do Nothing -> Activiti doesn't have start task method
+        Long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
         
+        client.start(taskId, userId , new BlockingTaskOperationResponseHandler());
     }
 
     public TTaskQueryResultSet query(String selectClause, String whereClause, String orderByClause, Integer maxTasks, Integer taskIndexOffset) throws IllegalArgumentFault, IllegalStateFault {
@@ -101,34 +100,40 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public List<TTaskAbstract> getMyTaskAbstracts(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(genericHumanRole).list();
-        return Activiti5TTaskAbstractAdapter.getInstance().adaptCollection(tasks);
+        BlockingTaskSummaryResponseHandler handler  = new BlockingTaskSummaryResponseHandler();
+        client.getTasksAssignedAsPotentialOwner(genericHumanRole, "en-UK", handler);
+        List<TaskSummary> results = handler.getResults();
+        return JBPM5TTaskAbstractAdapter.getInstance().adaptCollection(results);
     }
 
     public void skip(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Task task = this.getTask(identifier);
+        if (!task.getTaskData().isSkipable()){
+            throw new IllegalOperationFault();
+        }
+        
+        String userId = this.getActiveUserId();
+        
+        client.skip(task.getId(), userId, null);
     }
 
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        FormData formData = formService.getTaskFormData(identifier);
-        List<FormProperty> properties = formData.getFormProperties();
+        Task task = this.getTask(identifier);
         
-        List<TAttachment> attachs = new ArrayList<TAttachment>();
-        
-        for(FormProperty property : properties){
-            if(property.getName().equals(attachmentName)){
-                TAttachment attach = new TAttachment();
-                TAttachmentInfo attachInfo = new TAttachmentInfo();
-                attachInfo.setName(property.getName());
-                attachInfo.setContentType(property.getType().getName());
-                attach.setAttachmentInfo(attachInfo);
-                attach.setValue(property.getValue());
-                attachs.add(attach);
+        List<TAttachment> tAttachments = new ArrayList<TAttachment>();
+        for (Attachment attachment : task.getTaskData().getAttachments()) {
+            if (attachment.getName().equals(attachmentName)){
+                TAttachment tAttachment = new TAttachment();
+                tAttachment.setAttachmentInfo(new JBPM5TAttachmentInfoAdapter().adapt(attachment));
+                //@FIXME: is this the way to get the attachment content?
+                BlockingGetContentResponseHandler blockingGetContentResponseHandler = new BlockingGetContentResponseHandler();
+                client.getContent(attachment.getAttachmentContentId(), blockingGetContentResponseHandler);
+                tAttachment.setValue(blockingGetContentResponseHandler.getContent());
+                tAttachments.add(tAttachment);
             }
         }
         
-        return attachs;
-        
+        return tAttachments;
     }
 
     public String getTaskDescription(String identifier, String contentType) throws IllegalArgumentFault {
@@ -136,11 +141,14 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public void release(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+        client.release(taskId, userId, null);
     }
 
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
-        return Activiti5TTaskAdapter.getInstance().adapt(taskService.createTaskQuery().taskId(identifier).singleResult());
+        Task task = this.getTask(identifier);
+        return JBPM5TTaskAdapter.getInstance().adapt(task);
     }
 
     public void remove(String identifier) throws IllegalArgumentFault, IllegalAccessFault {
@@ -148,7 +156,9 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public void suspend(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+        client.suspend(taskId, userId, null);
     }
 
     public List<TTask> getMyTasks(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
@@ -176,7 +186,9 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public void stop(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+        client.stop(taskId, userId, null);
     }
 
     public Object getOutput(String identifier, String part) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -184,21 +196,8 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-         FormData formData = formService.getTaskFormData(identifier);
-        List<FormProperty> properties = formData.getFormProperties();
-        
-        List<TAttachmentInfo> attachInfos = new ArrayList<TAttachmentInfo>();
-        
-        for(FormProperty property : properties){
-           
-            TAttachmentInfo attachInfo = new TAttachmentInfo();
-            attachInfo.setName(property.getName());
-            attachInfo.setContentType(property.getType().getName());
-            
-            attachInfos.add(attachInfo);
-        }
-        
-        return attachInfos;
+        Task task = this.getTask(identifier);
+        return new JBPM5TAttachmentInfoAdapter().adaptCollection(task.getTaskData().getAttachments());
     }
 
     public void suspendUntil(String identifier, TTime time) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -210,8 +209,11 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public void complete(String identifier, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        taskService.complete(identifier);
-        formService.submitTaskFormData(identifier, (Map<String, String>)taskData);
+        long taskId = Long.parseLong(identifier);
+
+        String userId = this.getActiveUserId();
+        
+        client.complete(taskId, userId, (ContentData) taskData, null);
     }
 
     public void setPriority(String identifier, BigInteger priority) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -223,7 +225,7 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
     }
 
     public void claim(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        taskService.claim(identifier, this.authorizedOrganizationalEntity.getUsers().getUser().get(0));
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public void fail(String identifier, String faultName, Object faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
@@ -234,17 +236,27 @@ public class Activiti5TaskOperations implements AuthorizedTaskOperations{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void setAuthorizedOrganizationalEntity(TOrganizationalEntity entity) {
-        this.authorizedOrganizationalEntity = entity;
+   
+    
+    private String getActiveUserId(){
+        //@FIXME: I'm getting the first user of the entity... It would be better
+        //if this class provide us with the active user. 
+        return this.authorizedEntityId;
     }
 
-    public TOrganizationalEntity getAuthorizedOrganizationalEntity() {
-        return this.authorizedOrganizationalEntity;
+    private Task getTask(String identifier){
+        Long taskId = Long.parseLong(identifier);
+        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
+        client.getTask(taskId, blockingGetTaskResponseHandler);
+        return blockingGetTaskResponseHandler.getTask();
+    }
+
+    public void setAuthorizedEntityId(String entityId) {
+        this.authorizedEntityId = entityId;
+    }
+
+    public String getAuthorizedEntityId() {
+        return this.authorizedEntityId;
     }
     
-    
-
-    
-    
-
 }

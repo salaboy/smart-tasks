@@ -8,7 +8,7 @@ import org.example.ws_ht.api.TTaskAbstract;
 import org.jbpm.task.service.mina.MinaTaskClientHandler;
 import bitronix.tm.resource.jdbc.PoolingDataSource;
 import com.wordpress.salaboy.api.HumanTaskClientRegistry;
-import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5QueryClientWrapper;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5AuthorizedTaskOperations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -78,7 +78,7 @@ public class JBPM5SmartTaskAdapterTest {
         addSampleTasks();
         
 
-        HumanTaskClientRegistry.getInstance().addQueryClient("jBPM5Query", new JBPM5QueryClientWrapper(jBPM5TaskClient));
+        HumanTaskClientRegistry.getInstance().addQueryClient("jBPM5Query", new JBPM5AuthorizedTaskOperations(jBPM5TaskClient));
     }
 
     @After

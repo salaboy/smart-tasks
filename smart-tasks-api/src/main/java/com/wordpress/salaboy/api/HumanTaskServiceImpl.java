@@ -5,31 +5,33 @@
 
 package com.wordpress.salaboy.api;
 
-import org.example.ws_ht.TOrganizationalEntity;
-import org.example.ws_ht.api.wsdl.TaskOperations;
+import java.util.Map;
 
 /**
  *
  * @author salaboy
  */
-public class HumanTaskServiceImpl implements HumanTaskService, AuthorizedService{
-    private AuthorizedTaskOperations taskOperations;
-    public HumanTaskServiceImpl(AuthorizedTaskOperations taskOperations) {
-        this.taskOperations =  taskOperations;
+public class HumanTaskServiceImpl extends AuthorizedTaskOperationsDefault implements HumanTaskService{
+    private Map<String, AuthorizedTaskOperations> taskOperations;
+    
+    public HumanTaskServiceImpl(Map<String, AuthorizedTaskOperations> taskOperations) {
+        
+        this.taskOperations = taskOperations;
         
     }
     
-    public void setAuthorizedOrganizationalEntity(TOrganizationalEntity entity) {
-        this.taskOperations.setAuthorizedOrganizationalEntity(entity);
+    public void setAuthorizedOrganizationalEntity(String entityId) {
+        for(String key : this.taskOperations.keySet()){
+            this.taskOperations.get(key).setAuthorizedEntityId(entityId);
+        }
     }
 
-    public TOrganizationalEntity getAuthorizedOrganizationalEntity() {
-        return this.taskOperations.getAuthorizedOrganizationalEntity();
-    }
+   
 
-    public TaskOperations getTaskOperations() {
+    public Map<String, AuthorizedTaskOperations> getTaskOperations() {
         return this.taskOperations;
     }
+
     
 
 }

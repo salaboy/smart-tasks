@@ -5,8 +5,7 @@
 
 package com.wordpress.salaboy.api;
 
-import org.example.ws_ht.TOrganizationalEntity;
-import org.example.ws_ht.api.wsdl.TaskOperations;
+import java.util.Map;
 
 /**
  *
@@ -14,5 +13,5 @@ import org.example.ws_ht.api.wsdl.TaskOperations;
  */
 public interface HumanTaskService {
     
-    public TaskOperations getTaskOperations();
+    public Map<String, AuthorizedTaskOperations> getTaskOperations();
 }

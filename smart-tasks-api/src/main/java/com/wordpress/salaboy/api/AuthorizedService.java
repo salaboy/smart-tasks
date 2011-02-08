@@ -5,13 +5,11 @@
 
 package com.wordpress.salaboy.api;
 
-import org.example.ws_ht.TOrganizationalEntity;
-
 /**
  *
  * @author salaboy
  */
 public interface AuthorizedService {
-    public void setAuthorizedOrganizationalEntity(TOrganizationalEntity entity);
-    public TOrganizationalEntity getAuthorizedOrganizationalEntity();
+    public void setAuthorizedEntityId(String entityId);
+    public String getAuthorizedEntityId();
 }
