@@ -5,6 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
+import com.wordpress.salaboy.api.AuthorizedService;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,9 +40,10 @@ import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler
  *
  * @author salaboy
  */
-public class JBPM5QueryClientWrapper implements TaskOperations {
+public class JBPM5QueryClientWrapper implements TaskOperations, AuthorizedService {
 
     public TaskClient client;
+    private TOrganizationalEntity activeOrganizationalEntity;
 
     public JBPM5QueryClientWrapper(TaskClient client) {
         this.client = client;
@@ -85,14 +87,7 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
 
     public void start(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         Long taskId = Long.parseLong(identifier);
-        
-        //jBPM needs a user to start a task. Because the standard doesn't need
-        //it, I will get the first potential owner of the task. PLEASE @FIXME
-        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
-        client.getTask(taskId, blockingGetTaskResponseHandler);
-        Task task = blockingGetTaskResponseHandler.getTask();
-        
-        String userId =  task.getPeopleAssignments().getPotentialOwners().get(0).getId();
+        String userId = this.getActiveUserId();
         
         client.start(taskId, userId , new BlockingTaskOperationResponseHandler());
     }
@@ -113,16 +108,21 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public void skip(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Task task = this.getTask(identifier);
+        if (!task.getTaskData().isSkipable()){
+            throw new IllegalOperationFault();
+        }
+        
+        String userId = this.getActiveUserId();
+        
+        client.skip(task.getId(), userId, null);
     }
 
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        Long taskId = Long.parseLong(identifier);
-        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
-        client.getTask(taskId, blockingGetTaskResponseHandler);
+        Task task = this.getTask(identifier);
         
         List<TAttachment> tAttachments = new ArrayList<TAttachment>();
-        for (Attachment attachment : blockingGetTaskResponseHandler.getTask().getTaskData().getAttachments()) {
+        for (Attachment attachment : task.getTaskData().getAttachments()) {
             if (attachment.getName().equals(attachmentName)){
                 TAttachment tAttachment = new TAttachment();
                 tAttachment.setAttachmentInfo(new JBPM5TAttachmentInfoAdapter().adapt(attachment));
@@ -142,15 +142,14 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public void release(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+        client.release(taskId, userId, null);
     }
 
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
-        Long taskId = Long.parseLong(identifier);
-        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
-        client.getTask(taskId, blockingGetTaskResponseHandler);
-        
-        return JBPM5TTaskAdapter.getInstance().adapt(blockingGetTaskResponseHandler.getTask());
+        Task task = this.getTask(identifier);
+        return JBPM5TTaskAdapter.getInstance().adapt(task);
     }
 
     public void remove(String identifier) throws IllegalArgumentFault, IllegalAccessFault {
@@ -158,7 +157,9 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public void suspend(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+        client.suspend(taskId, userId, null);
     }
 
     public List<TTask> getMyTasks(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
@@ -186,7 +187,9 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public void stop(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+        client.stop(taskId, userId, null);
     }
 
     public Object getOutput(String identifier, String part) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -194,11 +197,8 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        Long taskId = Long.parseLong(identifier);
-        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
-        client.getTask(taskId, blockingGetTaskResponseHandler);
-        
-        return new JBPM5TAttachmentInfoAdapter().adaptCollection(blockingGetTaskResponseHandler.getTask().getTaskData().getAttachments());
+        Task task = this.getTask(identifier);
+        return new JBPM5TAttachmentInfoAdapter().adaptCollection(task.getTaskData().getAttachments());
     }
 
     public void suspendUntil(String identifier, TTime time) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -211,13 +211,8 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
 
     public void complete(String identifier, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
-        
-        //jBPM needs a user to start a task. Because the standard doesn't need
-        //it, I will get the first potential owner of the task. PLEASE @FIXME
-        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
-        client.getTask(taskId, blockingGetTaskResponseHandler);
-        Task task = blockingGetTaskResponseHandler.getTask();
-        String userId =  task.getPeopleAssignments().getPotentialOwners().get(0).getId();
+
+        String userId = this.getActiveUserId();
         
         client.complete(taskId, userId, (ContentData) taskData, null);
     }
@@ -242,4 +237,28 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public void setAuthorizedOrganizationalEntity(TOrganizationalEntity entity) {
+        this.activeOrganizationalEntity = entity;
+    }
+
+    public TOrganizationalEntity getAuthorizedOrganizationalEntinty() {
+        if (this.activeOrganizationalEntity == null){
+            throw new IllegalStateException("Not active organizational entity found");
+        }
+        return this.activeOrganizationalEntity;
+    }
+    
+    private String getActiveUserId(){
+        //@FIXME: I'm getting the first user of the entity... It would be better
+        //if this class provide us with the active user. 
+        return this.getAuthorizedOrganizationalEntinty().getUsers().getUser().get(0);
+    }
+
+    private Task getTask(String identifier){
+        Long taskId = Long.parseLong(identifier);
+        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
+        client.getTask(taskId, blockingGetTaskResponseHandler);
+        return blockingGetTaskResponseHandler.getTask();
+    }
+    
 }
