@@ -5,10 +5,11 @@
 
 package com.worpdress.salaboy.smarttasks;
 
+import org.activiti.engine.FormService;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.activiti.engine.task.Task;
 import com.wordpress.salaboy.api.HumanTaskClientRegistry;
-import com.worpdress.salaboy.smarttasks.activiti5wrapper.Activiti5QueryClientWrapper;
+import com.worpdress.salaboy.smarttasks.activiti5wrapper.Activiti5TaskOperations;
 import java.util.List;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
@@ -28,7 +29,7 @@ import static org.junit.Assert.*;
  */
 public class Activiti5SmartTaskAdapterTest {
     private TaskService taskService;
-    
+    private FormService formService;
 
     public Activiti5SmartTaskAdapterTest() {
     }
@@ -46,9 +47,10 @@ public class Activiti5SmartTaskAdapterTest {
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
         assertNotNull(processEngine);
         taskService = processEngine.getTaskService();
+        formService = processEngine.getFormService();
         assertNotNull(taskService);
         initSampleTask();
-        HumanTaskClientRegistry.getInstance().addQueryClient("Activiti5Query", new Activiti5QueryClientWrapper(taskService));
+        HumanTaskClientRegistry.getInstance().addQueryClient("Activiti5Query", new Activiti5TaskOperations(taskService, formService));
         
     }
 

@@ -5,11 +5,19 @@
 
 package com.worpdress.salaboy.smarttasks.activiti5wrapper;
 
+import com.wordpress.salaboy.api.AuthorizedService;
+import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAbstractAdapter;
+import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAdapter;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
+import org.activiti.engine.FormService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.form.FormData;
+import org.activiti.engine.form.FormProperty;
 import org.activiti.engine.task.Task;
 import org.example.ws_ht.TOrganizationalEntity;
 import org.example.ws_ht.api.TAttachment;
@@ -31,14 +39,19 @@ import org.example.ws_ht.api.xsd.TTime;
  *
  * @author salaboy
  */
-public class Activiti5QueryClientWrapper implements TaskOperations{
+public class Activiti5TaskOperations implements TaskOperations, AuthorizedService{
 
     private TaskService taskService;
-
-    public Activiti5QueryClientWrapper(TaskService taskService) {
+    private FormService formService;
+    private TOrganizationalEntity authorizedOrganizationalEntity;
+    
+    public Activiti5TaskOperations(TaskService taskService, FormService formService) {
         this.taskService = taskService;
+        this.formService = formService;
     }
 
+    
+    
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -76,7 +89,8 @@ public class Activiti5QueryClientWrapper implements TaskOperations{
     }
 
     public void start(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        // Do Nothing -> Activiti doesn't have start task method
+        
     }
 
     public TTaskQueryResultSet query(String selectClause, String whereClause, String orderByClause, Integer maxTasks, Integer taskIndexOffset) throws IllegalArgumentFault, IllegalStateFault {
@@ -97,7 +111,25 @@ public class Activiti5QueryClientWrapper implements TaskOperations{
     }
 
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        FormData formData = formService.getTaskFormData(identifier);
+        List<FormProperty> properties = formData.getFormProperties();
+        
+        List<TAttachment> attachs = new ArrayList<TAttachment>();
+        
+        for(FormProperty property : properties){
+            if(property.getName().equals(attachmentName)){
+                TAttachment attach = new TAttachment();
+                TAttachmentInfo attachInfo = new TAttachmentInfo();
+                attachInfo.setName(property.getName());
+                attachInfo.setContentType(property.getType().getName());
+                attach.setAttachmentInfo(attachInfo);
+                attach.setValue(property.getValue());
+                attachs.add(attach);
+            }
+        }
+        
+        return attachs;
+        
     }
 
     public String getTaskDescription(String identifier, String contentType) throws IllegalArgumentFault {
@@ -109,7 +141,7 @@ public class Activiti5QueryClientWrapper implements TaskOperations{
     }
 
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return Activiti5TTaskAdapter.getInstance().adapt(taskService.createTaskQuery().taskId(identifier).singleResult());
     }
 
     public void remove(String identifier) throws IllegalArgumentFault, IllegalAccessFault {
@@ -153,7 +185,21 @@ public class Activiti5QueryClientWrapper implements TaskOperations{
     }
 
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+         FormData formData = formService.getTaskFormData(identifier);
+        List<FormProperty> properties = formData.getFormProperties();
+        
+        List<TAttachmentInfo> attachInfos = new ArrayList<TAttachmentInfo>();
+        
+        for(FormProperty property : properties){
+           
+            TAttachmentInfo attachInfo = new TAttachmentInfo();
+            attachInfo.setName(property.getName());
+            attachInfo.setContentType(property.getType().getName());
+            
+            attachInfos.add(attachInfo);
+        }
+        
+        return attachInfos;
     }
 
     public void suspendUntil(String identifier, TTime time) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -165,7 +211,8 @@ public class Activiti5QueryClientWrapper implements TaskOperations{
     }
 
     public void complete(String identifier, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        taskService.complete(identifier);
+        formService.submitTaskFormData(identifier, (Map<String, String>)taskData);
     }
 
     public void setPriority(String identifier, BigInteger priority) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -177,7 +224,7 @@ public class Activiti5QueryClientWrapper implements TaskOperations{
     }
 
     public void claim(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        taskService.claim(identifier, this.authorizedOrganizationalEntity.getUsers().getUser().get(0));
     }
 
     public void fail(String identifier, String faultName, Object faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
@@ -187,17 +234,17 @@ public class Activiti5QueryClientWrapper implements TaskOperations{
     public void deleteFault(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    public void setAuthorizedOrganizationalEntity(TOrganizationalEntity entity) {
+        this.authorizedOrganizationalEntity = entity;
+    }
+
+    public TOrganizationalEntity getAuthorizedOrganizationalEntinty() {
+        return this.authorizedOrganizationalEntity;
+    }
     
     
-//    public List<TaskDefinition> getMyTaskAbstracts(String potentialOwner) {
-//        List<Task> tasks = taskService.createTaskQuery().taskAssignee(potentialOwner).list();
-//        return Activiti5TaskDefinitionAdapter.getInstance().adaptCollection(tasks);
-//    }
-//
-//    public TaskDefinition getMyTask(long taskId) {
-//        Task task = taskService.createTaskQuery().taskId(""+taskId).singleResult();
-//        return Activiti5TaskDefinitionAdapter.getInstance().adapt(task);
-//    }
+
     
     
 

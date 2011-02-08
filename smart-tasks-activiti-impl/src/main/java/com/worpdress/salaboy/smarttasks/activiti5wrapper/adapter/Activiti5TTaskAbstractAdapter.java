@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.smarttasks.activiti5wrapper;
+package com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-import com.wordpress.salaboy.api.TTaskAbstractAdapter;
+import com.wordpress.salaboy.api.TaskAdapter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -19,7 +19,7 @@ import org.example.ws_ht.api.TTaskAbstract;
  *
  * @author salaboy
  */
-public class Activiti5TTaskAbstractAdapter implements TTaskAbstractAdapter<TTaskAbstract, Task>{
+public class Activiti5TTaskAbstractAdapter implements TaskAdapter<TTaskAbstract, Task>{
     
     private static Activiti5TTaskAbstractAdapter adapter;
 

@@ -5,7 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
-import com.wordpress.salaboy.api.TTaskAbstractAdapter;
+import com.wordpress.salaboy.api.TaskAdapter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +25,7 @@ import org.jbpm.task.query.TaskSummary;
  * @author salaboy
  * @author esteban
  */
-public class JBPM5TTaskAbstractAdapter implements TTaskAbstractAdapter<TTaskAbstract, TaskSummary>{
+public class JBPM5TTaskAbstractAdapter implements TaskAdapter<TTaskAbstract, TaskSummary>{
 
     private static JBPM5TTaskAbstractAdapter adapter;
 
