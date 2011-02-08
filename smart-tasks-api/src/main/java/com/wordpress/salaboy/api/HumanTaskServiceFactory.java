@@ -15,13 +15,15 @@ import java.util.Map;
  */
 public class HumanTaskServiceFactory {
     
-    public static HumanTaskService newHumanTaskService(HumanTaskServiceConfiguration config){
+    public static HumanTaskService newHumanTaskService(HumanTaskServiceConfiguration config) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
         Map<String, AuthorizedTaskOperations> clientConfigs = new HashMap<String, AuthorizedTaskOperations>();
         
         for(String key : config.getHumanTaskClientConfigurations().keySet()){
-//           if(config.getHumanTaskClientConfigurations().get(key) ){
-//           
-//           }
+           if(config.getHumanTaskClientConfigurations().get(key).getType().equals("jBPM5") ){
+                clientConfigs.put("jBPM5TaskOperation", 
+                        (AuthorizedTaskOperations) Class.forName("com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5AuthorizedTaskOperations")
+                        .newInstance());
+           }
         }
         
         HumanTaskService humanTaskService = new HumanTaskServiceImpl(clientConfigs);
