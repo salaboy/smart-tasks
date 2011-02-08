@@ -6,6 +6,7 @@
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
 import com.wordpress.salaboy.api.AuthorizedService;
+import com.wordpress.salaboy.api.AuthorizedTaskOperations;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,7 @@ import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler
  *
  * @author salaboy
  */
-public class JBPM5QueryClientWrapper implements TaskOperations, AuthorizedService {
+public class JBPM5QueryClientWrapper implements AuthorizedTaskOperations {
 
     public TaskClient client;
     private TOrganizationalEntity activeOrganizationalEntity;
@@ -241,7 +242,7 @@ public class JBPM5QueryClientWrapper implements TaskOperations, AuthorizedServic
         this.activeOrganizationalEntity = entity;
     }
 
-    public TOrganizationalEntity getAuthorizedOrganizationalEntinty() {
+    public TOrganizationalEntity getAuthorizedOrganizationalEntity() {
         if (this.activeOrganizationalEntity == null){
             throw new IllegalStateException("Not active organizational entity found");
         }
@@ -251,7 +252,7 @@ public class JBPM5QueryClientWrapper implements TaskOperations, AuthorizedServic
     private String getActiveUserId(){
         //@FIXME: I'm getting the first user of the entity... It would be better
         //if this class provide us with the active user. 
-        return this.getAuthorizedOrganizationalEntinty().getUsers().getUser().get(0);
+        return this.getAuthorizedOrganizationalEntity().getUsers().getUser().get(0);
     }
 
     private Task getTask(String identifier){

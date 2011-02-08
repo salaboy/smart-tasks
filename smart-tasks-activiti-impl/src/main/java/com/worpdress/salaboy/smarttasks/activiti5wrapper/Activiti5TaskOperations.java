@@ -5,7 +5,7 @@
 
 package com.worpdress.salaboy.smarttasks.activiti5wrapper;
 
-import com.wordpress.salaboy.api.AuthorizedService;
+import com.wordpress.salaboy.api.AuthorizedTaskOperations;
 import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAbstractAdapter;
 import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAdapter;
 import java.math.BigInteger;
@@ -32,14 +32,13 @@ import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalOperationFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.example.ws_ht.api.wsdl.RecipientNotAllowed;
-import org.example.ws_ht.api.wsdl.TaskOperations;
 import org.example.ws_ht.api.xsd.TTime;
 
 /**
  *
  * @author salaboy
  */
-public class Activiti5TaskOperations implements TaskOperations, AuthorizedService{
+public class Activiti5TaskOperations implements AuthorizedTaskOperations{
 
     private TaskService taskService;
     private FormService formService;
@@ -239,7 +238,7 @@ public class Activiti5TaskOperations implements TaskOperations, AuthorizedServic
         this.authorizedOrganizationalEntity = entity;
     }
 
-    public TOrganizationalEntity getAuthorizedOrganizationalEntinty() {
+    public TOrganizationalEntity getAuthorizedOrganizationalEntity() {
         return this.authorizedOrganizationalEntity;
     }
     

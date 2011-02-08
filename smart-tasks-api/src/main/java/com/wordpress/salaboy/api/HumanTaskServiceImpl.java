@@ -13,19 +13,17 @@ import org.example.ws_ht.api.wsdl.TaskOperations;
  * @author salaboy
  */
 public class HumanTaskServiceImpl implements HumanTaskService, AuthorizedService{
-    private TaskOperations taskOperations;
-    public HumanTaskServiceImpl(TaskOperations taskOperations) {
+    private AuthorizedTaskOperations taskOperations;
+    public HumanTaskServiceImpl(AuthorizedTaskOperations taskOperations) {
         this.taskOperations =  taskOperations;
         
     }
-
-    
     
     public void setAuthorizedOrganizationalEntity(TOrganizationalEntity entity) {
         this.taskOperations.setAuthorizedOrganizationalEntity(entity);
     }
 
-    public TOrganizationalEntity getAuthorizedOrganizationalEntinty() {
+    public TOrganizationalEntity getAuthorizedOrganizationalEntity() {
         return this.taskOperations.getAuthorizedOrganizationalEntity();
     }
 

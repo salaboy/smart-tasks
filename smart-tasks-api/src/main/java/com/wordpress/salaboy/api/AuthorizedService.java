@@ -13,5 +13,5 @@ import org.example.ws_ht.TOrganizationalEntity;
  */
 public interface AuthorizedService {
     public void setAuthorizedOrganizationalEntity(TOrganizationalEntity entity);
-    public TOrganizationalEntity getAuthorizedOrganizationalEntinty();
+    public TOrganizationalEntity getAuthorizedOrganizationalEntity();
 }
