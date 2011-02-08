@@ -7,6 +7,7 @@ package com.wordpress.salaboy.api;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.example.ws_ht.api.wsdl.TaskOperations;
 
 /**
  *
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 public class HumanTaskClientRegistry {
     private Map<String, HumanTaskActionClientWrapper> actionClients = new HashMap<String, HumanTaskActionClientWrapper>();
-    private Map<String, HumanTaskQueryClientWrapper> queryClients = new HashMap<String, HumanTaskQueryClientWrapper>();
+    private Map<String, TaskOperations> queryClients = new HashMap<String, TaskOperations>();
     private static HumanTaskClientRegistry registry;
     public static HumanTaskClientRegistry getInstance(){
         if(registry == null){
@@ -33,11 +34,11 @@ public class HumanTaskClientRegistry {
         this.actionClients.put(name, client);
     }
     
-    public void addQueryClient(String name, HumanTaskQueryClientWrapper client){
+    public void addQueryClient(String name, TaskOperations client){
         this.queryClients.put(name, client);
     }
    
-    public HumanTaskQueryClientWrapper getQueryClient(String name){
+    public TaskOperations getQueryClient(String name){
         return this.queryClients.get(name);
     }
 
