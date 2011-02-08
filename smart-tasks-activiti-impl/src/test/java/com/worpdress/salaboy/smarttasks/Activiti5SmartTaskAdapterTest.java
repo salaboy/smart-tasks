@@ -5,14 +5,16 @@
 
 package com.worpdress.salaboy.smarttasks;
 
+import org.example.ws_ht.api.TTaskAbstract;
 import org.activiti.engine.task.Task;
 import com.wordpress.salaboy.api.HumanTaskClientRegistry;
-import com.worpdress.salaboy.api.TaskDefinition;
 import com.worpdress.salaboy.smarttasks.activiti5wrapper.Activiti5QueryClientWrapper;
 import java.util.List;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.TaskService;
+import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
+import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -56,10 +58,10 @@ public class Activiti5SmartTaskAdapterTest {
 
    
      @Test
-     public void hello() {
+     public void hello() throws IllegalArgumentFault, IllegalStateFault {
       
         
-        List<TaskDefinition> tasks = HumanTaskClientRegistry.getInstance().getQueryClient("Activiti5Query").getMyTaskAbstracts("salaboy");
+        List<TTaskAbstract> tasks = HumanTaskClientRegistry.getInstance().getQueryClient("Activiti5Query").getMyTaskAbstracts("","salaboy","",null,"","","",0,0);
         assertEquals(1, tasks.size());
      }
 
