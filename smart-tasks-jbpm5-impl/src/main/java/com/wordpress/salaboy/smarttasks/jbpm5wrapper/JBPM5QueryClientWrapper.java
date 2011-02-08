@@ -6,6 +6,7 @@
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
@@ -24,8 +25,14 @@ import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.example.ws_ht.api.wsdl.RecipientNotAllowed;
 import org.example.ws_ht.api.wsdl.TaskOperations;
 import org.example.ws_ht.api.xsd.TTime;
+import org.jbpm.task.Attachment;
+import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
+import org.jbpm.task.service.ContentData;
 import org.jbpm.task.service.TaskClient;
+import org.jbpm.task.service.responsehandlers.BlockingGetContentResponseHandler;
+import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
+import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
 
 /**
@@ -77,7 +84,17 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public void start(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Long taskId = Long.parseLong(identifier);
+        
+        //jBPM needs a user to start a task. Because the standard doesn't need
+        //it, I will get the first potential owner of the task. PLEASE @FIXME
+        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
+        client.getTask(taskId, blockingGetTaskResponseHandler);
+        Task task = blockingGetTaskResponseHandler.getTask();
+        
+        String userId =  task.getPeopleAssignments().getPotentialOwners().get(0).getId();
+        
+        client.start(taskId, userId , new BlockingTaskOperationResponseHandler());
     }
 
     public TTaskQueryResultSet query(String selectClause, String whereClause, String orderByClause, Integer maxTasks, Integer taskIndexOffset) throws IllegalArgumentFault, IllegalStateFault {
@@ -100,7 +117,24 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Long taskId = Long.parseLong(identifier);
+        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
+        client.getTask(taskId, blockingGetTaskResponseHandler);
+        
+        List<TAttachment> tAttachments = new ArrayList<TAttachment>();
+        for (Attachment attachment : blockingGetTaskResponseHandler.getTask().getTaskData().getAttachments()) {
+            if (attachment.getName().equals(attachmentName)){
+                TAttachment tAttachment = new TAttachment();
+                tAttachment.setAttachmentInfo(new JBPM5TAttachmentInfoAdapter().adapt(attachment));
+                //@FIXME: is this the way to get the attachment content?
+                BlockingGetContentResponseHandler blockingGetContentResponseHandler = new BlockingGetContentResponseHandler();
+                client.getContent(attachment.getAttachmentContentId(), blockingGetContentResponseHandler);
+                tAttachment.setValue(blockingGetContentResponseHandler.getContent());
+                tAttachments.add(tAttachment);
+            }
+        }
+        
+        return tAttachments;
     }
 
     public String getTaskDescription(String identifier, String contentType) throws IllegalArgumentFault {
@@ -112,7 +146,11 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Long taskId = Long.parseLong(identifier);
+        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
+        client.getTask(taskId, blockingGetTaskResponseHandler);
+        
+        return JBPM5TTaskAdapter.getInstance().adapt(blockingGetTaskResponseHandler.getTask());
     }
 
     public void remove(String identifier) throws IllegalArgumentFault, IllegalAccessFault {
@@ -156,7 +194,11 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Long taskId = Long.parseLong(identifier);
+        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
+        client.getTask(taskId, blockingGetTaskResponseHandler);
+        
+        return new JBPM5TAttachmentInfoAdapter().adaptCollection(blockingGetTaskResponseHandler.getTask().getTaskData().getAttachments());
     }
 
     public void suspendUntil(String identifier, TTime time) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -168,7 +210,16 @@ public class JBPM5QueryClientWrapper implements TaskOperations {
     }
 
     public void complete(String identifier, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        
+        //jBPM needs a user to start a task. Because the standard doesn't need
+        //it, I will get the first potential owner of the task. PLEASE @FIXME
+        BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
+        client.getTask(taskId, blockingGetTaskResponseHandler);
+        Task task = blockingGetTaskResponseHandler.getTask();
+        String userId =  task.getPeopleAssignments().getPotentialOwners().get(0).getId();
+        
+        client.complete(taskId, userId, (ContentData) taskData, null);
     }
 
     public void setPriority(String identifier, BigInteger priority) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
