@@ -5,7 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
-import com.wordpress.salaboy.api.TaskDefinitionAdapter;
+import com.wordpress.salaboy.api.TTaskAbstractAdapter;
 import com.worpdress.salaboy.api.TaskDefinition;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.jbpm.task.query.TaskSummary;
  *
  * @author salaboy
  */
-public class JBPM5TaskDefinitionAdapter implements TaskDefinitionAdapter<TaskSummary, Task> {
+public class JBPM5TaskDefinitionAdapter implements TTaskAbstractAdapter<TaskSummary, Task> {
 
     private static JBPM5TaskDefinitionAdapter adapter;
 
