@@ -4,12 +4,11 @@
  */
 package com.worpdress.salaboy;
 
-import org.jbpm.task.Comment;
+import org.example.ws_ht.api.TTaskAbstract;
 import org.jbpm.task.service.mina.MinaTaskClientHandler;
 import bitronix.tm.resource.jdbc.PoolingDataSource;
 import com.wordpress.salaboy.api.HumanTaskClientRegistry;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5QueryClientWrapper;
-import com.worpdress.salaboy.api.TaskDefinition;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -95,8 +94,8 @@ public class JBPM5SmartTaskAdapterTest {
     }
 
     @Test
-    public void jBPM5ClientWrapperTest() {
-        List<TaskDefinition> tasks = HumanTaskClientRegistry.getInstance().getQueryClient("jBPM5Query").getMyTaskAbstracts("salaboy");
+    public void jBPM5ClientWrapperTest() throws Exception {
+        List<TTaskAbstract> tasks = HumanTaskClientRegistry.getInstance().getQueryClient("jBPM5Query").getMyTaskAbstracts(null, "salaboy", null, null, null, null, null, null, null);
         
 //        for(TaskDefinition task : tasks){
 //            task.render();
