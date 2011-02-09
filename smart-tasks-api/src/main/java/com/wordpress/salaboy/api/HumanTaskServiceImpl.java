@@ -18,16 +18,17 @@ import org.example.ws_ht.api.wsdl.IllegalStateFault;
  *
  * @author salaboy
  */
-public class HumanTaskServiceImpl extends AuthorizedTaskOperationsDefault implements HumanTaskService{
-    private Map<String, AuthorizedTaskOperations> taskOperations;
+public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements HumanTaskService{
+    private Map<String, HumanTaskServiceOperations> taskOperations;
+    private Map<String, ServiceLifeCycleManager> serviceLifeCycleManagers;
     
-    public HumanTaskServiceImpl(Map<String, AuthorizedTaskOperations> taskOperations) {
+    public HumanTaskServiceImpl(Map<String, HumanTaskServiceOperations> taskOperations) {
         
         this.taskOperations = taskOperations;
         
     }
 
-    public Map<String, AuthorizedTaskOperations> getTaskOperations() {
+    public Map<String, HumanTaskServiceOperations> getTaskOperations() {
         return this.taskOperations;
     }
 
@@ -55,7 +56,7 @@ public class HumanTaskServiceImpl extends AuthorizedTaskOperationsDefault implem
     @Override
     public List<TTaskAbstract> getMyTaskAbstracts(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
         List<TTaskAbstract> result = new ArrayList<TTaskAbstract>();
-        for (Map.Entry<String, AuthorizedTaskOperations> entry : this.taskOperations.entrySet()) {
+        for (Map.Entry<String, HumanTaskServiceOperations> entry : this.taskOperations.entrySet()) {
             result.addAll(entry.getValue().getMyTaskAbstracts(taskType, genericHumanRole, workQueue, status, whereClause, orderByClause, createdOnClause, maxTasks, fromTaskNumber));
         }
         return result;
@@ -70,8 +71,34 @@ public class HumanTaskServiceImpl extends AuthorizedTaskOperationsDefault implem
         }
     }
 
+    public void setLocale(String locale) {
+        //@FIXME: I'm using the same locale for all taskOperations
+        for(String key : this.taskOperations.keySet()){
+            this.taskOperations.get(key).setLocale(locale);
+        }
+    }
+
+  
+    public void initializeService() {
+       
+        for(String key : this.taskOperations.keySet()){
+            this.taskOperations.get(key).initializeService();
+        }
+        
+    }
+
+    public void cleanUpService() {
+        
+        for(String key : this.taskOperations.keySet()){
+            this.taskOperations.get(key).cleanUpService();
+        }
+        
+    }
     
+  
+
     
+
     
 
 }

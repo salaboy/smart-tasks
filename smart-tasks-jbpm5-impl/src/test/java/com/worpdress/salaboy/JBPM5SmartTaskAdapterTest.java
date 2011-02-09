@@ -83,7 +83,7 @@ public class JBPM5SmartTaskAdapterTest {
         HumanTaskServiceConfiguration humanTaskServiceConfiguration = new HumanTaskServiceConfiguration();
         humanTaskServiceConfiguration.addHumanTaskClientConfiguration("JBPM5", new JBPM5HumanTaskClientConfiguration(taskClientHost, taskClientPort));
         this.humanTaskService = HumanTaskServiceFactory.newHumanTaskService(humanTaskServiceConfiguration);
-
+        this.humanTaskService.initializeService();
     }
 
     @After
@@ -93,6 +93,7 @@ public class JBPM5SmartTaskAdapterTest {
         } catch (InterruptedException ex) {
             Logger.getLogger(JBPM5SmartTaskAdapterTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.humanTaskService.cleanUpService();
         stopServer();
 
         emf.close();

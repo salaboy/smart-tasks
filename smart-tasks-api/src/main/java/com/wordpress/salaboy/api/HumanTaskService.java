@@ -11,9 +11,8 @@ import java.util.Map;
  *
  * @author salaboy
  */
-public interface HumanTaskService extends AuthorizedTaskOperations {
+public interface HumanTaskService extends HumanTaskServiceOperations {
     
-    public Map<String, AuthorizedTaskOperations> getTaskOperations();
-    
+    public Map<String, HumanTaskServiceOperations> getTaskOperations();
     
 }

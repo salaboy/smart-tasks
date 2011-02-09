@@ -5,7 +5,8 @@
 
 package com.worpdress.salaboy.smarttasks.activiti5wrapper;
 
-import com.wordpress.salaboy.api.AuthorizedTaskOperations;
+import com.wordpress.salaboy.api.HumanTaskServiceOperations;
+import com.wordpress.salaboy.api.ServiceLifeCycleManager;
 import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAbstractAdapter;
 import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAdapter;
 import java.math.BigInteger;
@@ -38,13 +39,14 @@ import org.example.ws_ht.api.xsd.TTime;
  *
  * @author salaboy
  */
-public class Activiti5AuthorizedTaskOperations implements AuthorizedTaskOperations{
+public class Activiti5HumanTaskServiceOperations implements HumanTaskServiceOperations{
 
     private TaskService taskService;
     private FormService formService;
     private String authorizedEntityId;
+    private String locale;
     
-    public Activiti5AuthorizedTaskOperations(TaskService taskService, FormService formService) {
+    public Activiti5HumanTaskServiceOperations(TaskService taskService, FormService formService) {
         this.taskService = taskService;
         this.formService = formService;
     }
@@ -240,6 +242,25 @@ public class Activiti5AuthorizedTaskOperations implements AuthorizedTaskOperatio
 
     public String getAuthorizedEntityId() {
         return  this.authorizedEntityId;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
+    }
+
+    public void initializeService() {
+        //FIX ME: This method should not be here!!!!!
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void cleanUpService() {
+        //FIX ME: This method should not be here!!!!!
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setServiceLifeCycle(String name, ServiceLifeCycleManager serviceLifeCycle) {
+        //FIX ME: This method should not be here!!!!! there is no managed services here.. 
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
    
