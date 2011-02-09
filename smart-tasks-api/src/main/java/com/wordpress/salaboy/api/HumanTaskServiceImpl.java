@@ -8,6 +8,8 @@ package com.wordpress.salaboy.api;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.example.ws_ht.api.TAttachment;
+import org.example.ws_ht.api.TAttachmentInfo;
 import org.example.ws_ht.api.TStatus;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalAccessFault;
@@ -61,7 +63,21 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         }
         return result;
     }
+    
+    @Override
+    public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
+        //@FIXME: this call should be performed according to some pattern in the id
+        //that identifies the real taskOperation
+        return this.taskOperations.entrySet().iterator().next().getValue().getAttachmentInfos(identifier);
+    }
 
+    @Override
+    public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
+        //@FIXME: this call should be performed according to some pattern in the id
+        //that identifies the real taskOperation
+        return this.taskOperations.entrySet().iterator().next().getValue().getAttachments(identifier, attachmentName);
+    }
+    
     @Override
     public void setAuthorizedEntityId(String entityId) {
         
@@ -71,6 +87,7 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         }
     }
 
+    @Override
     public void setLocale(String locale) {
         //@FIXME: I'm using the same locale for all taskOperations
         for(String key : this.taskOperations.keySet()){
@@ -79,6 +96,7 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
     }
 
   
+    @Override
     public void initializeService() {
        
         for(String key : this.taskOperations.keySet()){
@@ -87,6 +105,7 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         
     }
 
+    @Override
     public void cleanUpService() {
         
         for(String key : this.taskOperations.keySet()){
