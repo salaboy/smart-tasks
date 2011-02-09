@@ -12,7 +12,7 @@ import org.example.ws_ht.api.wsdl.TaskOperations;
  *
  * @author salaboy
  */
-public interface HumanTaskService extends TaskOperations {
+public interface HumanTaskService extends AuthorizedTaskOperations {
     
     public Map<String, AuthorizedTaskOperations> getTaskOperations();
     
