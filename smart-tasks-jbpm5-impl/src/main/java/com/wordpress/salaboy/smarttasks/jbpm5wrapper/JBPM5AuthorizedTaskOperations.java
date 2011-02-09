@@ -6,11 +6,13 @@
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
 import com.wordpress.salaboy.api.AuthorizedTaskOperations;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
+import org.drools.SystemEventListenerFactory;
 import org.example.ws_ht.TOrganizationalEntity;
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
@@ -30,6 +32,8 @@ import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
 import org.jbpm.task.service.TaskClient;
+import org.jbpm.task.service.mina.MinaTaskClientConnector;
+import org.jbpm.task.service.mina.MinaTaskClientHandler;
 import org.jbpm.task.service.responsehandlers.BlockingGetContentResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
@@ -41,11 +45,17 @@ import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler
  */
 public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
 
-    public TaskClient client;
+    private TaskClient client;
     private String authorizedEntityId;
 
-    public JBPM5AuthorizedTaskOperations(TaskClient client) {
-        this.client = client;
+    public JBPM5AuthorizedTaskOperations(JBPM5HumanTaskClientConfiguration configuration) {
+        //Create the taskClient
+        MinaTaskClientConnector minaTaskClientConnector = 
+                new MinaTaskClientConnector("jBPM5TaskClient", 
+                    new MinaTaskClientHandler(SystemEventListenerFactory.getSystemEventListener()));
+        client = new TaskClient(minaTaskClientConnector);
+        client.connect(configuration.getHost(), configuration.getPort());
+        
     }
 
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -88,7 +98,10 @@ public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
         Long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
         
-        client.start(taskId, userId , new BlockingTaskOperationResponseHandler());
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.start(taskId, userId , blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
 
     public TTaskQueryResultSet query(String selectClause, String whereClause, String orderByClause, Integer maxTasks, Integer taskIndexOffset) throws IllegalArgumentFault, IllegalStateFault {
@@ -114,7 +127,11 @@ public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
         
         String userId = this.getActiveUserId();
         
-        client.skip(task.getId(), userId, null);
+        
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.skip(task.getId(), userId, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
 
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -143,7 +160,12 @@ public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
     public void release(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        client.release(taskId, userId, null);
+        
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.release(taskId, userId, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
+        
     }
 
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
@@ -158,7 +180,11 @@ public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
     public void suspend(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        client.suspend(taskId, userId, null);
+        
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.suspend(taskId, userId, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
 
     public List<TTask> getMyTasks(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
@@ -188,7 +214,11 @@ public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
     public void stop(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        client.stop(taskId, userId, null);
+        
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.stop(taskId, userId, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
 
     public Object getOutput(String identifier, String part) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -210,10 +240,12 @@ public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
 
     public void complete(String identifier, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
-
         String userId = this.getActiveUserId();
         
-        client.complete(taskId, userId, (ContentData) taskData, null);
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.complete(taskId, userId, (ContentData) taskData, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
 
     public void setPriority(String identifier, BigInteger priority) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -225,7 +257,15 @@ public class JBPM5AuthorizedTaskOperations implements AuthorizedTaskOperations {
     }
 
     public void claim(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+        
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.claim(taskId, userId, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
+        
+        
     }
 
     public void fail(String identifier, String faultName, Object faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {

@@ -6,7 +6,6 @@
 package com.wordpress.salaboy.api;
 
 import java.util.Map;
-import org.example.ws_ht.api.wsdl.TaskOperations;
 
 /**
  *

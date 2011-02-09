@@ -6,6 +6,7 @@
 package com.wordpress.salaboy.api;
 
 import com.wordpress.salaboy.conf.HumanTaskServiceConfiguration;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,14 +16,20 @@ import java.util.Map;
  */
 public class HumanTaskServiceFactory {
     
-    public static HumanTaskService newHumanTaskService(HumanTaskServiceConfiguration config) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+    public static HumanTaskService newHumanTaskService(HumanTaskServiceConfiguration config) throws IllegalStateException{
         Map<String, AuthorizedTaskOperations> clientConfigs = new HashMap<String, AuthorizedTaskOperations>();
         
         for(String key : config.getHumanTaskClientConfigurations().keySet()){
            if(config.getHumanTaskClientConfigurations().get(key).getType().equals("jBPM5") ){
-                clientConfigs.put("jBPM5TaskOperation", 
-                        (AuthorizedTaskOperations) Class.forName("com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5AuthorizedTaskOperations")
-                        .newInstance());
+                try {
+                    Class<?> clazz = Class.forName("com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5AuthorizedTaskOperations");
+                    Constructor<?> constructor = clazz.getConstructor(config.getHumanTaskClientConfigurations().get(key).getClass());
+                    AuthorizedTaskOperations newInstance = (AuthorizedTaskOperations) constructor.newInstance(config.getHumanTaskClientConfigurations().get(key));
+                   
+                   clientConfigs.put("jBPM5TaskOperation", newInstance);
+                } catch (Exception ex) {
+                    throw new IllegalStateException("Unable to create AuthorizedTaskOperations instance: "+ex.getMessage(), ex);
+                }
            }
         }
         
