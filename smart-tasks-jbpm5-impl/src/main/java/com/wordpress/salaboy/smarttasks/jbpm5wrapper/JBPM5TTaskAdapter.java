@@ -45,12 +45,14 @@ public class JBPM5TTaskAdapter implements TaskAdapter<TTask, Task> {
         task.setActualOwner(vendorTask.getTaskData().getActualOwner().getId());
         task.setBusinessAdministrators(new JBPM5TOrganizationalEntityAdapter().adapt(vendorTask.getPeopleAssignments().getBusinessAdministrators()));
         //task.setCompleteByExists()
-        task.setCreatedBy(vendorTask.getTaskData().getCreatedBy().getId());
+        if (vendorTask.getTaskData().getCreatedBy() != null){
+            task.setCreatedBy(vendorTask.getTaskData().getCreatedBy().getId());
+        }
         task.setCreatedOn(XMLDataTypeUtils.convertDateToGregorianCalendar(vendorTask.getTaskData().getCreatedOn()));
         task.setDeadlinesInfo(new JBPM5TDeadlinesInfoAdapter().adapt(vendorTask.getDeadlines()));
         //task.setEscalated();
         task.setExpirationTime(XMLDataTypeUtils.convertDateToGregorianCalendar(vendorTask.getTaskData().getExpirationTime()));
-        task.setHasAttachments(!vendorTask.getTaskData().getAttachments().isEmpty());
+        task.setHasAttachments(vendorTask.getTaskData().getDocumentContentId() > 0 || !vendorTask.getTaskData().getAttachments().isEmpty());
         task.setHasComments(!vendorTask.getTaskData().getComments().isEmpty());
         //Rely on faultType to check if has fault or not
         task.setHasFault(vendorTask.getTaskData().getFaultType() != null && !vendorTask.getTaskData().getFaultType().isEmpty());
@@ -66,13 +68,17 @@ public class JBPM5TTaskAdapter implements TaskAdapter<TTask, Task> {
         //@FIXME: Only getting the first I18N name!. By the way, what presentation name is?
         task.setPresentationName(vendorTask.getNames().get(0).getText());
         //@FIXME: Only getting the first I18N name!
-        task.setPresentationSubject(vendorTask.getSubjects().get(0).getText());
+        if (!vendorTask.getSubjects().isEmpty()){
+            task.setPresentationSubject(vendorTask.getSubjects().get(0).getText());
+        }
         //task.setPrimarySearchBy();
         task.setPriority(BigInteger.valueOf(vendorTask.getPriority()));
         //task.setRenderingMethodExists();
         //task.setStartByExists();
         task.setStatus(new JBPM5TStatusAdapter().adapt(vendorTask.getTaskData().getStatus()));
-        task.setTaskInitiator(vendorTask.getPeopleAssignments().getTaskInitiator().getId());
+        if (vendorTask.getPeopleAssignments().getTaskInitiator() != null){
+            task.setTaskInitiator(vendorTask.getPeopleAssignments().getTaskInitiator().getId());
+        }
         task.setTaskStakeholders(new JBPM5TOrganizationalEntityAdapter().adapt(vendorTask.getPeopleAssignments().getTaskStakeholders()));
         //task.setTaskType();
 

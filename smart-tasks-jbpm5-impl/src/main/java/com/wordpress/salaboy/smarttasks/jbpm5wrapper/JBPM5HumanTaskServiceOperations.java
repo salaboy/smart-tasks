@@ -8,6 +8,7 @@ package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.api.ServiceLifeCycleManager;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.model.JBPM5TAttachmentInfo;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,6 @@ import org.example.ws_ht.api.wsdl.IllegalOperationFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.example.ws_ht.api.wsdl.RecipientNotAllowed;
 import org.example.ws_ht.api.xsd.TTime;
-import org.jbpm.task.Attachment;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
@@ -143,18 +143,19 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         Task task = this.getTask(identifier);
         
+        List<JBPM5TAttachmentInfo> taskTAttachmentInfo = new JBPM5TAttachmentInfoAdapter().getTaskTAttachmentInfo(task, attachmentName);
+        
         List<TAttachment> tAttachments = new ArrayList<TAttachment>();
-        for (Attachment attachment : task.getTaskData().getAttachments()) {
-            if (attachment.getName().equals(attachmentName)){
-                TAttachment tAttachment = new TAttachment();
-                tAttachment.setAttachmentInfo(new JBPM5TAttachmentInfoAdapter().adapt(attachment));
-                //@FIXME: is this the way to get the attachment content?
-                BlockingGetContentResponseHandler blockingGetContentResponseHandler = new BlockingGetContentResponseHandler();
-                client.getContent(attachment.getAttachmentContentId(), blockingGetContentResponseHandler);
-                tAttachment.setValue(blockingGetContentResponseHandler.getContent());
-                tAttachments.add(tAttachment);
-            }
+        for (JBPM5TAttachmentInfo tAttachmentInfo : taskTAttachmentInfo) {
+            TAttachment tAttachment = new TAttachment();
+            tAttachment.setAttachmentInfo(tAttachmentInfo);
+            //@FIXME: is this the way to get the attachment content?
+            BlockingGetContentResponseHandler blockingGetContentResponseHandler = new BlockingGetContentResponseHandler();
+            client.getContent(tAttachmentInfo.getId(), blockingGetContentResponseHandler);
+            tAttachment.setValue(blockingGetContentResponseHandler.getContent());
+            tAttachments.add(tAttachment);
         }
+        
         
         return tAttachments;
     }
@@ -233,7 +234,8 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         Task task = this.getTask(identifier);
-        return new JBPM5TAttachmentInfoAdapter().adaptCollection(task.getTaskData().getAttachments());
+        
+        return new ArrayList<TAttachmentInfo>(new JBPM5TAttachmentInfoAdapter().getTaskTAttachmentInfo(task));
     }
 
     public void suspendUntil(String identifier, TTime time) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {

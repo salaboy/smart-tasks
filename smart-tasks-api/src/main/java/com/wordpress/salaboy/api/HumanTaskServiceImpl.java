@@ -11,6 +11,7 @@ import java.util.Map;
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
 import org.example.ws_ht.api.TStatus;
+import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalAccessFault;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
@@ -113,11 +114,17 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         }
         
     }
-    
-  
-
-    
-
+    public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
+        //@FIXME: We should ask to the correct taskOperations
+        for(String key : this.taskOperations.keySet()){
+            TTask taskInfo = this.taskOperations.get(key).getTaskInfo(identifier);
+            if (taskInfo != null){
+                return taskInfo;
+            }
+        }
+        
+        return null;
+    }
     
 
 }
