@@ -50,7 +50,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     private TaskClient client;
     private String authorizedEntityId;
-    private String locale;
+    private String locale =  "en-UK";
     private final JBPM5HumanTaskClientConfiguration configuration; 
 
     public JBPM5HumanTaskServiceOperations(JBPM5HumanTaskClientConfiguration configuration) {
@@ -120,7 +120,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     public List<TTaskAbstract> getMyTaskAbstracts(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
         BlockingTaskSummaryResponseHandler handler  = new BlockingTaskSummaryResponseHandler();
-        client.getTasksAssignedAsPotentialOwner(genericHumanRole, "en-UK", handler);
+        client.getTasksAssignedAsPotentialOwner(genericHumanRole, this.locale, handler);
         List<TaskSummary> results = handler.getResults();
         return JBPM5TTaskAbstractAdapter.getInstance().adaptCollection(results);
     }

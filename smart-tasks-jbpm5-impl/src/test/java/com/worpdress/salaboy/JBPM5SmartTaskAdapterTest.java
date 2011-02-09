@@ -29,10 +29,12 @@ import static org.junit.Assert.*;
  */
 public class JBPM5SmartTaskAdapterTest extends BaseTest{
 
+    
     @Test
     public void jBPM5ClientWrapperTest() throws Exception {
         HumanTaskService humanTaskService = null;
         try{
+            addSampleTasks();
             humanTaskService = this.createHumanTaskService();
             humanTaskService.initializeService();
             humanTaskService.setLocale("en-UK");
@@ -51,6 +53,7 @@ public class JBPM5SmartTaskAdapterTest extends BaseTest{
     public void jBPM5ClientTaskClaimTest() throws Exception {
         HumanTaskService humanTaskService = null;
         try{
+            this.addSampleTasks();
             humanTaskService = this.createHumanTaskService();
             humanTaskService.initializeService();
         
