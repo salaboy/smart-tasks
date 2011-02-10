@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.api;
+package com.wordpress.salaboy.api;
 
 import java.util.HashMap;
 import java.util.Map;

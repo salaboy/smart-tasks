@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.worpdress.salaboy;
+package com.wordpress.salaboy;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

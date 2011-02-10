@@ -3,5 +3,5 @@ target/
 .classpath
 .DS_Store
 .iml
-.db
+*.db
 

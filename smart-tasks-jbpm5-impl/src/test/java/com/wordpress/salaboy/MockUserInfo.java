@@ -1,4 +1,4 @@
-package com.worpdress.salaboy;
+package com.wordpress.salaboy;
 
 import java.util.HashMap;
 import java.util.Iterator;

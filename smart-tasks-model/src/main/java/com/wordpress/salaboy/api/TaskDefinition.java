@@ -3,10 +3,10 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.api;
+package com.wordpress.salaboy.api;
 
-import com.worpdress.salaboy.api.render.Renderizable;
-import com.worpdress.salaboy.api.render.RendererProvider;
+import com.wordpress.salaboy.api.render.Renderizable;
+import com.wordpress.salaboy.api.render.RendererProvider;
 import java.util.Date;
 
 /**

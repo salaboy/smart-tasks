@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.worpdress.salaboy;
+package com.wordpress.salaboy;
 
 import java.io.StringReader;
 import java.util.Date;
