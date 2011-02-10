@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.smarttasks.activiti5wrapper.conf;
+package com.wordpress.salaboy.smarttasks.activiti5wrapper.conf;
 
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
 

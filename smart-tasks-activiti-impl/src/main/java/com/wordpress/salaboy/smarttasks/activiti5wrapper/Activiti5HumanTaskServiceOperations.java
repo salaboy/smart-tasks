@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.smarttasks.activiti5wrapper;
+package com.wordpress.salaboy.smarttasks.activiti5wrapper;
 
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.api.ServiceLifeCycleManager;
-import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAbstractAdapter;
-import com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAdapter;
+import com.wordpress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAbstractAdapter;
+import com.wordpress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAdapter;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;

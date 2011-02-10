@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.smarttasks.activiti5wrapper.adapter;
+package com.wordpress.salaboy.smarttasks.activiti5wrapper.adapter;
 
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import com.wordpress.salaboy.api.TaskAdapter;

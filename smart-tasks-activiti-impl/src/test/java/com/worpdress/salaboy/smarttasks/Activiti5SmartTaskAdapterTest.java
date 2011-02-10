@@ -9,7 +9,7 @@ import org.activiti.engine.FormService;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.activiti.engine.task.Task;
 import com.wordpress.salaboy.api.HumanTaskClientRegistry;
-import com.worpdress.salaboy.smarttasks.activiti5wrapper.Activiti5HumanTaskServiceOperations;
+import com.wordpress.salaboy.smarttasks.activiti5wrapper.Activiti5HumanTaskServiceOperations;
 import java.util.List;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
