@@ -9,6 +9,7 @@ import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.api.ServiceLifeCycleManager;
 import com.wordpress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAbstractAdapter;
 import com.wordpress.salaboy.smarttasks.activiti5wrapper.adapter.Activiti5TTaskAdapter;
+import com.wordpress.salaboy.smarttasks.activiti5wrapper.conf.ActivitiHumanTaskClientConfiguration;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
 import org.activiti.engine.FormService;
+import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormData;
 import org.activiti.engine.form.FormProperty;
@@ -39,16 +42,20 @@ import org.example.ws_ht.api.xsd.TTime;
  *
  * @author salaboy
  */
-public class Activiti5HumanTaskServiceOperations implements HumanTaskServiceOperations{
+public class ActivitiHumanTaskServiceOperations implements HumanTaskServiceOperations{
 
-    private TaskService taskService;
-    private FormService formService;
+    private ActivitiHumanTaskClientConfiguration config;
     private String authorizedEntityId;
     private String locale;
+    private final TaskService taskService;
+    private final FormService formService;
     
-    public Activiti5HumanTaskServiceOperations(TaskService taskService, FormService formService) {
-        this.taskService = taskService;
-        this.formService = formService;
+    public ActivitiHumanTaskServiceOperations(ActivitiHumanTaskClientConfiguration config) {
+       this.config = config;
+       
+        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+        this.taskService = processEngine.getTaskService(); 
+        this.formService = processEngine.getFormService();
     }
 
     
@@ -250,12 +257,12 @@ public class Activiti5HumanTaskServiceOperations implements HumanTaskServiceOper
 
     public void initializeService() {
         //FIX ME: This method should not be here!!!!!
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     public void cleanUpService() {
         //FIX ME: This method should not be here!!!!!
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     public void setServiceLifeCycle(String name, ServiceLifeCycleManager serviceLifeCycle) {

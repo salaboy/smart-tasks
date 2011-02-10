@@ -13,9 +13,19 @@ import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
  */
 public class ActivitiHumanTaskClientConfiguration implements HumanTaskClientConfiguration{
 
+    private String configurationResource;
+    
+    public ActivitiHumanTaskClientConfiguration(String configurationResource) {
+        this.configurationResource =  configurationResource;
+    }
+
+    public String getConfigurationResource() {
+        return configurationResource;
+    }
+
     
     public String getType() {
-        return "Activity";
+        return "Activiti";
     }
 
 }
