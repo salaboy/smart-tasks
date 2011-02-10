@@ -5,8 +5,8 @@
 
 package com.salaboy.wordpress.api.test.mock;
 
-import com.worpdress.salaboy.api.TaskDefinition;
-import com.worpdress.salaboy.api.render.RendererProvider;
+import com.wordpress.salaboy.api.TaskDefinition;
+import com.wordpress.salaboy.api.render.RendererProvider;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;

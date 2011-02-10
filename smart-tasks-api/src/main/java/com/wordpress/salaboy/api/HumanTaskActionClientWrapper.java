@@ -5,8 +5,6 @@
 
 package com.wordpress.salaboy.api;
 
-import com.worpdress.salaboy.api.OutputData;
-
 /**
  *
  * @author salaboy

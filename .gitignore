@@ -2,3 +2,6 @@ target/
 .project
 .classpath
 .DS_Store
+.iml
+.db
+

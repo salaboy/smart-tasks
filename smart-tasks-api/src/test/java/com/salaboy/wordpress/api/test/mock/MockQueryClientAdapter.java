@@ -5,7 +5,7 @@
 
 package com.salaboy.wordpress.api.test.mock;
 
-import com.worpdress.salaboy.api.TaskDefinition;
+import com.wordpress.salaboy.api.TaskDefinition;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;

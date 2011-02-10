@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package com.worpdress.salaboy.smarttasks;
+package com.wordpress.salaboy.smarttasks;
 
 import org.activiti.engine.FormService;
 import org.example.ws_ht.api.TTaskAbstract;
