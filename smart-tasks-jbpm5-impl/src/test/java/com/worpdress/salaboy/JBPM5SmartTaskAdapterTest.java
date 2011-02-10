@@ -4,6 +4,19 @@
  */
 package com.worpdress.salaboy;
 
+import java.io.StringReader;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import org.jbpm.eventmessaging.EventKey;
+import org.jbpm.eventmessaging.Payload;
+import org.jbpm.process.workitem.wsht.BlockingEventResponseHandler;
+import org.jbpm.process.workitem.wsht.BlockingGetTaskResponseHandler;
+import org.jbpm.task.Status;
+import org.jbpm.task.event.TaskCompletedEvent;
+import org.jbpm.task.event.TaskEventKey;
+import org.jbpm.task.query.TaskSummary;
+import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
 import com.wordpress.salaboy.api.HumanTaskService;
 import org.example.ws_ht.api.TTaskAbstract;
@@ -28,7 +41,6 @@ import static org.junit.Assert.*;
  * @author salaboy
  */
 public class JBPM5SmartTaskAdapterTest extends BaseTest{
-
     
     @Test
     public void jBPM5ClientWrapperTest() throws Exception {
@@ -117,7 +129,7 @@ public class JBPM5SmartTaskAdapterTest extends BaseTest{
         people.setBusinessAdministrators(new ArrayList<OrganizationalEntity>() {
 
             {
-                add(new Group("crusaders"));
+                add(new User("Administrator"));
             }
         });
         task1.setPeopleAssignments(people);

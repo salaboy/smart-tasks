@@ -115,9 +115,11 @@ public abstract class BaseTest {
 
     @After
     public void tearDown() throws Exception {
+        client.disconnect();
+        
         taskSession.dispose();
         emf.close();
-        client.disconnect();
+        
         server.stop();
     }
 
