@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <humanTaskServiceConfiguration>
+        <humanTaskClientsConfigurations>
+            <ActivityHumanTaskServiceConfiguration name="Activiti" configurationResource="/some/configuration/resource"/>
+            <JBPM5HumanTaskServiceConfiguration name="JBPM5" host="http://localhost/some/url" port="8123"/>
+        </humanTaskClientsConfigurations>
+    </humanTaskServiceConfiguration>
+</configuration>

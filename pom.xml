@@ -10,8 +10,9 @@
     <modules>
         <module>smart-tasks-model</module>
         <module>smart-tasks-api</module>
-    <module>smart-tasks-jbpm5-impl</module>
-    <module>smart-tasks-activiti-impl</module>
+        <module>smart-tasks-jbpm5-impl</module>
+        <module>smart-tasks-activiti-impl</module>
+        <module>smart-tasks-ui-helper</module>
   </modules>
     
     <dependencies>
