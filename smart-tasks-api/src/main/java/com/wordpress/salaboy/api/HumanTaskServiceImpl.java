@@ -125,6 +125,5 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         
         return null;
     }
-    
 
 }

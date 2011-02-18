@@ -8,9 +8,7 @@ package com.wordpress.salaboy.smarttasks.uihelper.api;
 import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.api.HumanTaskServiceFactory;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskListUIHelper;
-import java.io.File;
 
 /**
  *
@@ -23,9 +21,8 @@ public class SmartTaskUIHelper {
     private HumanTaskService humanTaskService;
     private UIHelperConfiguration configuration;
 
-    public SmartTaskUIHelper(File root) {
-        //TODO: add the possibility to register custom UIHelperConfigurationUriHandlers
-        this.configuration = new UIHelperConfigurationProvider(root).createConfiguration();
+    public SmartTaskUIHelper(UIHelperConfiguration configuration) {
+        this.configuration = configuration;
         this.humanTaskService = HumanTaskServiceFactory.newHumanTaskService(configuration.getHumanTaskServiceConfiguration());
     }
     
@@ -38,7 +35,7 @@ public class SmartTaskUIHelper {
         
         this.connectionData = connectionData;
         try {
-            this.humanTaskService.activate(connectionData.getEntityId());
+            this.humanTaskService.initializeService();
         } catch (Exception ex) {
             throw new IllegalStateException("Could not connect to HumanTaskService",ex);
         }

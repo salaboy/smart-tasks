@@ -7,9 +7,9 @@
         http://plugtree.org/smart-tasks/Activiti http://plugtree.org/smart-tasks/Activiti.xsd"
     >
     <humanTaskServiceConfiguration>
-        <humanTaskClientsConfigurations>
+        <humanTaskServicesConfigurations>
             <activiti:ActivityHumanTaskServiceConfiguration name="Activiti" configurationResource="/some/configuration/resource"/>
             <jbpm5:JBPM5HumanTaskServiceConfiguration name="JBPM5" host="http://localhost/some/url" port="8123"/>
-        </humanTaskClientsConfigurations>
+        </humanTaskServicesConfigurations>
     </humanTaskServiceConfiguration>
 </configuration>

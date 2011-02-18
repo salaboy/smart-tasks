@@ -55,7 +55,7 @@ public class UIHelperConfigurationProviderTest {
     @Test
     public void testConfigurationParser() throws IOException{
         
-        File root = new File(Thread.currentThread().getContextClassLoader().getResource(("smartTaskUIHelperTest")).getFile());
+        File root = new File(Thread.currentThread().getContextClassLoader().getResource(("UIHelperConfigurationProviderTest/configurationParser")).getFile());
         
         UIHelperConfiguration configuration = new UIHelperConfigurationProvider(root).createConfiguration();
         
@@ -83,8 +83,7 @@ public class UIHelperConfigurationProviderTest {
     @Test
     public void testCustomHumanTaskOperationsConfigurationParser() throws IOException{
         
-        File root = new File(Thread.currentThread().getContextClassLoader().getResource(("customHumanTaskOperationsTest")).getFile());
-        //TODO: pass a map of Mock... to createConfiguration()
+        File root = new File(Thread.currentThread().getContextClassLoader().getResource(("UIHelperConfigurationProviderTest/customHumanTaskOperationsTest")).getFile());
         UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);
         uIHelperConfigurationProvider.addUIHelperConfigurationUriHandler(new MockConfigurationHandler());
         

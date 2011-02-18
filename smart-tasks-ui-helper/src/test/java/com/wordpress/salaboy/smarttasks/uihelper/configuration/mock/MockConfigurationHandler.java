@@ -18,6 +18,19 @@ public class MockConfigurationHandler implements UIHelperConfigurationUriHandler
     
     public static final String URI = "http://plugtree.org/smart-tasks/MOCK";
     
+    private MockHumanTaskClientConfiguration mockHumanTaskClientConfiguration;
+
+    public MockConfigurationHandler() {
+        this(new MockHumanTaskClientConfiguration());
+    }
+    
+    public MockConfigurationHandler(MockHumanTaskClientConfiguration mockHumanTaskClientConfiguration) {
+        this.mockHumanTaskClientConfiguration = mockHumanTaskClientConfiguration;
+    }
+    
+    
+    
+    
     @Override
     public String getURI() {
         return URI;
@@ -30,10 +43,9 @@ public class MockConfigurationHandler implements UIHelperConfigurationUriHandler
             String attr1 = attributes.getValue("attr1");
             String attr2 = attributes.getValue("attr2");
             
-            MockHumanTaskClientConfiguration clientConfiguration = new MockHumanTaskClientConfiguration();
-            clientConfiguration.setAttr1(attr1);
-            clientConfiguration.setAttr2(attr2);
-            configuration.getHumanTaskServiceConfiguration().addHumanTaskClientConfiguration(clientConfiguration.getType(),clientConfiguration);
+            mockHumanTaskClientConfiguration.setAttr1(attr1);
+            mockHumanTaskClientConfiguration.setAttr2(attr2);
+            configuration.getHumanTaskServiceConfiguration().addHumanTaskClientConfiguration(mockHumanTaskClientConfiguration.getType(),mockHumanTaskClientConfiguration);
         }
     }
 

@@ -5,8 +5,8 @@
     xsi:schemaLocation="http://plugtree.org/smart-tasks/MOCK http://plugtree.org/smart-tasks/MOCK.xsd"
     >
     <humanTaskServiceConfiguration>
-        <humanTaskClientsConfigurations>
+        <humanTaskServicesConfigurations>
             <mock:MockHumanTaskServiceConfiguration attr1="value1" attr2="value2"/>
-        </humanTaskClientsConfigurations>
+        </humanTaskServicesConfigurations>
     </humanTaskServiceConfiguration>
 </configuration>
