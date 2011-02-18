@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mock="http://plugtree.org/smart-tasks/MOCK" 
+    xsi:schemaLocation="http://plugtree.org/smart-tasks/MOCK http://plugtree.org/smart-tasks/MOCK.xsd"
+    >
+    <humanTaskServiceConfiguration>
+        <humanTaskServicesConfigurations>
+            <mock:MockHumanTaskServiceConfiguration attr1="value1" attr2="value2"/>
+        </humanTaskServicesConfigurations>
+    </humanTaskServiceConfiguration>
+</configuration>

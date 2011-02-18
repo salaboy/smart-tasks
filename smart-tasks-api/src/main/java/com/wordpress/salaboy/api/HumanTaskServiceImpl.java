@@ -31,6 +31,7 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         
     }
 
+    @Override
     public Map<String, HumanTaskServiceOperations> getTaskOperations() {
         return this.taskOperations;
     }
@@ -114,6 +115,8 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         }
         
     }
+    
+    @Override
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
         //@FIXME: We should ask to the correct taskOperations
         for(String key : this.taskOperations.keySet()){
@@ -126,4 +129,19 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         return null;
     }
 
+    @Override
+    public List<TTask> getMyTasks(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
+        List<TTask> tTasks = new ArrayList<TTask> ();
+        //@FIXME: We should ask to the correct taskOperations
+        for(String key : this.taskOperations.keySet()){
+            List<TTask> tasks = this.taskOperations.get(key).getMyTasks(taskType, genericHumanRole, workQueue, status, whereClause, orderByClause, createdOnClause, maxTasks, fromTaskNumber);
+            if (tasks != null){
+                tTasks.addAll(tasks);
+            }
+        }
+        
+        return tTasks;
+    }
+
+    
 }
