@@ -3,12 +3,11 @@ package com.wordpress.salaboy.smarttasks.uihelper.configuration;
 import com.wordpress.salaboy.smarttasks.activiti5wrapper.conf.ActivitiHumanTaskClientConfiguration;
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockConfigurationHandler;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskClientConfiguration;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
-import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -49,25 +48,16 @@ public class UIHelperConfigurationProviderTest {
     @Test(expected=IllegalArgumentException.class)
     public void testNoConfigFile() throws IOException{
         File root = tempFolder.newFolder("emptyFolder");
-        UIHelperConfigurationProvider.createConfiguration(root);
+        new UIHelperConfigurationProvider(root).createConfiguration();
     }
     
     
     @Test
     public void testConfigurationParser() throws IOException{
-        File root = tempFolder.newFolder("testConnectionConfig");
-
-        File destConfigurationFile = new File(root,UIHelperConfigurationProvider.UI_HELPER_FILE_NAME);
         
-        FileOutputStream destination = new FileOutputStream(destConfigurationFile); 
-        InputStream source = Thread.currentThread().getContextClassLoader().getResourceAsStream("smartTaskUIHelperTest/UIHelper.config.xml");
+        File root = new File(Thread.currentThread().getContextClassLoader().getResource(("smartTaskUIHelperTest")).getFile());
         
-        IOUtils.copy(source, destination);
-        
-        source.close();
-        destination.close();
-        
-        UIHelperConfiguration configuration = UIHelperConfigurationProvider.createConfiguration(root);
+        UIHelperConfiguration configuration = new UIHelperConfigurationProvider(root).createConfiguration();
         
         assertEquals(root, configuration.getUiHelperRootDirectory());
 
@@ -87,6 +77,33 @@ public class UIHelperConfigurationProviderTest {
         assertNotNull(activitiConfiguration);
         assertTrue(activitiConfiguration instanceof ActivitiHumanTaskClientConfiguration);
         assertEquals("/some/configuration/resource", ((ActivitiHumanTaskClientConfiguration)activitiConfiguration).getConfigurationResource());
+        
+    }
+    
+    @Test
+    public void testCustomHumanTaskOperationsConfigurationParser() throws IOException{
+        
+        File root = new File(Thread.currentThread().getContextClassLoader().getResource(("customHumanTaskOperationsTest")).getFile());
+        //TODO: pass a map of Mock... to createConfiguration()
+        UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);
+        uIHelperConfigurationProvider.addUIHelperConfigurationUriHandler(new MockConfigurationHandler());
+        
+        
+        UIHelperConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
+        
+        assertEquals(root, configuration.getUiHelperRootDirectory());
+
+        assertNotNull(configuration.getHumanTaskServiceConfiguration());
+        
+        Map<String, HumanTaskClientConfiguration> humanTaskClientConfigurations = configuration.getHumanTaskServiceConfiguration().getHumanTaskClientConfigurations();
+        assertNotNull(humanTaskClientConfigurations);
+        assertEquals(1,humanTaskClientConfigurations.size());
+        
+        HumanTaskClientConfiguration mockConfiguration = humanTaskClientConfigurations.get(MockHumanTaskClientConfiguration.TYPE);
+        assertNotNull(mockConfiguration);
+        assertTrue(mockConfiguration instanceof MockHumanTaskClientConfiguration);
+        assertEquals("value1", ((MockHumanTaskClientConfiguration)mockConfiguration).getAttr1());
+        assertEquals("value2", ((MockHumanTaskClientConfiguration)mockConfiguration).getAttr2());
         
     }
     

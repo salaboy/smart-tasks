@@ -5,10 +5,13 @@
 
 package com.wordpress.salaboy.conf;
 
+import com.wordpress.salaboy.api.HumanTaskServiceOperations;
+
 /**
  *
  * @author salaboy
  */
 public interface HumanTaskClientConfiguration {
-    public String getType();
+    String getType();
+    HumanTaskServiceOperations getServiceOperationsImplementation();
 }

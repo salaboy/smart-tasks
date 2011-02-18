@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
+<configuration 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jbpm5="http://plugtree.org/smart-tasks/JBPM5" 
+    xmlns:activiti="http://plugtree.org/smart-tasks/Activiti" 
+    xsi:schemaLocation="http://plugtree.org/smart-tasks/JBPM5 http://plugtree.org/smart-tasks/JBPM5.xsd
+        http://plugtree.org/smart-tasks/Activiti http://plugtree.org/smart-tasks/Activiti.xsd"
+    >
     <humanTaskServiceConfiguration>
         <humanTaskClientsConfigurations>
-            <ActivityHumanTaskServiceConfiguration name="Activiti" configurationResource="/some/configuration/resource"/>
-            <JBPM5HumanTaskServiceConfiguration name="JBPM5" host="http://localhost/some/url" port="8123"/>
+            <activiti:ActivityHumanTaskServiceConfiguration name="Activiti" configurationResource="/some/configuration/resource"/>
+            <jbpm5:JBPM5HumanTaskServiceConfiguration name="JBPM5" host="http://localhost/some/url" port="8123"/>
         </humanTaskClientsConfigurations>
     </humanTaskServiceConfiguration>
 </configuration>

@@ -5,14 +5,16 @@
 
 package com.wordpress.salaboy.smarttasks.activiti5wrapper.conf;
 
+import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.activiti5wrapper.ActivitiHumanTaskServiceOperations;
 
 /**
  *
  * @author salaboy
  */
 public class ActivitiHumanTaskClientConfiguration implements HumanTaskClientConfiguration{
-
+    public final static String TYPE = "Activiti";
     private String configurationResource;
     
     public ActivitiHumanTaskClientConfiguration(String configurationResource) {
@@ -25,7 +27,11 @@ public class ActivitiHumanTaskClientConfiguration implements HumanTaskClientConf
 
     
     public String getType() {
-        return "Activiti";
+        return TYPE;
+    }
+
+    public HumanTaskServiceOperations getServiceOperationsImplementation() {
+        return new ActivitiHumanTaskServiceOperations(this);
     }
 
 }

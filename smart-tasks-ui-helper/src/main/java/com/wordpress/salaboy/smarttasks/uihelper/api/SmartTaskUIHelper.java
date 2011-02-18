@@ -24,7 +24,8 @@ public class SmartTaskUIHelper {
     private UIHelperConfiguration configuration;
 
     public SmartTaskUIHelper(File root) {
-        this.configuration = UIHelperConfigurationProvider.createConfiguration(root);
+        //TODO: add the possibility to register custom UIHelperConfigurationUriHandlers
+        this.configuration = new UIHelperConfigurationProvider(root).createConfiguration();
         this.humanTaskService = HumanTaskServiceFactory.newHumanTaskService(configuration.getHumanTaskServiceConfiguration());
     }
     

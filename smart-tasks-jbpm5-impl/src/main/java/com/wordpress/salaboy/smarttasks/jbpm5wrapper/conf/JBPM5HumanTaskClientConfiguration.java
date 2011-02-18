@@ -5,13 +5,17 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf;
 
+import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperations;
 
 /**
  *
  * @author salaboy
  */
 public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfiguration{
+    public final static String TYPE = "jBPM5";
+    
     private String host;
     private int port;
 
@@ -29,7 +33,11 @@ public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfigu
     }
 
     public String getType() {
-        return "jBPM5";
+        return TYPE;
+    }
+
+    public HumanTaskServiceOperations getServiceOperationsImplementation() {
+        return new JBPM5HumanTaskServiceOperations(this);
     }
     
     
