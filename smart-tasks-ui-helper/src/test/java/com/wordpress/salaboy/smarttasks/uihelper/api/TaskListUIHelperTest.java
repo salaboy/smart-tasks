@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.example.ws_ht.api.TStatus;
-import org.example.ws_ht.api.TTask;
+import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.junit.Test;
@@ -129,15 +129,15 @@ public class TaskListUIHelperTest {
                     }
 
                     @Override
-                    public List<TTask> getMyTasks(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
-                        List<TTask> tasks = new ArrayList<TTask>();
+                    public List<TTaskAbstract> getMyTaskAbstracts(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
+                        List<TTaskAbstract> tasks = new ArrayList<TTaskAbstract>();
                         
                         //4 mock tasks
                         for (int i = 0; i < 4; i++) {
-                            TTask task = new TTask();
-                            task.setId(""+i);
-                            task.setName(new QName("Task "+i));
-                            tasks.add(task);
+                            TTaskAbstract taskAbstract = new TTaskAbstract();
+                            taskAbstract.setId(""+i);
+                            taskAbstract.setName(new QName("Task "+i));
+                            tasks.add(taskAbstract);
                         }
                         
                         if (fromTaskNumber == null){
