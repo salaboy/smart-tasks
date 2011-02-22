@@ -6,10 +6,8 @@
     xsi:schemaLocation="http://plugtree.org/smart-tasks/JBPM5 http://plugtree.org/smart-tasks/JBPM5.xsd
         http://plugtree.org/smart-tasks/Activiti http://plugtree.org/smart-tasks/Activiti.xsd"
     >
-    <humanTaskServiceConfiguration>
-        <humanTaskServicesConfigurations>
-            <activiti:ActivityHumanTaskServiceConfiguration name="Activiti" configurationResource="/some/configuration/resource"/>
-            <jbpm5:JBPM5HumanTaskServiceConfiguration name="JBPM5" host="http://localhost/some/url" port="8123"/>
-        </humanTaskServicesConfigurations>
-    </humanTaskServiceConfiguration>
+    <humanTaskServicesConfigurations>
+        <activiti:ActivityHumanTaskServiceConfiguration name="Activiti" configurationResource="/some/configuration/resource"/>
+        <jbpm5:JBPM5HumanTaskServiceConfiguration name="JBPM5" host="http://localhost/some/url" port="8123"/>
+    </humanTaskServicesConfigurations>
 </configuration>
