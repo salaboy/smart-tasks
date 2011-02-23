@@ -12,5 +12,6 @@ package com.wordpress.salaboy.smarttasks.uihelper.api;
 public interface TaskListDataSet {
     
     String[][] getData();
+    String[][] getRowsMetaData();
 
 }

@@ -54,4 +54,29 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
 
         return data;
     }
+    
+    @Override
+    public String[][] getRowsMetaData() {
+        String[][] rowMetadata = this.taskListTableDefinition.getRowsMetaData();
+        
+        if (rowMetadata == null){
+            //No metadata defined
+            return null;
+        }
+        
+        String[][] metaData = new String[this.taskAbstracts.size()][];
+        
+        int i =0;
+        for (TTaskAbstract tTaskAbstract : this.taskAbstracts) {
+            metaData[i] = new String[rowMetadata[0].length];
+            for (int j = 0; j < metaData[i].length; j++) {
+                //TODO: add support for expressions in metadata
+                metaData[i][j] = rowMetadata[j][1]; 
+            }
+            i++;
+        }
+        
+        
+        return metaData;
+    }
 }

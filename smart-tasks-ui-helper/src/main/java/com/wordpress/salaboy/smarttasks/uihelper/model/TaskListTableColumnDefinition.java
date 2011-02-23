@@ -14,7 +14,6 @@ import com.wordpress.salaboy.smarttasks.uihelper.impl.Formatter;
 public class TaskListTableColumnDefinition {
    private String header;
    private String sourceExpresion;
-   private String[][] metadata;
    private Formatter formatter;
 
     public Formatter getFormatter() {
@@ -40,5 +39,5 @@ public class TaskListTableColumnDefinition {
     public void setSourceExpresion(String sourceExpresion) {
         this.sourceExpresion = sourceExpresion;
     }
-   
+
 }

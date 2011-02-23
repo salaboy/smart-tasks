@@ -30,5 +30,7 @@ public interface TaskListUIHelper {
      */
     public int getDataCount();
     
+    public String[] getRowMetadataKeys();
+    
     
 }

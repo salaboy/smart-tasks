@@ -86,4 +86,22 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
         return myTasks.size();
     }
     
+    @Override
+    public String[] getRowMetadataKeys() {
+        String[][] rowMetadata = this.taskListTableDefinition.getRowsMetaData();
+        
+        if (rowMetadata == null){
+            //No metadata defined
+            return null;
+        }
+        
+        String[] keys = new String[rowMetadata.length];
+        
+        for (int i = 0; i < rowMetadata.length; i++) {
+            keys[i] = rowMetadata[i][0];
+        }
+        
+        return keys;
+    }
+    
 }
