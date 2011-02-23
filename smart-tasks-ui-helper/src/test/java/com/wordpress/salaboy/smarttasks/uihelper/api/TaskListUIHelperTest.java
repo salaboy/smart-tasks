@@ -176,7 +176,8 @@ public class TaskListUIHelperTest {
         assertEquals(4, dataCount);
         
         //give me the first 2 tasks
-        String[][] data = taskListHelper.getData(0, 2);
+        TaskListDataSet dataSet = taskListHelper.getDataSet(0, 2);
+        String[][] data = dataSet.getData();
         assertEquals(2, data.length);
         assertEquals(2, data[0].length);
         assertEquals(2, data[1].length);
@@ -185,8 +186,9 @@ public class TaskListUIHelperTest {
         assertEquals("1", data[1][0]);
         assertEquals("Task 1", data[1][1]);
         
-        //give me the 2 mores tasks
-        data = taskListHelper.getData(2, 2);
+        //give me 2 mores tasks
+        dataSet = taskListHelper.getDataSet(2, 2);
+        data = dataSet.getData();
         assertEquals(2, data.length);
         assertEquals(2, data[0].length);
         assertEquals(2, data[1].length);

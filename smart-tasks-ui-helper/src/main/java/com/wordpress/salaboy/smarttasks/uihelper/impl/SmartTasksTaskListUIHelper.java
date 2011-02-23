@@ -6,6 +6,7 @@
 package com.wordpress.salaboy.smarttasks.uihelper.impl;
 
 import com.wordpress.salaboy.api.HumanTaskService;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
@@ -17,7 +18,6 @@ import java.util.logging.Logger;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
-import org.mvel2.MVEL;
 
 /**
  *
@@ -56,40 +56,16 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
     }
 
     @Override
-    public String[][] getData(int from, int amount) {
-        try {
+    public TaskListDataSet getDataSet(int from, int amount){
+        try{
             List<TTaskAbstract> myTasks = humanTaskService.getMyTaskAbstracts(taskType, entityId, null, null, null, null, null, amount, from);
-            
-            String[][] data = new String[myTasks.size()][this.taskListTableDefinition.getColumns().size()]; 
-            
-            int i = 0;
-            for (TTaskAbstract tTaskAbstract : myTasks) {
-                int j = 0;
-                for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
-                    Object expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion(),tTaskAbstract);
-                    String stringData = null;
-                    if (taskListTableColumnDefinition.getFormatter() != null){
-                        stringData = taskListTableColumnDefinition.getFormatter().format(expresionResult);
-                    }else{
-                        if (expresionResult == null){
-                            stringData = "null";
-                        }else{
-                            stringData = expresionResult.toString();
-                        }
-                    }
-                    
-                    data[i][j] = stringData;
-                    j++;
-                }
-                i++;
-            }
-            
-            return data;
+            return new SmartTasksTaskListDataSet(taskListTableDefinition, myTasks);
         } catch (IllegalArgumentFault ex) {
             throw new IllegalArgumentException(ex);
         } catch (IllegalStateFault ex) {
             throw new IllegalStateException(ex);
         }
+        
     }
 
     @Override
@@ -109,5 +85,5 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
         }
         return myTasks.size();
     }
-
+    
 }
