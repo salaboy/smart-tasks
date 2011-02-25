@@ -35,7 +35,8 @@
             <groupId>com.wordpress.salaboy.smarttasks</groupId>
             <artifactId>smart-tasks-metamodel-base</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+             <type>jar</type>
+         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

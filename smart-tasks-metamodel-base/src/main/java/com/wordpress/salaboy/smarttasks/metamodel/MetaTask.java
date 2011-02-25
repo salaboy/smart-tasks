@@ -19,6 +19,10 @@ public class MetaTask {
     public MetaTask(TTask task) {
         this.task = task;
     }
+    
+    public MetaTask(TTaskAbstract taskAbstract) {
+        this.taskAbstract = taskAbstract;
+    }
 
     public Long getId() {
         return id;
@@ -45,7 +49,22 @@ public class MetaTask {
     }
 
     public String getStringRepresentation() {
-        return "id: "+id+" - meta: "+"base meta - "+"ttask:"+task.toString();
+        String stringRep = "";
+       
+        if(task != null){
+             if(!task.getId().equals("")){
+                 stringRep += "id: "+task.getId();
+             }
+             stringRep += "name: "+task.getName()+" - ";
+        }
+        
+        if(taskAbstract != null){
+             if(!taskAbstract.getId().equals("")){
+                 stringRep += "abstract:id: "+taskAbstract.getId();
+             }
+             stringRep += "abstract:name: "+taskAbstract.getName()+" - ";
+        }
+        return stringRep;
     }
     
     

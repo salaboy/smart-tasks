@@ -4,6 +4,7 @@
  */
 package com.wordpress.salaboy.smarttasks.uihelper.impl;
 
+import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableColumnDefinition;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
@@ -17,42 +18,53 @@ import org.mvel2.MVEL;
  */
 public class SmartTasksTaskListDataSet implements TaskListDataSet {
 
-    private final List<TTaskAbstract> taskAbstracts;
+    private final List<MetaTask> myTasks;
     private final TaskListTableDefinition taskListTableDefinition;
 
-    public SmartTasksTaskListDataSet(TaskListTableDefinition taskListTableDefinition, List<TTaskAbstract> taskAbstracts) {
+    public SmartTasksTaskListDataSet(TaskListTableDefinition taskListTableDefinition, List<MetaTask> myTasks) {
         this.taskListTableDefinition = taskListTableDefinition;
-        this.taskAbstracts = taskAbstracts;
+        this.myTasks = myTasks;
     }
 
     @Override
     public String[][] getData() {
         
-        String[][] data = new String[this.taskAbstracts.size()][this.taskListTableDefinition.getColumns().size()];
-
-        int i = 0;
-        for (TTaskAbstract tTaskAbstract : this.taskAbstracts) {
-            int j = 0;
-            for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
-                Object expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion(), tTaskAbstract);
-                String stringData = null;
-                if (taskListTableColumnDefinition.getFormatter() != null) {
-                    stringData = taskListTableColumnDefinition.getFormatter().format(expresionResult);
-                } else {
-                    if (expresionResult == null) {
-                        stringData = "null";
-                    } else {
-                        stringData = expresionResult.toString();
+        String[][] data = new String[myTasks.size()][this.taskListTableDefinition.getColumns().size()]; 
+            
+            int i = 0;
+            for (MetaTask metaTask : myTasks) {
+                int j = 0;
+                for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
+                    Object expresionResult = null;
+                    if(taskListTableColumnDefinition.getSourceExpresion().startsWith("meta:")){
+                        
+                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion().split(":")[1],metaTask);
                     }
+                    else if(taskListTableColumnDefinition.getSourceExpresion().startsWith("task:")){
+                        
+                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion().split(":")[1],metaTask.getTask());
+                    }
+                    else{
+                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion(),metaTask.getTaskAbstract());
+                    }
+                    String stringData = null;
+                    if (taskListTableColumnDefinition.getFormatter() != null){
+                        stringData = taskListTableColumnDefinition.getFormatter().format(expresionResult);
+                    }else{
+                        if (expresionResult == null){
+                            stringData = "null";
+                        }else{
+                            stringData = expresionResult.toString();
+                        }
+                    }
+                    
+                    data[i][j] = stringData;
+                    j++;
                 }
-
-                data[i][j] = stringData;
-                j++;
+                i++;
             }
-            i++;
-        }
-
-        return data;
+            
+            return data;
     }
     
     @Override
@@ -64,10 +76,10 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
             return null;
         }
         
-        String[][] metaData = new String[this.taskAbstracts.size()][];
+        String[][] metaData = new String[this.myTasks.size()][];
         
         int i =0;
-        for (TTaskAbstract tTaskAbstract : this.taskAbstracts) {
+        for (MetaTask metaTask : this.myTasks) {
             metaData[i] = new String[rowMetadata[0].length];
             for (int j = 0; j < metaData[i].length; j++) {
                 //TODO: add support for expressions in metadata

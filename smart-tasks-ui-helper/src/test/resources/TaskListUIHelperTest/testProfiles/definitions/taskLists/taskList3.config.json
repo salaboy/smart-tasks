@@ -16,7 +16,7 @@
      "profile": "SalaboyMeta",
      "columns": [
          {
-            "header":"Id",
+            "header":"StringRep",
             "sourceExpresion":"meta:stringRepresentation"
          }
      ]

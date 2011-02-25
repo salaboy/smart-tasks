@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.example.ws_ht.api.TTask;
+import org.example.ws_ht.api.TTaskAbstract;
 
 /**
  *
@@ -32,6 +33,13 @@ public class MetaTaskDecoratorService {
     
     public MetaTask decorate(String decorator, TTask task){
         return decorators.get(decorator).decorate(task);
+    }
+    public List<MetaTask> decorateAbstractList(String decorator, List<TTaskAbstract> taskAbstracts){
+        return decorators.get(decorator).decorateAbstractList(taskAbstracts);
+    }
+    
+    public MetaTask decorateAbstract(String decorator, TTaskAbstract taskAbstract){
+        return decorators.get(decorator).decorateAbstract(taskAbstract);
     }
     
     
