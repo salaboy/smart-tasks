@@ -39,5 +39,5 @@ public class TaskListTableColumnDefinition {
     public void setSourceExpresion(String sourceExpresion) {
         this.sourceExpresion = sourceExpresion;
     }
-   
+
 }

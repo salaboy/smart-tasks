@@ -17,18 +17,20 @@ public interface TaskListUIHelper {
     public String[] getColumnHeaders();
     
     /**
-     * Return the data that should be used to populate the task list.
+     * Return a TaskListDataSet
      * @param from the number of the first record to be returned
      * @param ammount the amount of records requested.
      * @return 
      */
-    public String[][] getData(int from, int amount);
+    public TaskListDataSet getDataSet(int from, int amount);
     
     /**
      * Returns the total number of records.
      * @return 
      */
     public int getDataCount();
+    
+    public String[] getRowMetadataKeys();
     
     
 }

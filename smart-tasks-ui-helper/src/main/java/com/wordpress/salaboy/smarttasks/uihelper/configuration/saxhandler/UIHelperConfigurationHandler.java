@@ -26,7 +26,7 @@ public class UIHelperConfigurationHandler implements UIHelperConfigurationUriHan
 
     @Override
     public void startElement(String tagName, Attributes attributes, UIHelperConfiguration configuration) throws SAXException {
-        if ("humanTaskServiceConfiguration".equals(tagName)){
+        if ("humanTaskServicesConfigurations".equals(tagName)){
             configuration.setHumanTaskServiceConfiguration(new HumanTaskServiceConfiguration());
         }
     }

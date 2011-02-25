@@ -18,6 +18,7 @@ public class TaskListTableDefinition {
    private String profile = DEFAULT_PROFILE_NAME;
    private String decorator;
    private List<TaskListTableColumnDefinition> columns = new ArrayList<TaskListTableColumnDefinition>();
+   private String[][] rowsMetaData;
 
     public List<TaskListTableColumnDefinition> getColumns() {
         return columns;
@@ -38,5 +39,8 @@ public class TaskListTableDefinition {
     }
     
     
+    public String[][] getRowsMetaData() {
+        return this.rowsMetaData;
+    }
    
 }

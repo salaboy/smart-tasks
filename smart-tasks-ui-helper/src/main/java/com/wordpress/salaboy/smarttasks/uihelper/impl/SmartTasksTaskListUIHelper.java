@@ -9,6 +9,7 @@ import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
@@ -17,10 +18,9 @@ import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.example.ws_ht.api.TTask;
+import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
-import org.mvel2.MVEL;
 
 /**
  *
@@ -99,18 +99,24 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
             }
             
             return data;
+    }
+    public TaskListDataSet getDataSet(int from, int amount){
+        try{
+            List<TTaskAbstract> myTasks = humanTaskService.getMyTaskAbstracts(taskType, entityId, null, null, null, null, null, amount, from);
+            return new SmartTasksTaskListDataSet(taskListTableDefinition, myTasks);
         } catch (IllegalArgumentFault ex) {
             throw new IllegalArgumentException(ex);
         } catch (IllegalStateFault ex) {
             throw new IllegalStateException(ex);
         }
+        
     }
 
     @Override
     public int getDataCount() {
-        List<TTask> myTasks = null;
+        List<TTaskAbstract> myTasks = null;
         try {
-            myTasks = humanTaskService.getMyTasks(taskListId, entityId, null, null, null, null, null, null, null);
+            myTasks = humanTaskService.getMyTaskAbstracts(taskType, entityId, null, null, null, null, null, null, null);
         } catch (IllegalArgumentFault ex) {
             //TODO: throw a more appropiated exception
             Logger.getLogger(SmartTasksTaskListUIHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -123,5 +129,23 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
         }
         return myTasks.size();
     }
-
+    
+    @Override
+    public String[] getRowMetadataKeys() {
+        String[][] rowMetadata = this.taskListTableDefinition.getRowsMetaData();
+        
+        if (rowMetadata == null){
+            //No metadata defined
+            return null;
+        }
+        
+        String[] keys = new String[rowMetadata.length];
+        
+        for (int i = 0; i < rowMetadata.length; i++) {
+            keys[i] = rowMetadata[i][0];
+        }
+        
+        return keys;
+    }
+    
 }

@@ -4,9 +4,7 @@
     xmlns:mock="http://plugtree.org/smart-tasks/MOCK" 
     xsi:schemaLocation="http://plugtree.org/smart-tasks/MOCK http://plugtree.org/smart-tasks/MOCK.xsd"
     >
-    <humanTaskServiceConfiguration>
-        <humanTaskServicesConfigurations>
-            <mock:MockHumanTaskServiceConfiguration attr1="value1" attr2="value2"/>
-        </humanTaskServicesConfigurations>
-    </humanTaskServiceConfiguration>
+    <humanTaskServicesConfigurations>
+        <mock:MockHumanTaskServiceConfiguration attr1="value1" attr2="value2"/>
+    </humanTaskServicesConfigurations>
 </configuration>
