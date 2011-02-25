@@ -5,6 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.uihelper.model;
 
+import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecorator;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class TaskListTableDefinition {
    public static final String DEFAULT_PROFILE_NAME = "Default";
    private String profile = DEFAULT_PROFILE_NAME;
+   private String decorator;
    private List<TaskListTableColumnDefinition> columns = new ArrayList<TaskListTableColumnDefinition>();
    private String[][] rowsMetaData;
 
@@ -26,6 +28,17 @@ public class TaskListTableDefinition {
         return profile;
     }
 
+    public void setDecorator(String decorator) {
+        this.decorator = decorator;
+    }
+
+    
+    
+    public String getDecorator() {
+        return decorator;
+    }
+    
+    
     public String[][] getRowsMetaData() {
         return this.rowsMetaData;
     }

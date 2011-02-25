@@ -6,6 +6,9 @@
 package com.wordpress.salaboy.smarttasks.uihelper.impl;
 
 import com.wordpress.salaboy.api.HumanTaskService;
+import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
+import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
+import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
@@ -56,6 +59,47 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
     }
 
     @Override
+    public String[][] getData(int from, int amount) {
+        try {
+           
+            List<MetaTask> myTasks = MetaTaskDecoratorService.getInstance().decorateList(
+                        //taskListTableDefinition.getDecorator(),
+                        "base",
+                        humanTaskService.getMyTasks(taskListId, entityId, null, null, null, null, null, amount, from));
+             
+            
+            String[][] data = new String[myTasks.size()][this.taskListTableDefinition.getColumns().size()]; 
+            
+            int i = 0;
+            for (MetaTask metaTask : myTasks) {
+                int j = 0;
+                for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
+                    Object expresionResult = null;
+                    if(taskListTableColumnDefinition.getSourceExpresion().startsWith("meta:")){
+                        
+                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion().split(":")[1],metaTask);
+                    }else{
+                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion(),metaTask.getTask());
+                    }
+                    String stringData = null;
+                    if (taskListTableColumnDefinition.getFormatter() != null){
+                        stringData = taskListTableColumnDefinition.getFormatter().format(expresionResult);
+                    }else{
+                        if (expresionResult == null){
+                            stringData = "null";
+                        }else{
+                            stringData = expresionResult.toString();
+                        }
+                    }
+                    
+                    data[i][j] = stringData;
+                    j++;
+                }
+                i++;
+            }
+            
+            return data;
+    }
     public TaskListDataSet getDataSet(int from, int amount){
         try{
             List<TTaskAbstract> myTasks = humanTaskService.getMyTaskAbstracts(taskType, entityId, null, null, null, null, null, amount, from);
