@@ -4,19 +4,6 @@
  */
 package com.wordpress.salaboy;
 
-import java.io.StringReader;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import org.jbpm.eventmessaging.EventKey;
-import org.jbpm.eventmessaging.Payload;
-import org.jbpm.process.workitem.wsht.BlockingEventResponseHandler;
-import org.jbpm.process.workitem.wsht.BlockingGetTaskResponseHandler;
-import org.jbpm.task.Status;
-import org.jbpm.task.event.TaskCompletedEvent;
-import org.jbpm.task.event.TaskEventKey;
-import org.jbpm.task.query.TaskSummary;
-import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
 import com.wordpress.salaboy.api.HumanTaskService;
 import org.example.ws_ht.api.TTaskAbstract;
@@ -26,7 +13,6 @@ import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientCo
 import java.util.ArrayList;
 import java.util.List;
 import org.jbpm.process.workitem.wsht.BlockingAddTaskResponseHandler;
-import org.jbpm.task.Group;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.PeopleAssignments;

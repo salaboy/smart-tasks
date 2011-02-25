@@ -6,8 +6,10 @@
 package com.wordpress.salaboy.api;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
 import org.example.ws_ht.api.TStatus;
@@ -25,10 +27,12 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
     private Map<String, HumanTaskServiceOperations> taskOperations;
     private Map<String, ServiceLifeCycleManager> serviceLifeCycleManagers;
     
-    public HumanTaskServiceImpl(Map<String, HumanTaskServiceOperations> taskOperations) {
-        
-        this.taskOperations = taskOperations;
-        
+    public HumanTaskServiceImpl(List<HumanTaskServiceOperations> taskOperations) {
+        this.taskOperations = new HashMap<String, HumanTaskServiceOperations>();
+        for (HumanTaskServiceOperations humanTaskServiceOperations : taskOperations) {
+            String serviceOperationId = UUID.randomUUID().toString();
+            this.taskOperations.put(serviceOperationId, humanTaskServiceOperations);
+        }
     }
 
     @Override
@@ -38,62 +42,67 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
 
     @Override
     public void claim(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        //@FIXME: this call should be performed according to some pattern in the id
-        //that identifies the real taskOperation
-        this.taskOperations.entrySet().iterator().next().getValue().claim(identifier);
+        String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        this.taskOperations.get(taskOperationId).claim(entityId);
     }
     
     @Override
     public void start(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        //@FIXME: this call should be performed according to some pattern in the id
-        //that identifies the real taskOperation
-        this.taskOperations.entrySet().iterator().next().getValue().start(identifier);
+        String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        this.taskOperations.get(taskOperationId).start(entityId);
     }
     
     @Override
     public void complete(String identifier, Object contentData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        //@FIXME: this call should be performed according to some pattern in the id
-        //that identifies the real taskOperation
-        this.taskOperations.entrySet().iterator().next().getValue().complete(identifier, contentData);
+        String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        this.taskOperations.get(taskOperationId).complete(entityId, contentData);
     }
 
     @Override
     public List<TTaskAbstract> getMyTaskAbstracts(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
         List<TTaskAbstract> result = new ArrayList<TTaskAbstract>();
         for (Map.Entry<String, HumanTaskServiceOperations> entry : this.taskOperations.entrySet()) {
-            result.addAll(entry.getValue().getMyTaskAbstracts(taskType, genericHumanRole, workQueue, status, whereClause, orderByClause, createdOnClause, maxTasks, fromTaskNumber));
+            //Custom id creation
+            List<TTaskAbstract> myTaskAbstracts = entry.getValue().getMyTaskAbstracts(taskType, genericHumanRole, workQueue, status, whereClause, orderByClause, createdOnClause, maxTasks, fromTaskNumber);
+            for (TTaskAbstract tTaskAbstract : myTaskAbstracts) {
+                tTaskAbstract.setId(this.createUniqueId(entry.getKey(), tTaskAbstract));
+                result.add(tTaskAbstract);
+            }
         }
         return result;
     }
     
     @Override
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        //@FIXME: this call should be performed according to some pattern in the id
-        //that identifies the real taskOperation
-        return this.taskOperations.entrySet().iterator().next().getValue().getAttachmentInfos(identifier);
+        String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        return this.taskOperations.get(taskOperationId).getAttachmentInfos(entityId);
     }
 
     @Override
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        //@FIXME: this call should be performed according to some pattern in the id
-        //that identifies the real taskOperation
-        return this.taskOperations.entrySet().iterator().next().getValue().getAttachments(identifier, attachmentName);
+        String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        return this.taskOperations.get(taskOperationId).getAttachments(entityId, attachmentName);
     }
     
     @Override
     public void setAuthorizedEntityId(String entityId) {
         
         //@FIXME: I'm using the same entityId for all taskOperations
-        for(String key : this.taskOperations.keySet()){
-            this.taskOperations.get(key).setAuthorizedEntityId(entityId);
+        for (Map.Entry<String, HumanTaskServiceOperations> entry : this.taskOperations.entrySet()) {
+            entry.getValue().setAuthorizedEntityId(entityId);
         }
     }
 
     @Override
     public void setLocale(String locale) {
         //@FIXME: I'm using the same locale for all taskOperations
-        for(String key : this.taskOperations.keySet()){
-            this.taskOperations.get(key).setLocale(locale);
+        for (Map.Entry<String, HumanTaskServiceOperations> entry : this.taskOperations.entrySet()) {
+            entry.getValue().setLocale(locale);
         }
     }
 
@@ -118,24 +127,26 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
     
     @Override
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
-        //@FIXME: We should ask to the correct taskOperations
-        for(String key : this.taskOperations.keySet()){
-            TTask taskInfo = this.taskOperations.get(key).getTaskInfo(identifier);
-            if (taskInfo != null){
-                return taskInfo;
-            }
-        }
+        String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
         
+        TTask taskInfo = this.taskOperations.get(taskOperationId).getTaskInfo(entityId);
+        if (taskInfo != null){
+            taskInfo.setId(this.createUniqueId(taskOperationId, taskInfo));
+            return taskInfo;
+        }
         return null;
     }
 
     @Override
     public List<TTask> getMyTasks(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
         List<TTask> tTasks = new ArrayList<TTask> ();
-        //@FIXME: We should ask to the correct taskOperations
-        for(String key : this.taskOperations.keySet()){
-            List<TTask> tasks = this.taskOperations.get(key).getMyTasks(taskType, genericHumanRole, workQueue, status, whereClause, orderByClause, createdOnClause, maxTasks, fromTaskNumber);
+        for (Map.Entry<String, HumanTaskServiceOperations> entry : this.taskOperations.entrySet()) {
+            List<TTask> tasks = entry.getValue().getMyTasks(taskType, genericHumanRole, workQueue, status, whereClause, orderByClause, createdOnClause, maxTasks, fromTaskNumber);
             if (tasks != null){
+                for (TTask tTask : tasks) {
+                    tTask.setId(this.createUniqueId(entry.getKey(), tTask));
+                }
                 tTasks.addAll(tasks);
             }
         }
@@ -143,5 +154,25 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         return tTasks;
     }
 
+    private String createUniqueId(String key, TTask task){
+        return this.createUniqueId(key, task.getId());
+    }
     
+    private String createUniqueId(String key, TTaskAbstract taskAbstract){
+        return this.createUniqueId(key, taskAbstract.getId());
+    }
+    
+    
+    private String createUniqueId(String key, String entityId){
+        //simple Unique Id creator. Of course that key should already be unique ;)
+        return key+"-@-"+entityId;
+    }
+    
+    private String getEntityId(String uniqueId){
+        return uniqueId.split("\\-@\\-")[1];
+    }
+    
+    private String getTaskOperationId(String uniqueId){
+        return uniqueId.split("\\-@\\-")[0];
+    }
 }
