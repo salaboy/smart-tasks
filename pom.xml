@@ -13,6 +13,8 @@
         <module>smart-tasks-jbpm5-impl</module>
         <module>smart-tasks-activiti-impl</module>
         <module>smart-tasks-ui-helper</module>
+    <module>smart-tasks-metamodel-base</module>
+    <module>smart-tasks-metamodel-simulation</module>
   </modules>
     
     <dependencies>

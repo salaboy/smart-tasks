@@ -5,3 +5,6 @@ target/
 .iml
 *.db
 
+/smart-tasks-ui-helper/target/
+/smart-task-metamodel-base/target/
+/smart-tasks-metamodel-simulation/target/
