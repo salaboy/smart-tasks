@@ -1,0 +1,25 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"id"
+         },
+         {
+            "header":"Name",
+            "sourceExpresion":"name"
+         }
+     ]
+ },
+ {
+     "profile": "Esteban",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"id"
+         }
+     ],
+     "rowsMetaData":[["metaData1","metaDataValue1"],["metaData2","metaDataValue2"]]
+ }
+]

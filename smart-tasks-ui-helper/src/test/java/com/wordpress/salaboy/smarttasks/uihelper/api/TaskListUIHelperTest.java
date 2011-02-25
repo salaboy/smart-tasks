@@ -4,7 +4,6 @@
  */
 package com.wordpress.salaboy.smarttasks.uihelper.api;
 
-import org.example.ws_ht.api.TTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
@@ -217,7 +216,7 @@ public class TaskListUIHelperTest {
     
     
      @Test
-    public void testBasicDataMeta(){
+    public void testBasicMetaModel(){
         MetaTaskDecoratorService.getInstance().registerDecorator("base", new MetaTaskDecoratorBase());
         File root = new File(Thread.currentThread().getContextClassLoader().getResource(("TaskListUIHelperTest/testProfiles")).getFile());
         UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);

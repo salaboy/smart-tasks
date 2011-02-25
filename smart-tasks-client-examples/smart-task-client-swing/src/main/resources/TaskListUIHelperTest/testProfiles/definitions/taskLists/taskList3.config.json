@@ -1,0 +1,24 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"id"
+         },
+         {
+            "header":"Name",
+            "sourceExpresion":"name"
+         }
+     ]
+ },
+ {
+     "profile": "SalaboyMeta",
+     "columns": [
+         {
+            "header":"StringRep",
+            "sourceExpresion":"meta:stringRepresentation"
+         }
+     ]
+ }
+]

@@ -9,3 +9,9 @@ target/
 /smart-task-metamodel-base/target/
 /smart-tasks-metamodel-simulation/target/
 /smart-tasks-metamodel-base/target/
+/smart-tasks-client-examples/smart-tasks-client-console/target/
+/smart-tasks-activiti-impl/target/
+/smart-tasks-api/target/
+/smart-tasks-jbpm5-impl/target/
+/smart-tasks-model/target/
+/smart-tasks-client-examples/smart-task-client-swing/target/
