@@ -72,10 +72,10 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
         
         int i =0;
         for (MetaTask metaTask : this.myTasks) {
-            metaData[i] = new String[rowMetadata[0].length];
+            metaData[i] = new String[rowMetadata.length];
             for (int j = 0; j < metaData[i].length; j++) {
-                //TODO: add support for expressions in metadata
-                metaData[i][j] = rowMetadata[j][1]; 
+                Object expressionResult = this.expressionResolver.resolveExpression(rowMetadata[j][1],metaTask);
+                metaData[i][j] = expressionResult == null? "null":expressionResult.toString(); 
             }
             i++;
         }

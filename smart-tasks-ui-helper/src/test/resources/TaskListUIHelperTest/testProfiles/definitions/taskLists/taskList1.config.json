@@ -20,6 +20,6 @@
             "sourceExpresion":"#{id}"
          }
      ],
-     "rowsMetaData":[["metaData1","metaDataValue1"],["metaData2","metaDataValue2"]]
+     "rowsMetaData":[["metaData1","metaDataValue1"],["metaData2","metaDataValue2"],["metaData3","#{name}"]]
  }
 ]

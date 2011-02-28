@@ -196,9 +196,10 @@ public class TaskListUIHelperTest {
         String[] rowMetadataKeys = taskListHelper.getRowMetadataKeys();
         
         assertNotNull(taskListHelper.getRowMetadataKeys());
-        assertEquals(2, rowMetadataKeys.length);
+        assertEquals(3, rowMetadataKeys.length);
         assertEquals("metaData1", rowMetadataKeys[0]);
         assertEquals("metaData2", rowMetadataKeys[1]);
+        assertEquals("metaData3", rowMetadataKeys[2]);
 
         TaskListDataSet dataSet = taskListHelper.getDataSet(0, 4);
 
@@ -209,6 +210,7 @@ public class TaskListUIHelperTest {
             String[] value = rowsMetaData[i];
             assertEquals("metaDataValue1", value[0]);
             assertEquals("metaDataValue2", value[1]);
+            assertEquals("Task "+i, value[2]);
         }
 
         helper.disconnect();
