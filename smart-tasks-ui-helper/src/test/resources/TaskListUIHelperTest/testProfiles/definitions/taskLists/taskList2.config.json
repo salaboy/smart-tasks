@@ -4,11 +4,11 @@
      "columns": [
          {
             "header":"Id",
-            "sourceExpresion":"id"
+            "sourceExpresion":"#{id}"
          },
          {
             "header":"Name",
-            "sourceExpresion":"name"
+            "sourceExpresion":"#{name}"
          }
      ]
  },
@@ -17,7 +17,7 @@
      "columns": [
          {
             "header":"Id",
-            "sourceExpresion":"id"
+            "sourceExpresion":"#{id}"
          }
      ]
  },
@@ -26,7 +26,7 @@
      "columns": [
          {
             "header":"Status",
-            "sourceExpresion":"status"
+            "sourceExpresion":"#{status}"
          }
      ]
  },
@@ -39,7 +39,7 @@
          },
          {
             "header":"Priority",
-            "sourceExpresion":"priority"
+            "sourceExpresion":"#{priority}"
          }
      ]
  }

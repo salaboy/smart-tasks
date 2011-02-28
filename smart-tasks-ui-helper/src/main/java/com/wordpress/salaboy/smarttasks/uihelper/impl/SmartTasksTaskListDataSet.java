@@ -6,11 +6,11 @@ package com.wordpress.salaboy.smarttasks.uihelper.impl;
 
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
+import com.wordpress.salaboy.smarttasks.uihelper.expression.ExpressionResolver;
+import com.wordpress.salaboy.smarttasks.uihelper.expression.MVELExpressionResolver;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableColumnDefinition;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
 import java.util.List;
-import org.example.ws_ht.api.TTaskAbstract;
-import org.mvel2.MVEL;
 
 /**
  *
@@ -20,10 +20,12 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
 
     private final List<MetaTask> myTasks;
     private final TaskListTableDefinition taskListTableDefinition;
+    private final ExpressionResolver expressionResolver;
 
     public SmartTasksTaskListDataSet(TaskListTableDefinition taskListTableDefinition, List<MetaTask> myTasks) {
         this.taskListTableDefinition = taskListTableDefinition;
         this.myTasks = myTasks;
+        this.expressionResolver = new MVELExpressionResolver();
     }
 
     @Override
@@ -35,18 +37,8 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
             for (MetaTask metaTask : myTasks) {
                 int j = 0;
                 for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
-                    Object expresionResult = null;
-                    if(taskListTableColumnDefinition.getSourceExpresion().startsWith("meta:")){
-                        
-                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion().split(":")[1],metaTask);
-                    }
-                    else if(taskListTableColumnDefinition.getSourceExpresion().startsWith("task:")){
-                        
-                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion().split(":")[1],metaTask.getTask());
-                    }
-                    else{
-                        expresionResult = MVEL.eval(taskListTableColumnDefinition.getSourceExpresion(),metaTask.getTaskAbstract());
-                    }
+                    Object expresionResult = this.expressionResolver.resolveExpression(taskListTableColumnDefinition.getSourceExpresion(), metaTask);
+                    
                     String stringData = null;
                     if (taskListTableColumnDefinition.getFormatter() != null){
                         stringData = taskListTableColumnDefinition.getFormatter().format(expresionResult);

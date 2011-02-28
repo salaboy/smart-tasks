@@ -8,7 +8,7 @@
          },
          {
             "header":"Name",
-            "sourceExpresion":"name"
+            "sourceExpresion":"#{name}"
          }
      ]
  },
@@ -17,7 +17,7 @@
      "columns": [
          {
             "header":"Id",
-            "sourceExpresion":"id"
+            "sourceExpresion":"#{id}"
          }
      ],
      "rowsMetaData":[["metaData1","metaDataValue1"],["metaData2","metaDataValue2"]]
