@@ -5,6 +5,8 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf;
 
+import java.util.Properties;
+
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperations;
@@ -18,10 +20,16 @@ public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfigu
     
     private String host;
     private int port;
+    private Properties extraInfo;
 
     public JBPM5HumanTaskClientConfiguration(String host, int port) {
+    	this(host, port, new Properties());
+    }
+    
+    public JBPM5HumanTaskClientConfiguration(String host, int port, Properties extraInfo) {
         this.host = host;
         this.port = port;
+        this.extraInfo = extraInfo;
     }
 
     public String getHost() {
@@ -32,6 +40,10 @@ public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfigu
         return port;
     }
 
+    public Properties getExtraInfo() {
+		return extraInfo;
+	}
+    
     public String getType() {
         return TYPE;
     }

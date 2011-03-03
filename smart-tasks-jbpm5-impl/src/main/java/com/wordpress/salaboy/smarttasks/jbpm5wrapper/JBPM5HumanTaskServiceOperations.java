@@ -55,14 +55,18 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     public JBPM5HumanTaskServiceOperations(JBPM5HumanTaskClientConfiguration configuration) {
         //Create the taskClient
-        MinaTaskClientConnector minaTaskClientConnector = 
-                new MinaTaskClientConnector("jBPM5TaskClient", 
-                    new MinaTaskClientHandler(SystemEventListenerFactory.getSystemEventListener()));
-        client = new TaskClient(minaTaskClientConnector);
+        this.client = createTaskClient(configuration);
         this.configuration = configuration;
         
         
     }
+
+	protected TaskClient createTaskClient(JBPM5HumanTaskClientConfiguration configuration) {
+		MinaTaskClientConnector minaTaskClientConnector = 
+                new MinaTaskClientConnector("jBPM5TaskClient", 
+                    new MinaTaskClientHandler(SystemEventListenerFactory.getSystemEventListener()));
+        return new TaskClient(minaTaskClientConnector);
+	}
 
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         throw new UnsupportedOperationException("Not supported yet.");
