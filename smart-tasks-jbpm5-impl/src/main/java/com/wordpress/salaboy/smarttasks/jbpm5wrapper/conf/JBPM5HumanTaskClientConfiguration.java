@@ -7,6 +7,11 @@ package com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf;
 
 import java.util.Properties;
 
+import org.drools.SystemEventListenerFactory;
+import org.jbpm.task.service.TaskClientConnector;
+import org.jbpm.task.service.mina.MinaTaskClientConnector;
+import org.jbpm.task.service.mina.MinaTaskClientHandler;
+
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperations;
@@ -51,6 +56,13 @@ public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfigu
     public HumanTaskServiceOperations getServiceOperationsImplementation() {
         return new JBPM5HumanTaskServiceOperations(this);
     }
-    
+
+    public TaskClientConnector createConnector() {
+    	return new MinaTaskClientConnector("jbpm5TaskClient", 
+    		new MinaTaskClientHandler(
+    			SystemEventListenerFactory.getSystemEventListener()
+    		)
+    	);
+    }
     
 }
