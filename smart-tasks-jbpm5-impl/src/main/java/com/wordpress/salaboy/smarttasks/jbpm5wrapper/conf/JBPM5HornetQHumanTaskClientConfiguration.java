@@ -22,7 +22,6 @@ public class JBPM5HornetQHumanTaskClientConfiguration extends JBPM5HumanTaskClie
 		super(host, port);
 	}
 	
-	@Override
 	public TaskClientConnector createConnector() {
 		return new HornetQTaskClientConnector(
 			"jbpm5TaskClient",
