@@ -5,10 +5,12 @@
 
 package com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler;
 
-import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5MinaHumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 
 /**
  * UIHelperConfigurationUriHandler implementation that handles JBPM5
@@ -44,7 +46,7 @@ public class JBPM5ConfigurationHandler implements UIHelperConfigurationUriHandle
             }
             int intPort = Integer.parseInt(port);
             
-            JBPM5HumanTaskClientConfiguration clientConfiguration = new JBPM5HumanTaskClientConfiguration(host,intPort);
+            JBPM5HumanTaskClientConfiguration clientConfiguration = new JBPM5MinaHumanTaskClientConfiguration(host,intPort);
             configuration.getHumanTaskServiceConfiguration().addHumanTaskClientConfiguration(name,clientConfiguration);
         }
     }
