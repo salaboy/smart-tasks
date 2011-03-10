@@ -41,6 +41,6 @@ public class MetaTaskDecoratorService {
     public MetaTask decorateAbstract(String decorator, TTaskAbstract taskAbstract){
         return decorators.get(decorator).decorateAbstract(taskAbstract);
     }
-    
+
     
 }

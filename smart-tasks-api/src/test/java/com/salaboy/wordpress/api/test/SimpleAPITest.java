@@ -10,9 +10,7 @@ import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.example.ws_ht.api.wsdl.TaskOperations;
 import com.salaboy.wordpress.api.test.mock.MockQueryClientAdapter;
-import com.salaboy.wordpress.api.test.mock.MockRendererProvider;
 import com.wordpress.salaboy.api.HumanTaskClientRegistry;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -41,8 +39,6 @@ public class SimpleAPITest {
 
     @Before
     public void setUp() {
-        MockRendererProvider.results  = new ArrayList<String>();
-        
         queryClient = MockQueryClientAdapter.newQueryClient();
         
         HumanTaskClientRegistry.getInstance().addQueryClient("mockQuery", queryClient);
