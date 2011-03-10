@@ -5,10 +5,8 @@
 
 package com.salaboy.wordpress.api.test.mock;
 
-import com.wordpress.salaboy.api.TaskDefinition;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
