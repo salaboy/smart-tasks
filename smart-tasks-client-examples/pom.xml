@@ -12,7 +12,7 @@
   <packaging>pom</packaging>
   <name>Smart Tasks :: Client Examples</name>
   <modules>
-    <module>smart-tasks-client-console</module>
+    <!--module>smart-tasks-client-console</module-->
     <module>smart-task-client-swing</module>
   </modules>
 </project>
