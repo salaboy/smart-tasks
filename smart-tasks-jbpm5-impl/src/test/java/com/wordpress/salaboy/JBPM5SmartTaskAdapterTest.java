@@ -4,14 +4,12 @@
  */
 package com.wordpress.salaboy;
 
-import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
-import com.wordpress.salaboy.api.HumanTaskService;
-import org.example.ws_ht.api.TTaskAbstract;
-import com.wordpress.salaboy.api.HumanTaskServiceFactory;
-import com.wordpress.salaboy.conf.HumanTaskServiceConfiguration;
-import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import org.example.ws_ht.api.TTaskAbstract;
 import org.jbpm.process.workitem.wsht.BlockingAddTaskResponseHandler;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.OrganizationalEntity;
@@ -19,8 +17,13 @@ import org.jbpm.task.PeopleAssignments;
 import org.jbpm.task.Task;
 import org.jbpm.task.TaskData;
 import org.jbpm.task.User;
+import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import com.wordpress.salaboy.api.HumanTaskService;
+import com.wordpress.salaboy.api.HumanTaskServiceFactory;
+import com.wordpress.salaboy.conf.HumanTaskServiceConfiguration;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5MinaHumanTaskClientConfiguration;
 
 /**
  *
@@ -136,7 +139,7 @@ public class JBPM5SmartTaskAdapterTest extends BaseTest{
     
     private HumanTaskService createHumanTaskService(){
         HumanTaskServiceConfiguration humanTaskServiceConfiguration = new HumanTaskServiceConfiguration();
-        humanTaskServiceConfiguration.addHumanTaskClientConfiguration("JBPM5", new JBPM5HumanTaskClientConfiguration("127.0.0.1", 9123));
+        humanTaskServiceConfiguration.addHumanTaskClientConfiguration("JBPM5", new JBPM5MinaHumanTaskClientConfiguration("127.0.0.1", 9123));
         return HumanTaskServiceFactory.newHumanTaskService(humanTaskServiceConfiguration);
     }
 }

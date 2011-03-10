@@ -5,18 +5,15 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
-import com.wordpress.salaboy.api.HumanTaskServiceOperations;
-import com.wordpress.salaboy.api.ServiceLifeCycleManager;
-import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
-import com.wordpress.salaboy.smarttasks.jbpm5wrapper.model.JBPM5TAttachmentInfo;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
-import org.drools.SystemEventListenerFactory;
+
 import org.example.ws_ht.TOrganizationalEntity;
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
@@ -35,12 +32,15 @@ import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
 import org.jbpm.task.service.TaskClient;
-import org.jbpm.task.service.mina.MinaTaskClientConnector;
-import org.jbpm.task.service.mina.MinaTaskClientHandler;
 import org.jbpm.task.service.responsehandlers.BlockingGetContentResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
+
+import com.wordpress.salaboy.api.HumanTaskServiceOperations;
+import com.wordpress.salaboy.api.ServiceLifeCycleManager;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.model.JBPM5TAttachmentInfo;
 
 /**
  *
@@ -55,14 +55,13 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     public JBPM5HumanTaskServiceOperations(JBPM5HumanTaskClientConfiguration configuration) {
         //Create the taskClient
-        MinaTaskClientConnector minaTaskClientConnector = 
-                new MinaTaskClientConnector("jBPM5TaskClient", 
-                    new MinaTaskClientHandler(SystemEventListenerFactory.getSystemEventListener()));
-        client = new TaskClient(minaTaskClientConnector);
+        this.client = createTaskClient(configuration);
         this.configuration = configuration;
-        
-        
     }
+
+	protected TaskClient createTaskClient(JBPM5HumanTaskClientConfiguration configuration) {
+        return new TaskClient(configuration.createConnector());
+	}
 
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         throw new UnsupportedOperationException("Not supported yet.");

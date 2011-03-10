@@ -5,6 +5,10 @@
 
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf;
 
+import java.util.Properties;
+
+import org.jbpm.task.service.TaskClientConnector;
+
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperations;
@@ -13,15 +17,21 @@ import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperat
  *
  * @author salaboy
  */
-public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfiguration{
+public abstract class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfiguration{
     public final static String TYPE = "jBPM5";
     
     private String host;
     private int port;
+    private Properties extraInfo;
 
     public JBPM5HumanTaskClientConfiguration(String host, int port) {
+    	this(host, port, new Properties());
+    }
+    
+    public JBPM5HumanTaskClientConfiguration(String host, int port, Properties extraInfo) {
         this.host = host;
         this.port = port;
+        this.extraInfo = extraInfo;
     }
 
     public String getHost() {
@@ -32,6 +42,10 @@ public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfigu
         return port;
     }
 
+    public Properties getExtraInfo() {
+		return extraInfo;
+	}
+    
     public String getType() {
         return TYPE;
     }
@@ -39,6 +53,7 @@ public class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfigu
     public HumanTaskServiceOperations getServiceOperationsImplementation() {
         return new JBPM5HumanTaskServiceOperations(this);
     }
-    
+
+    public abstract TaskClientConnector createConnector();
     
 }
