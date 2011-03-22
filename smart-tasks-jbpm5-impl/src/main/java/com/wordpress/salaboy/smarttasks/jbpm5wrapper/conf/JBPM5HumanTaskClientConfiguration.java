@@ -11,7 +11,6 @@ import org.jbpm.task.service.TaskClientConnector;
 
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
-import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperations;
 
 /**
  *
@@ -50,9 +49,7 @@ public abstract class JBPM5HumanTaskClientConfiguration implements HumanTaskClie
         return TYPE;
     }
 
-    public HumanTaskServiceOperations getServiceOperationsImplementation() {
-        return new JBPM5HumanTaskServiceOperations(this);
-    }
+    public abstract HumanTaskServiceOperations getServiceOperationsImplementation(); 
 
     public abstract TaskClientConnector createConnector();
     

@@ -2,7 +2,6 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
 import java.math.BigInteger;
@@ -50,8 +49,8 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     private TaskClient client;
     private String authorizedEntityId;
-    private String locale =  "en-UK";
-    private final JBPM5HumanTaskClientConfiguration configuration; 
+    private String locale = "en-UK";
+    private final JBPM5HumanTaskClientConfiguration configuration;
 
     public JBPM5HumanTaskServiceOperations(JBPM5HumanTaskClientConfiguration configuration) {
         //Create the taskClient
@@ -59,9 +58,9 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
         this.configuration = configuration;
     }
 
-	protected TaskClient createTaskClient(JBPM5HumanTaskClientConfiguration configuration) {
+    protected TaskClient createTaskClient(JBPM5HumanTaskClientConfiguration configuration) {
         return new TaskClient(configuration.createConnector());
-	}
+    }
 
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -102,9 +101,9 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void start(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         Long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        
+
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
-        client.start(taskId, userId , blockingTaskOperationResponseHandler);
+        client.start(taskId, userId, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
         blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
@@ -118,7 +117,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public List<TTaskAbstract> getMyTaskAbstracts(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
-        BlockingTaskSummaryResponseHandler handler  = new BlockingTaskSummaryResponseHandler();
+        BlockingTaskSummaryResponseHandler handler = new BlockingTaskSummaryResponseHandler();
         client.getTasksAssignedAsPotentialOwner(genericHumanRole, this.locale, handler);
         List<TaskSummary> results = handler.getResults();
         return JBPM5TTaskAbstractAdapter.getInstance().adaptCollection(results);
@@ -126,13 +125,13 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     public void skip(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
         Task task = this.getTask(identifier);
-        if (!task.getTaskData().isSkipable()){
+        if (!task.getTaskData().isSkipable()) {
             throw new IllegalOperationFault();
         }
-        
+
         String userId = this.getActiveUserId();
-        
-        
+
+
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
         client.skip(task.getId(), userId, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
@@ -141,9 +140,9 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     public List<TAttachment> getAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         Task task = this.getTask(identifier);
-        
+
         List<JBPM5TAttachmentInfo> taskTAttachmentInfo = new JBPM5TAttachmentInfoAdapter().getTaskTAttachmentInfo(task, attachmentName);
-        
+
         List<TAttachment> tAttachments = new ArrayList<TAttachment>();
         for (JBPM5TAttachmentInfo tAttachmentInfo : taskTAttachmentInfo) {
             TAttachment tAttachment = new TAttachment();
@@ -154,8 +153,8 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
             tAttachment.setValue(blockingGetContentResponseHandler.getContent());
             tAttachments.add(tAttachment);
         }
-        
-        
+
+
         return tAttachments;
     }
 
@@ -166,12 +165,12 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void release(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        
+
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
         client.release(taskId, userId, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
         blockingTaskOperationResponseHandler.waitTillDone(1000);
-        
+
     }
 
     public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
@@ -186,7 +185,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void suspend(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        
+
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
         client.suspend(taskId, userId, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
@@ -220,7 +219,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void stop(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        
+
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
         client.stop(taskId, userId, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
@@ -233,7 +232,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
 
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         Task task = this.getTask(identifier);
-        
+
         return new ArrayList<TAttachmentInfo>(new JBPM5TAttachmentInfoAdapter().getTaskTAttachmentInfo(task));
     }
 
@@ -248,7 +247,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void complete(String identifier, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        
+
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
         client.complete(taskId, userId, (ContentData) taskData, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
@@ -266,13 +265,13 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void claim(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
-        
+
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
         client.claim(taskId, userId, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
         blockingTaskOperationResponseHandler.waitTillDone(1000);
-        
-        
+
+
     }
 
     public void fail(String identifier, String faultName, Object faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
@@ -283,15 +282,13 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-   
-    
-    private String getActiveUserId(){
+    private String getActiveUserId() {
         //@FIXME: I'm getting the first user of the entity... It would be better
         //if this class provide us with the active user. 
         return this.authorizedEntityId;
     }
 
-    private Task getTask(String identifier){
+    private Task getTask(String identifier) {
         Long taskId = Long.parseLong(identifier);
         BlockingGetTaskResponseHandler blockingGetTaskResponseHandler = new BlockingGetTaskResponseHandler();
         client.getTask(taskId, blockingGetTaskResponseHandler);
@@ -325,5 +322,4 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void setServiceLifeCycle(String name, ServiceLifeCycleManager serviceLifeCycle) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }

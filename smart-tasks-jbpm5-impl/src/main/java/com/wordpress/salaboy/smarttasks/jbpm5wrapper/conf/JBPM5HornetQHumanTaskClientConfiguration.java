@@ -1,5 +1,7 @@
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf;
 
+import com.wordpress.salaboy.api.HumanTaskServiceOperations;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperations;
 import java.util.Properties;
 
 import org.drools.SystemEventListenerFactory;
@@ -30,4 +32,9 @@ public class JBPM5HornetQHumanTaskClientConfiguration extends JBPM5HumanTaskClie
 			)
 		);
 	}
+
+    @Override
+    public HumanTaskServiceOperations getServiceOperationsImplementation() {
+        return new JBPM5HumanTaskServiceOperations(this);
+    }
 }
