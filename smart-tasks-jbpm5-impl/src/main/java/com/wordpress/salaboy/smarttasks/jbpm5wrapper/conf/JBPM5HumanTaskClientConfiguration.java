@@ -20,8 +20,11 @@ import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5HumanTaskServiceOperat
 public abstract class JBPM5HumanTaskClientConfiguration implements HumanTaskClientConfiguration{
     public final static String TYPE = "jBPM5";
     
+    public final static long DEFAULT_TIMEOUT = 5000; 
+    
     private String host;
     private int port;
+    private long timeout = DEFAULT_TIMEOUT;
     private Properties extraInfo;
 
     public JBPM5HumanTaskClientConfiguration(String host, int port) {
@@ -32,6 +35,7 @@ public abstract class JBPM5HumanTaskClientConfiguration implements HumanTaskClie
         this.host = host;
         this.port = port;
         this.extraInfo = extraInfo;
+        this.timeout = extraInfo == null ? DEFAULT_TIMEOUT : Long.valueOf(extraInfo.getProperty("timeout", String.valueOf(DEFAULT_TIMEOUT)));
     }
 
     public String getHost() {
@@ -44,6 +48,10 @@ public abstract class JBPM5HumanTaskClientConfiguration implements HumanTaskClie
 
     public Properties getExtraInfo() {
 		return extraInfo;
+	}
+    
+    public long getTimeout() {
+		return timeout;
 	}
     
     public String getType() {
