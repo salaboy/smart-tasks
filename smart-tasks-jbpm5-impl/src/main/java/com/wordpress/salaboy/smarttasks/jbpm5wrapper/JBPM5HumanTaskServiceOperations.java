@@ -41,8 +41,11 @@ import org.jbpm.task.AccessType;
 import org.jbpm.task.Attachment;
 import org.jbpm.task.Comment;
 import org.jbpm.task.Content;
+import org.jbpm.task.Group;
 import org.jbpm.task.I18NText;
+import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.Task;
+import org.jbpm.task.User;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
 import org.jbpm.task.service.FaultData;
@@ -52,6 +55,7 @@ import org.jbpm.task.service.responsehandlers.BlockingAddCommentResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingDeleteAttachmentResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingGetContentResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
+import org.jbpm.task.service.responsehandlers.BlockingQueryGenericResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskOperationResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingTaskSummaryResponseHandler;
 
@@ -83,7 +87,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-    	/*List<OrganizationalEntity> potentialOwners = new ArrayList<OrganizationalEntity>();
+    	List<OrganizationalEntity> potentialOwners = new ArrayList<OrganizationalEntity>();
     	List<String> users = organizationalEntity.getUsers() == null ? new ArrayList<String>() : organizationalEntity.getUsers().getUser();
     	for (String user : users) {
     		potentialOwners.add(new User(user));
@@ -94,9 +98,8 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     	}
     	
     	BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
-    	client.nominate(Long.parseLong(identifier), potentialOwners, responseHandler);
-    	responseHandler.waitTillDone(configuration.getTimeout());*/
-    	throw new UnsupportedOperationException("Nos supported yet.");
+    	client.nominate(Long.parseLong(identifier), getActiveUserId(), potentialOwners, responseHandler);
+    	responseHandler.waitTillDone(configuration.getTimeout());
     }
 
     public void getFault(String identifier, Holder<String> faultName, Holder<Object> faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
@@ -134,11 +137,10 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void deleteOutput(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-    	/*long taskId = Long.parseLong(identifier);
+    	long taskId = Long.parseLong(identifier);
     	BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
     	client.deleteOutput(taskId, getActiveUserId(), responseHandler);
-    	responseHandler.waitTillDone(configuration.getTimeout());*/
-    	throw new UnsupportedOperationException("Not supported yet.");
+    	responseHandler.waitTillDone(configuration.getTimeout());
     }
 
     public List<QName> getRenderingTypes(Object identifier) throws IllegalArgumentFault {
@@ -178,22 +180,20 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void activate(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-    	/*long taskId = Long.parseLong(identifier);
+    	long taskId = Long.parseLong(identifier);
     	BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
 		client.activate(taskId, getActiveUserId(), responseHandler);
-		responseHandler.waitTillDone(configuration.getTimeout());*/
-    	throw new UnsupportedOperationException("Not supported yet.");
+		responseHandler.waitTillDone(configuration.getTimeout());
     }
 
     public void setOutput(String identifier, String part, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-    	/*long taskId = Long.parseLong(identifier);
+    	long taskId = Long.parseLong(identifier);
     	ContentData outputContentData = new ContentData();
     	String userId = this.getActiveUserId();
     	outputContentData.setContent(taskData.toString().getBytes());
     	BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
     	client.setOutput(taskId, userId, outputContentData, responseHandler);
-    	responseHandler.waitTillDone(configuration.getTimeout());*/
-    	throw new UnsupportedOperationException("Not supported yet.");
+    	responseHandler.waitTillDone(configuration.getTimeout());
     }
 
     public void start(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -206,7 +206,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public TTaskQueryResultSet query(String selectClause, String whereClause, String orderByClause, Integer maxTasks, Integer taskIndexOffset) throws IllegalArgumentFault, IllegalStateFault {
-    	/*String qlString = "select " + selectClause + 
+    	String qlString = "select " + selectClause + 
     		" from Task t left join t.taskData.createdBy" +
     		" left join t.taskData.actualOwner" +
     		" left join t.subjects as subject, I18NText names, I18NText subjects," +
@@ -215,11 +215,11 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     		" order by " + orderByClause;
     	BlockingQueryGenericResponseHandler responseHandler = new BlockingQueryGenericResponseHandler(); 
     	client.query(qlString, maxTasks, taskIndexOffset, responseHandler);
+    	@SuppressWarnings("unchecked")
     	List<Object> results = (List<Object>) responseHandler.getResults();
     	TTaskQueryResultSet resultSet = new TTaskQueryResultSet();
     	resultSet.getRow().addAll(JBPM5TTaskQueryResultAdapter.getInstance().adaptCollection(results));
-        return resultSet;*/
-        throw new UnsupportedOperationException("Not supported yet.");
+        return resultSet;
     }
 
     public void deleteAttachments(String identifier, String attachmentName) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -334,7 +334,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     		List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, 
     		Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
    
-    	/*String qlString = "select t from Task t left join t.taskData.actualOwner left join t.taskData.status where " + whereClause;
+    	String qlString = "select t from Task t left join t.taskData.actualOwner left join t.taskData.status where " + whereClause;
     	if (createdOnClause != null && !"".equals(createdOnClause)) {
     		qlString += " and " + createdOnClause;
     	}
@@ -358,8 +358,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
         for (Object obj : results) {
         	tasks.add(JBPM5TTaskAdapter.getInstance().adapt((Task) obj));
         }
-        return tasks;*/
-    	throw new UnsupportedOperationException("Not supported yet.");
+        return tasks;
     }
 
     public void setGenericHumanRole(String identifier, String genericHumanRole, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -375,14 +374,13 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void setFault(String identifier, String faultName, Object faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
-    	/*long taskId = Long.parseLong(identifier);
+    	long taskId = Long.parseLong(identifier);
     	FaultData fault = new FaultData();
     	fault.setContent(faultData == null ? null : faultData.toString().getBytes());
     	fault.setFaultName(faultName);
     	BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
     	client.setFault(taskId, getActiveUserId(), fault, responseHandler);
-    	responseHandler.waitTillDone(configuration.getTimeout());*/
-    	throw new UnsupportedOperationException("Not supported yet.");
+    	responseHandler.waitTillDone(configuration.getTimeout());
     }
 
     public void delegate(String identifier, TOrganizationalEntity organizationalEntity) throws RecipientNotAllowed, IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -473,10 +471,9 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void setPriority(String identifier, BigInteger priority) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-    	/*BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
+    	BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
     	client.setPriority(Long.parseLong(identifier), getActiveUserId(), priority.intValue(), responseHandler);
-    	responseHandler.waitTillDone(configuration.getTimeout());*/
-    	throw new UnsupportedOperationException("Not supported yet.");
+    	responseHandler.waitTillDone(configuration.getTimeout());
     }
 
     public void resume(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -508,11 +505,10 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void deleteFault(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-    	/*Long taskId = Long.parseLong(identifier);
+    	Long taskId = Long.parseLong(identifier);
     	BlockingTaskOperationResponseHandler responseHandler = new BlockingTaskOperationResponseHandler();
     	client.deleteFault(taskId, getActiveUserId(), responseHandler);
-    	responseHandler.waitTillDone(configuration.getTimeout());*/
-    	throw new UnsupportedOperationException("Not supported yet.");
+    	responseHandler.waitTillDone(configuration.getTimeout());
     }
 
     private String getActiveUserId() {
