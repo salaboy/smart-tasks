@@ -15,4 +15,18 @@
     <!--module>smart-tasks-client-console</module-->
     <module>smart-task-client-swing</module>
   </modules>
+<build>
+        <plugins>
+             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
