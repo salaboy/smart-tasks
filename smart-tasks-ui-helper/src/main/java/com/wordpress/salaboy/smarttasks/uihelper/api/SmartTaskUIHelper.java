@@ -9,6 +9,7 @@ import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.api.HumanTaskServiceFactory;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskListUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskSupportUIHelper;
 
 /**
  *
@@ -53,6 +54,11 @@ public class SmartTaskUIHelper {
     public TaskListUIHelper getTaskListHelper(String taskListId, String taskType){
         this.checkIfConnected();
         return new SmartTasksTaskListUIHelper(taskListId, this.connectionData.getEntityId(), taskType, configuration, humanTaskService );
+    }
+    
+    public TaskSupportUIHelper getTaskSupportHelper(String taskId, String taskUIId, String profile) {
+    	this.checkIfConnected();
+    	return new SmartTasksTaskSupportUIHelper(configuration, taskId, profile, humanTaskService, taskUIId, this.connectionData.getEntityId());
     }
     
     private void checkIfConnected(){

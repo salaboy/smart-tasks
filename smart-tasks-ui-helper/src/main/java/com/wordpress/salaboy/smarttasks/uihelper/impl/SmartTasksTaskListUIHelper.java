@@ -12,8 +12,8 @@ import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
-import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableColumnDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
+import com.wordpress.salaboy.smarttasks.uihelper.model.TaskPropertyDefinition;
+import com.wordpress.salaboy.smarttasks.uihelper.model.TaskTableDefinition;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +31,7 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
     private final String taskListId;
     private final String entityId;
     private final String taskType;
-    private final TaskListTableDefinition taskListTableDefinition;
+    private final TaskTableDefinition taskListTableDefinition;
     
     public SmartTasksTaskListUIHelper(String taskListId, String entityId, String taskType, UIHelperConfiguration configuration, HumanTaskService humanTaskService ) {
         this.taskListId = taskListId;
@@ -49,7 +49,7 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
         
         String[] headers = new String[this.taskListTableDefinition.getColumns().size()];
         int i=0;
-        for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
+        for (TaskPropertyDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
             headers[i] = taskListTableColumnDefinition.getHeader();
             i++;
         }

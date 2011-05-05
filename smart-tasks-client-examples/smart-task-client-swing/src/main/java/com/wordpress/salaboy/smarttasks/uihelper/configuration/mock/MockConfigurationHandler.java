@@ -31,12 +31,12 @@ public class MockConfigurationHandler implements UIHelperConfigurationUriHandler
     
     
     
-    @Override
+
     public String getURI() {
         return URI;
     }
 
-    @Override
+
     public void startElement(String tagName, Attributes attributes, UIHelperConfiguration configuration) throws SAXException {
         if ("MockHumanTaskServiceConfiguration".equals(tagName)){
             

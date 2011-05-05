@@ -1,0 +1,167 @@
+This project is intended to help the UI to interact with the human tasks transparently, using the smart task api to connect to various task vendors.
+
+If you want to connect from your UI to smart-tasks-ui-helper, here are the needed steps:
+
+- Create a resources folder with 4 folders:
+-----myfolder/
+--------------formDefinitions/
+--------------operationDefinitions/operations.config.json
+--------------taskDefinitions/
+--------------taskLists/
+--------------UIHelper.config.xml
+
+- The file UIHelper.config.xml has information of which human task vendors will the application get information from. This is an example of configuration which gets the information from Activiti and JBPM5:
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jbpm5="http://plugtree.org/smart-tasks/JBPM5" 
+    xmlns:activiti="http://plugtree.org/smart-tasks/Activiti" 
+    xsi:schemaLocation="http://plugtree.org/smart-tasks/JBPM5 http://plugtree.org/smart-tasks/JBPM5.xsd
+        http://plugtree.org/smart-tasks/Activiti http://plugtree.org/smart-tasks/Activiti.xsd"
+    >
+    <humanTaskServicesConfigurations>
+        <activiti:ActivityHumanTaskServiceConfiguration name="Activiti" configurationResource="/some/configuration/resource"/>
+        <jbpm5:JBPM5HumanTaskServiceConfiguration name="JBPM5" host="http://localhost/some/url" port="8123"/>
+    </humanTaskServicesConfigurations>
+</configuration>
+
+- In formdefinitions and taskdefinitions must be placed the configuration for the task description and the task form. There must be a file called: default.config.json which will be picked up by default of there is no specific file for the task. To specify an specific form/task details for a task, a file with the format <SomeTaskIdentification>.config.conf must be created, and this <SomeTaskIdentification> must be used when getting the definitions from UIHelperDefinitionsProvider class.that 
+
+Here there is an example of the .json file:
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         },he 
+         {
+            "header":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "header":"priority",
+            "sourceExpresion":"#{task:priority}"
+         }
+     ]
+ }
+]
+
+- In taskLists folder, files with the same format must be placed. The name of the file must be <TaskListId>.config.json, and <TaskListId> must be given to UIHelperDefinitionsProvider when creating task list definition.
+
+- operationDefinitions/operations.config.json file Has information about the operations that can be applied to a task. The format is a .json file, which basically is Operation->NextOperations. The following is an example of file:
+	[
+		{
+			"name": "Claim",
+			"isRoot": "true",
+			"isEnd": "false",
+			"next": [
+			{
+					"name":"Start"
+				},
+				{
+					"name":"Release"
+				},
+				{
+					"name": "Suspend"
+				}
+			]
+		},
+		{
+			"name": "Start",
+			"isRoot": "false",
+			"isEnd": "false",
+			"next": [
+			{
+					"name":"Stop"
+				},
+				{
+					"name":"Release"
+				},
+				{
+					"name": "Suspend"
+				},
+				{
+					"name": "Complete"
+				},
+				{
+					"name": "Fail"
+				}
+			]
+		},
+		{
+			"name": "Stop",
+			"isRoot": "false",
+			"isEnd": "false",
+			"next": [
+			{
+					"name":"Start"
+				},
+				{
+					"name":"Release"
+				},
+				{
+					"name": "Suspend"
+				}
+			]
+		},
+		{
+			"name": "Release",
+			"isRoot": "false",
+			"isEnd": "false",
+			"next": [
+			{
+					"name":"Start"
+				},
+				{
+					"name":"Claim"
+				},
+				{
+					"name": "Suspend"
+				}
+			]
+		},
+		{
+			"name": "Suspend",
+			"isRoot": "false",
+			"isEnd": "false",
+			"next": [
+			{
+					"name":"Resume"
+				}
+			]
+		},
+		{
+			"name": "Resume",
+			"isRoot": "false",
+			"isEnd": "false",
+			"next": [
+			{
+					"name":"Start"
+				},
+				{
+					"name":"Claim"
+				},
+				{
+					"name": "Suspend"
+				}
+			]
+		},
+		{
+			"name": "Complete",
+			"isRoot": "false",
+			"isEnd": "true"
+		},
+		{
+			"name": "Fail",
+			"isRoot": "false",
+			"isEnd": "true"
+		}
+	
+	]
+
+- When all is configured, an instance of SmartTaskUIHelper must be used to:
+---Connect to the task repository(ies).
+---Get a TaskListUIHelper instance that will provide help for task lists.
+---Get a TaskSupportUIHelper instance that will provide support for single tasks.

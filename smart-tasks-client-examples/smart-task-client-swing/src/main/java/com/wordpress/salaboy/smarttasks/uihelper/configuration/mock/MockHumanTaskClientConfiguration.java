@@ -17,12 +17,12 @@ public class MockHumanTaskClientConfiguration implements HumanTaskClientConfigur
     private String attr1;
     private String attr2;
     
-    @Override
+    
     public String getType() {
         return MockHumanTaskClientConfiguration.TYPE;
     }
 
-    @Override
+    
     public HumanTaskServiceOperations getServiceOperationsImplementation() {
         return new MockHumanTaskServiceOperations();
     }
