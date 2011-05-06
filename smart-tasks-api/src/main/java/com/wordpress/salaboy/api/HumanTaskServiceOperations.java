@@ -12,4 +12,6 @@ import org.example.ws_ht.api.wsdl.TaskOperations;
  * @author salaboy
  */
 public interface HumanTaskServiceOperations extends TaskOperations, AuthorizedService, LocalizedService,  ManagedService {
+	
+	public String getTaskOriginName(String taskId);
 }

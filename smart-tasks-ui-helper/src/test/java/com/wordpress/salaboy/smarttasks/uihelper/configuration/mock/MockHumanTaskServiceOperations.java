@@ -31,7 +31,10 @@ import org.example.ws_ht.api.xsd.TTime;
  * @author esteban
  */
 public class MockHumanTaskServiceOperations implements HumanTaskServiceOperations {
-
+	@Override
+	public String getTaskOriginName(String taskId) {
+		return "Mock";
+	}
     @Override
     public void nominate(String identifier, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
     }

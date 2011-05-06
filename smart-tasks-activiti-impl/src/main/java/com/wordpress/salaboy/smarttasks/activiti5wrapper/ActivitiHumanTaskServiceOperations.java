@@ -18,6 +18,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
 import org.activiti.engine.FormService;
 import org.activiti.engine.ProcessEngine;
+import org.activiti.engine.ProcessEngineConfiguration;
 import org.activiti.engine.ProcessEngines;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.FormData;
@@ -54,6 +55,7 @@ public class ActivitiHumanTaskServiceOperations implements HumanTaskServiceOpera
        this.config = config;
        
         ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
+      
         this.taskService = processEngine.getTaskService(); 
         this.formService = processEngine.getFormService();
     }
@@ -161,7 +163,8 @@ public class ActivitiHumanTaskServiceOperations implements HumanTaskServiceOpera
     }
 
     public List<TTask> getMyTasks(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<Task> tasks = taskService.createTaskQuery().taskAssignee(genericHumanRole).list();
+        return Activiti5TTaskAdapter.getInstance().adaptCollection(tasks);
     }
 
     public void setGenericHumanRole(String identifier, String genericHumanRole, TOrganizationalEntity organizationalEntity) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -270,7 +273,9 @@ public class ActivitiHumanTaskServiceOperations implements HumanTaskServiceOpera
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-   
+	public String getTaskOriginName(String taskId) {
+		return ActivitiHumanTaskClientConfiguration.TYPE;
+	}
     
     
 

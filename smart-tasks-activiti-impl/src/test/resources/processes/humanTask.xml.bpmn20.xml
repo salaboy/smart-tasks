@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<definitions targetNamespace="adhoc" xmlns:ns2="http://www.signavio.com"
+		xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:ns4="http://www.omg.org/spec/DD/20100524/DI"
+		xmlns:ns3="http://activiti.org/bpmn" xmlns:ns5="http://www.omg.org/spec/DD/20100524/DC"
+		xmlns:ns6="http://www.omg.org/spec/BPMN/20100524/DI">
+		<process isExecutable="false" name="activitiProcess" id="adhoc_test">
+				<documentation id="adhoc_test_documentation" />
+				<startEvent ns3:initiator="initiator" id="theStart" />
+				<sequenceFlow targetRef="task_1" sourceRef="theStart"
+						id="flow_1" />
+				<userTask ns3:formKey="my_task.form" name="Write document in activiti" id="task_1">
+						<documentation id="task_1_documentation" />
+						<humanPerformer
+								id="sid-d751f3f3-1032-4e3b-b757-b9bbc1ed5477_humanPerformer">
+								<resourceAssignmentExpression
+										id="sid-d751f3f3-1032-4e3b-b757-b9bbc1ed5477_humanPerformer_assignmentExpression">
+										<formalExpression
+												id="sid-d751f3f3-1032-4e3b-b757-b9bbc1ed5477_humanPerformer_formalExpressions">salaboy</formalExpression>
+								</resourceAssignmentExpression>
+						</humanPerformer>
+				</userTask>
+				<endEvent id="theEnd" />
+				<sequenceFlow targetRef="theEnd" sourceRef="task_1" id="flow_2" />
+		</process>
+		<ns6:BPMNDiagram id="test_diagram">
+				<ns6:BPMNPlane bpmnElement="adhoc_test" id="test_plane">
+						<ns6:BPMNShape bpmnElement="theStart" id="theStart_shape">
+								<ns5:Bounds height="20.0" width="20.0" y="45.0" x="0.0" />
+						</ns6:BPMNShape>
+						<ns6:BPMNEdge bpmnElement="flow_1" id="flow_1_edge">
+								<ns4:waypoint y="55.0" x="20.0" />
+								<ns4:waypoint y="55.0" x="70.0" />
+						</ns6:BPMNEdge>
+						<ns6:BPMNShape bpmnElement="task_1" id="task_1_shape">
+								<ns5:Bounds height="60.0" width="130.0" y="25.0" x="70.0" />
+						</ns6:BPMNShape>
+						<ns6:BPMNEdge bpmnElement="flow_2" id="flow_2_edge">
+								<ns4:waypoint y="55.0" x="200.0" />
+								<ns4:waypoint y="55.0" x="250.0" />
+						</ns6:BPMNEdge>
+						<ns6:BPMNShape bpmnElement="theEnd" id="theEnd_shape">
+								<ns5:Bounds height="20.0" width="20.0" y="45.0" x="250.0" />
+						</ns6:BPMNShape>
+				</ns6:BPMNPlane>
+		</ns6:BPMNDiagram>
+</definitions>

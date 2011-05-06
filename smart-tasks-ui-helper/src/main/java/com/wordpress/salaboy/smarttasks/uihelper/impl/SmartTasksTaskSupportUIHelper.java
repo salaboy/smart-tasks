@@ -36,7 +36,7 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 	private String taskId;
 
 	private String profile;
-
+ 
 	private String entityId;
 
 	private final HumanTaskService humanTaskService;
@@ -71,7 +71,7 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 		this.taskFormDefinition = provider.getTaskFormTableDefinition(
 				this.taskUIId, this.entityId, profile);
 		this.operationsDefinition = provider
-				.getTaskOperationsDefinition(operationsDefinitionFileName);
+				.getTaskOperationsDefinition(this.humanTaskService.getTaskOriginName(this.taskId).toLowerCase());
 	}
 
 	/**

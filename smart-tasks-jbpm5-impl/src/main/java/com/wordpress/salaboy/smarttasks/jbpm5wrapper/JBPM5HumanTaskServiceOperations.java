@@ -322,4 +322,8 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     public void setServiceLifeCycle(String name, ServiceLifeCycleManager serviceLifeCycle) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+    
+    public String getTaskOriginName(String taskId) {
+    	return JBPM5HumanTaskClientConfiguration.TYPE;
+    }
 }
