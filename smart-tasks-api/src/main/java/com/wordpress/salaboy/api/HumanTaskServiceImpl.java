@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
 import org.example.ws_ht.api.TStatus;
@@ -61,19 +64,34 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         this.taskOperations.get(taskOperationId).complete(entityId, contentData);
     }
 
-    @Override
-    public List<TTaskAbstract> getMyTaskAbstracts(String taskType, String genericHumanRole, String workQueue, List<TStatus> status, String whereClause, String orderByClause, String createdOnClause, Integer maxTasks, Integer fromTaskNumber) throws IllegalArgumentFault, IllegalStateFault {
-        List<TTaskAbstract> result = new ArrayList<TTaskAbstract>();
-        for (Map.Entry<String, HumanTaskServiceOperations> entry : this.taskOperations.entrySet()) {
-            //Custom id creation
-            List<TTaskAbstract> myTaskAbstracts = entry.getValue().getMyTaskAbstracts(taskType, genericHumanRole, workQueue, status, whereClause, orderByClause, createdOnClause, maxTasks, fromTaskNumber);
-            for (TTaskAbstract tTaskAbstract : myTaskAbstracts) {
-                tTaskAbstract.setId(this.createUniqueId(entry.getKey(), tTaskAbstract));
-                result.add(tTaskAbstract);
-            }
-        }
-        return result;
-    }
+	@Override
+	public List<TTaskAbstract> getMyTaskAbstracts(String taskType,
+			String genericHumanRole, String workQueue, List<TStatus> status,
+			String whereClause, String orderByClause, String createdOnClause,
+			Integer maxTasks, Integer fromTaskNumber)
+			throws IllegalArgumentFault, IllegalStateFault {
+		List<TTaskAbstract> result = new ArrayList<TTaskAbstract>();
+		for (Map.Entry<String, HumanTaskServiceOperations> entry : this.taskOperations
+				.entrySet()) {
+			// Custom id creation
+			try {
+				List<TTaskAbstract> myTaskAbstracts = entry.getValue()
+						.getMyTaskAbstracts(taskType, genericHumanRole,
+								workQueue, status, whereClause, orderByClause,
+								createdOnClause, maxTasks, fromTaskNumber);
+				for (TTaskAbstract tTaskAbstract : myTaskAbstracts) {
+					tTaskAbstract.setId(this.createUniqueId(entry.getKey(),
+							tTaskAbstract));
+					result.add(tTaskAbstract);
+				}
+			} catch (Exception e) {
+				Logger.getLogger(HumanTaskServiceImpl.class.getName()).log(
+						Level.WARNING,
+						"There was an error obtaining task information.", e);
+			}
+		}
+		return result;
+	}
     
     @Override
     public List<TAttachmentInfo> getAttachmentInfos(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -174,5 +192,14 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
     
     private String getTaskOperationId(String uniqueId){
         return uniqueId.split("\\-@\\-")[0];
+    }
+    
+    public String getTaskOriginName(String taskId) {
+    	for (String operatorId : this.taskOperations.keySet()) {
+			if (taskId.contains(operatorId)) {
+				return this.taskOperations.get(operatorId).getTaskOriginName(taskId);
+			}
+		}
+    	return null;
     }
 }

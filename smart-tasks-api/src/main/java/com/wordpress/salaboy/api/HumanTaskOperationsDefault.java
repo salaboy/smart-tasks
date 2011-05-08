@@ -207,7 +207,9 @@ public class HumanTaskOperationsDefault implements HumanTaskService{
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-  
+    public String getTaskOriginName(String taskId) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
    
 

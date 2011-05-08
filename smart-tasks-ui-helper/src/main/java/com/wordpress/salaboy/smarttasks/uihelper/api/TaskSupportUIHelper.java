@@ -1,0 +1,36 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package com.wordpress.salaboy.smarttasks.uihelper.api;
+
+import java.util.Map;
+
+import org.example.ws_ht.api.TTask;
+
+/**
+ * Represents a service to give support to a task interaction.
+ * 
+ * @author calcacuervo
+ * 
+ */
+public interface TaskSupportUIHelper {
+
+	/**
+	 * Returns a map with the details of the {@link TTask}.
+	 */
+	public Map<String, String> getTaskDetails();
+
+	/**
+	 * Return the name of the form inputs as the key, and default values as
+	 * values of the map.
+	 */
+	public Map<String, String> getTaskFormInputs();
+
+	/**
+	 * Returns the actions graph as an instance of {@link TaskOperationsDefinition}
+	 */
+	public TaskOperationsDefinition getTaskOperations();
+
+}

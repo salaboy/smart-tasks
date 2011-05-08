@@ -8,8 +8,8 @@ import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.expression.ExpressionResolver;
 import com.wordpress.salaboy.smarttasks.uihelper.expression.MVELExpressionResolver;
-import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableColumnDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
+import com.wordpress.salaboy.smarttasks.uihelper.model.TaskPropertyDefinition;
+import com.wordpress.salaboy.smarttasks.uihelper.model.TaskTableDefinition;
 import java.util.List;
 
 /**
@@ -19,10 +19,10 @@ import java.util.List;
 public class SmartTasksTaskListDataSet implements TaskListDataSet {
 
     private final List<MetaTask> myTasks;
-    private final TaskListTableDefinition taskListTableDefinition;
+    private final TaskTableDefinition taskListTableDefinition;
     private final ExpressionResolver expressionResolver;
 
-    public SmartTasksTaskListDataSet(TaskListTableDefinition taskListTableDefinition, List<MetaTask> myTasks) {
+    public SmartTasksTaskListDataSet(TaskTableDefinition taskListTableDefinition, List<MetaTask> myTasks) {
         this.taskListTableDefinition = taskListTableDefinition;
         this.myTasks = myTasks;
         this.expressionResolver = new MVELExpressionResolver();
@@ -36,7 +36,7 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
             int i = 0;
             for (MetaTask metaTask : myTasks) {
                 int j = 0;
-                for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
+                for (TaskPropertyDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
                     Object expresionResult = this.expressionResolver.resolveExpression(taskListTableColumnDefinition.getSourceExpresion(), metaTask);
                     
                     String stringData = null;

@@ -1,0 +1,29 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         },
+         {
+            "header":"Name",
+            "sourceExpresion":"#{task:name}"
+         },
+         {
+            "header":"Priority",
+            "sourceExpresion":"#{task:priority}"
+         }
+     ]
+ },
+ {
+     "profile": "Esteban",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         }
+     ],
+     "rowsMetaData":[["metaData1","metaDataValue1"],["metaData2","metaDataValue2"]]
+ }
+]

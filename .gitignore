@@ -4,6 +4,7 @@ target/
 .DS_Store
 .iml
 *.db
+.settings
 
 /smart-tasks-ui-helper/target/
 /smart-task-metamodel-base/target/
