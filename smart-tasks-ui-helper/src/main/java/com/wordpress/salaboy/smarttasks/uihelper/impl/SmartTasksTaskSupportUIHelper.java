@@ -71,7 +71,7 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 		this.taskFormDefinition = provider.getTaskFormTableDefinition(
 				this.taskUIId, this.entityId, profile);
 		this.operationsDefinition = provider
-				.getTaskOperationsDefinition(this.humanTaskService.getTaskOriginName(this.taskId).toLowerCase());
+				.getTaskOperationsDefinition(this.humanTaskService.getTaskOriginatorType(this.taskId).toLowerCase());
 	}
 
 	/**

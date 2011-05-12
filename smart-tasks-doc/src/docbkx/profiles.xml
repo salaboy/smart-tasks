@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" >
+<chapter>
+	<title>Example - Implementing API for JBPM5 specific operations</title>
+
+	<section>
+		<title>Component - Profiles
+		</title>
+		<para>
+			One of the goals of smart tasks is to improve the development of
+			task oriented interfaces. Profiles makes possible the customization
+			of the interfaces for different users, tasks, tasks types, etc.
+		</para>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="media/profiles.jpg" align="center" />
+			</imageobject>
+			<caption>profiles component</caption>
+		</mediaobject>
+	</section>
+</chapter>

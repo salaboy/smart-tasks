@@ -16,6 +16,7 @@
     <module>smart-tasks-metamodel-base</module>
     <module>smart-tasks-metamodel-simulation</module>
     <module>smart-tasks-client-examples</module>
+    <module>smart-tasks-doc</module>
   </modules>
     
     <dependencies>

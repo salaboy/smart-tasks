@@ -32,7 +32,7 @@ import org.example.ws_ht.api.xsd.TTime;
  */
 public class MockHumanTaskServiceOperations implements HumanTaskServiceOperations {
 	@Override
-	public String getTaskOriginName(String taskId) {
+	public String getTaskOriginatorType(String taskId) {
 		return "Mock";
 	}
     @Override

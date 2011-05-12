@@ -194,10 +194,10 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         return uniqueId.split("\\-@\\-")[0];
     }
     
-    public String getTaskOriginName(String taskId) {
+    public String getTaskOriginatorType(String uniqueId) {
     	for (String operatorId : this.taskOperations.keySet()) {
-			if (taskId.contains(operatorId)) {
-				return this.taskOperations.get(operatorId).getTaskOriginName(taskId);
+			if (uniqueId.contains(operatorId)) {
+				return this.taskOperations.get(operatorId).getTaskOriginatorType(uniqueId);
 			}
 		}
     	return null;

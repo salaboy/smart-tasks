@@ -323,7 +323,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    public String getTaskOriginName(String taskId) {
+    public String getTaskOriginatorType(String taskId) {
     	return JBPM5HumanTaskClientConfiguration.TYPE;
     }
 }

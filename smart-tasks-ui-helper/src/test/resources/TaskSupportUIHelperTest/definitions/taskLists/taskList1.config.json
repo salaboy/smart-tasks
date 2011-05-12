@@ -1,0 +1,11 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{id}"
+         }
+     ]
+ }
+]

@@ -5,7 +5,7 @@ If you want to connect from your UI to smart-tasks-ui-helper, here are the neede
 - Create a resources folder with 4 folders:
 -----myfolder/
 --------------formDefinitions/
---------------operationDefinitions/operations.config.json
+--------------operationDefinitions/
 --------------taskDefinitions/
 --------------taskLists/
 --------------UIHelper.config.xml
@@ -50,7 +50,7 @@ Here there is an example of the .json file:
 
 - In taskLists folder, files with the same format must be placed. The name of the file must be <TaskListId>.config.json, and <TaskListId> must be given to UIHelperDefinitionsProvider when creating task list definition.
 
-- operationDefinitions/operations.config.json file Has information about the operations that can be applied to a task. The format is a .json file, which basically is Operation->NextOperations. The following is an example of file:
+- operationDefinitions/ will have .config.json files, which have information about the operations that can be applied to a task. The format is a .json file, which basically is Operation->NextOperations. One file by vendor should be provided. The following is an example of file:
 	[
 		{
 			"name": "Claim",

@@ -273,7 +273,7 @@ public class ActivitiHumanTaskServiceOperations implements HumanTaskServiceOpera
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-	public String getTaskOriginName(String taskId) {
+	public String getTaskOriginatorType(String taskId) {
 		return ActivitiHumanTaskClientConfiguration.TYPE;
 	}
     

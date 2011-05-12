@@ -1,0 +1,15 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{task:id}"
+         },
+         {
+            "header":"status",
+            "sourceExpresion":"#{task:status}"
+         }
+     ]
+ }
+]
