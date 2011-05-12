@@ -1,0 +1,39 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{id}"
+         },
+         {
+            "header":"Name",
+            "sourceExpresion":"#{name}"
+         }
+     ]
+ },
+ {
+     "profile": "Very busy user",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{id}"
+         }
+         ,
+         {
+            "header":"Priority",
+            "sourceExpresion":"#{priority}"
+         }
+         ,
+         {
+            "header":"Status",
+            "sourceExpresion":"#{status}"
+         }
+         ,
+         {
+            "header":"Name",
+            "sourceExpresion":"#{name}"
+         }
+     ]
+ }
+]

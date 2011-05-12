@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" >
+<preface id="pref-Hibernate_Development_Guide-Preface">
+
+
+	<title>Preface</title>
+	<para>If you read about BPM Systems you probably notice that some of
+		the advantages that they propose are:</para>
+	<itemizedlist>
+		<listitem>
+			<para>Automation of the company processes.</para>
+		</listitem>
+		<listitem>
+			<para>Coordination between human tasks and systems.</para>
+		</listitem>
+		<listitem>
+			<para>Data handling.</para>
+		</listitem>
+		<listitem>
+			<para>Declarative approach of expressing how business works.</para>
+		</listitem>
+		<listitem>
+			<para>Performance metrics.</para>
+		</listitem>
+	</itemizedlist>
+	<para>
+		When you understand these points you start asking about how your
+		applications will look like. 
+</para>
+	<para>
+		One of the biggest abstraction that BPM Systems provide is the
+		unified /
+		task list based User Interface approach.
+</para>
+	<para>
+		You will notice that most of the current BPM Systems will
+		generate for
+		you an unified UI that will contain a task list for each
+		user role
+		inside your company.
+		The main idea behind this decision is to
+		be able to guide each user into
+		his/her dialy tasks.
+</para>
+	<para>
+		We will end up having a main screen that will contain a task list with
+		all the task that the current user must work on.\
+</para>
+	<para>
+		Most of the BPM Systems right now allow you to define a Task Form to each
+		different task that you define in your business processes. So, if you
+		have 1000 processes (definitions, not instances) and each of them
+		define two human tasks you will end up defining 2000 different task
+		forms.
+</para>
+	<para>
+		Clicking in a Task List entry the user will access to the defined Task Form
+		that will allow him/her to work on that specific task.
+</para>
+	<para>
+		The task list will be populated according the process instances that are
+		being created by the company.
+</para>
+	<para>
+		Each BPM System provide a way (a set of APIs) to interact with human
+		tasks. There is a good standard that define the Human Task Life Cycle
+		(WS-HT). 
+</para>
+	<para>
+		This framework do not try to override each specific Human Task API neither
+		the Human Task Life Cycle.
+</para>
+	<para>
+		This framework wraps the Human Task APIs created by different vendors to
+		provide an unified set of abstractions and User Interface components
+		to allow a Rapid Application Development approach.
+</para>
+
+	<section>
+		<title>Get Involved</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					Try Smart Tasks and get involved with the code
+					<ulink url="http://github.com/Salaboy/smart-tasks" />
+					.
+				</para>
+			</listitem>
+			<listitem>
+				<para>
+					Mailing List / Google Groups for Dev and Design:
+					<ulink url="http://groups.google.com/group/smart-tasks" />
+					.
+				</para>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+</preface>

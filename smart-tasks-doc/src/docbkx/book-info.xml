@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE bookinfo PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" >
+
+<bookinfo id="Smart_Tasks_Documentation">
+	<title>Smart Tasks Documentation</title>
+	<edition>1.0</edition>
+	<pubsnumber>1</pubsnumber>
+	<productname>Smart Tasks</productname>
+	<issuenum>1</issuenum>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="../media/logo.png" depth="3cm" />
+		</imageobject>
+	</mediaobject>
+</bookinfo>

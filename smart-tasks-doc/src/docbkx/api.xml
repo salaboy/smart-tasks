@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" >
+<chapter>
+	<title>Smart Tasks Services API</title>
+
+	<section>
+		<title>Smart Tasks Services</title>
+		<para>
+			Smart Tasks offers services to interact with human tasks
+			transparently
+			without working directly with the human tasks vendors.
+		</para>
+		<mediaobject>
+			<imageobject>
+				<imagedata scale="200"  fileref="../media/ClassDiagram.png"
+					align="center" />
+			</imageobject>
+		</mediaobject>
+	</section>
+	<section>
+		<title>The HumanTaskServiceOperations interface</title>
+		<para>The interface HumanTaskServiceOperations defines the behaviour
+			of a class that is able to get the information about tasks. Usually,
+			we will implement this interface to define the concrete operations
+			for an specific vendor, for example, JBPM5 </para>
+	</section>
+	<section>
+		<title>Human Task Service</title>
+		<para>
+			The class
+			<classname>HumanTaskServiceImpl</classname>
+			represents the service the service to work with. It composes
+			<classname>HumanTaskServiceOperations</classname>
+			, to access to many of them, and give to the users of this api a
+			transparent way to access to the different implementations. Some
+			useful methods are:
+			<itemizedlist>
+				<listitem>
+					<para>
+						<methodsynopsis>
+							<methodname>getMyTaskAbstracts</methodname>
+						</methodsynopsis>
+						Will return the list of task summaries for the given entity for
+						all the configured vendors.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<methodsynopsis>
+							<methodname>getMyTasks</methodname>
+						</methodsynopsis>
+						Will return the list of task details for the given entity for all
+						the configured vendors.
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<methodsynopsis>
+							<methodname>getTaskInfo</methodname>
+						</methodsynopsis>
+						Will return the task details for the given task id, looking into
+						all the configured vendors.
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+	<section>
+		<title>Obtaining the Human Task Service</title>
+		<para>
+			To get a human task service, there is needed:
+			<itemizedlist>
+				<listitem>
+					<para>
+						An instance of
+						<classname>HumanTaskServiceConfiguration</classname>
+						, which has a map of
+						<classname>HumanTaskServiceConfiguration</classname>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						Use the
+						<classname>HumanTaskServiceFactory</classname>
+						.
+						<methodname>newInstance(HumanTaskServiceConfiguration)
+						</methodname>
+						method to get an instance of the service
+					</para>
+				</listitem>
+			</itemizedlist>
+			The
+			<classname>HumanTaskClientConfiguration</classname>
+			is an interface, and will be implemented for each human task vendor.
+			The implementors are responsible for providing the services the
+			specific implementations of
+			<classname>HumanTaskServiceOperations</classname>
+		</para>
+	</section>
+	<section>
+		<title>Adaptors</title>
+		<para>
+			The API provides some interfaces, that will help the specific
+			implementations to adapt the smart task model classes with the vendor
+			specific classes. These interfaces are:
+			<itemizedlist>
+				<listitem>
+					<para>
+						<classname>TaskAdapter</classname>
+						: Implementations will adapt specific vendor classes to
+						<classname>TTask</classname>
+						or
+						<classname>TTaskAbstract</classname>
+					</para>
+				</listitem>
+
+				<listitem>
+					<para>
+						<classname>TDeadlinesInfoAdapter</classname>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<classname>TOrganizationalEntryAdapter</classname>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<classname>TStatusAdapter</classname>
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+</chapter>

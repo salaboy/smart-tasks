@@ -1,0 +1,219 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" >
+<chapter>
+	<title>Smart Tasks Components</title>
+
+	<section>
+		<title>Components</title>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="../media/overallStructure.png" align="center" />
+			</imageobject>
+		</mediaobject>
+		<para>
+			This is an overview of the different components of smart tasks
+			project.
+		</para>
+	</section>
+	<section>
+		<title>Profiles</title>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="../media/profiles.png" align="center" />
+			</imageobject>
+		</mediaobject>
+		<para>One of the goals of smart tasks is to improve the development of
+			task oriented interfaces. Profiles makes possible the customization
+			of the interfaces for different users, tasks, tasks types, etc, which
+			give the flexibility to adapt these interfaces to the needs.</para>
+		<section>
+			<title>Task Lists Profiles</title>
+			<para>
+				Task lists usually needs to be customized depending of the
+				user.
+				For example, a simple user may only need to see the Task Name
+				and the
+				description on the task list interface. But another user, who
+				usually
+				has many assigned tasks, should also see a column with the
+				priority,
+				so he can pick up the most urgent one.
+		</para>
+			<para>
+				Smart tasks gives the possibility of defining profiles inside a task
+				list implementation. For example, let's see this task list
+				configuration file (in next chapters we will look at these files
+				deeper):
+				<example>
+					<title>
+						Task List Configuration
+				</title>
+					<programlisting language="Json"><xi:include
+						href="extras/taskList.config.json" xmlns:xi="http://www.w3.org/2001/XInclude"
+						parse="text" /></programlisting>
+				</example>
+			</para>
+			<para>In this case, there are two defined users, one that will only
+				show the name, and the busy user will also see the priority and
+				status.</para>
+			<note>
+				<title>Task View Profiles</title>
+				<para>Analogous to the task list profiles, the task details view and
+					tasks form view
+					handle profiles, which can be customized to show
+					different type
+					details depending of the profile. For more details,
+					check the Task Views
+					chapter.</para>
+			</note>
+			<note>
+				<title>More details?</title>
+				<para>For more advanced details, check the Task Lists chapter.
+				</para>
+			</note>
+		</section>
+	</section>
+
+	<section>
+		<title>WS-HT Client Wrapper</title>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="../media/wshtclient.png" align="center" />
+			</imageobject>
+		</mediaobject>
+		<section>
+			<title>Model</title>
+			<para>
+				Smart Tasks is based on a java model generated from the Web
+				Services -
+				Human Tasks specification
+				so that it covers all the
+				semantics of human tasks and its usages.
+		</para>
+
+			<note>
+				<para>WS-HumanTask,
+					https://www.sdn.sap.com/irj/sdn/go/portal/prtroot/docs/library/uuid/a0c9ce4c-ee02-2a10-4b96-cb205464aa02
+				</para>
+				<para>© 2007 Active Endpoints Inc., Adobe Systems Inc., BEA Systems
+					Inc., International
+					Business Machines Corporation, Oracle Inc., and
+					SAP AG. All rights reserved.
+			</para>
+			</note>
+		</section>
+
+		<section>
+			<title>Definitions</title>
+			<para>Human tasks represents unit of work performed by people and
+				allow integration
+				people in service oriented systems. A human task
+				should have:
+  	</para>
+			<itemizedlist>
+				<listitem>
+					<para>People. In a human task can be many people performing
+						different roles. For example, the role of a business administator
+						will be different for the actual performed of the task.</para>
+				</listitem>
+				<listitem>
+					<para>Data. Human Tasks can get input data that will be valuable to
+						complete the task, and also produce output</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+
+		<section>
+			<title>Representations of a task</title>
+			<para>The WS-HT standard defines to structures to represent a task,
+				that will be used depending on the need:</para>
+			<itemizedlist>
+				<listitem>
+					<para>Task Abstract, that is used to provide the summary data of a
+						task, which will be shown on a task list</para>
+				</listitem>
+				<listitem>
+					<para>Task, which contains all the data of a task</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+		<section>
+			<title>Task Rendering</title>
+			<para>To interact with tasks, it is good to have some interfaces to
+				coordinate the task executions, giving enough visibility and
+				functionality. Some needed interfaces could be:</para>
+			<itemizedlist>
+				<listitem>
+					<para>Task List. An interface where a user can see all the tasks
+						that has assigned, where a summary of the task is displayed.
+					</para>
+				</listitem>
+				<listitem>
+					<para>Task details, where the user can check more details
+						information of a task, with task input data, status, and more.
+					</para>
+				</listitem>
+				<listitem>
+					<para>Operate the task. It means a way to start, complete, suspend,
+						the task. It mean, make the task go through its state until finish
+						it.</para>
+				</listitem>
+			</itemizedlist>
+		</section>
+	</section>
+
+	<section>
+		<title>Task UI APIs</title>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="../media/taskuiapis.png" align="center" />
+			</imageobject>
+		</mediaobject>
+		<para>Smart Tasks offers a set of APIs that will help the users of the
+			framework to build its interfaces in an easy and flexible way,
+			independent of the human task vendor.</para>
+		<para>The services that smart tasks offers right now include:</para>
+		<itemizedlist>
+			<listitem>
+				<para>Task Lists UI Helper, which is the responsible of retrieving
+					to the UI, the customized task lists to be shown.</para>
+			</listitem>
+			<listitem>
+				<para>Task Support UI Helper. This service it responsible of giving
+					the UI interaction with a single task, also using profiles and
+					single task customization. Basically, it offers three services:
+				</para>
+				<orderedlist>
+					<listitem>
+						<para>Get the task information, to show to the user of the task
+						</para>
+					</listitem>
+				</orderedlist>
+				<orderedlist>
+					<listitem>
+						<para>Get the task form, that the user of the task will have to
+							fill</para>
+					</listitem>
+				</orderedlist>
+				<orderedlist>
+					<listitem>
+						<para>Action flow, of the task, which usually will be used to show
+							in the UI the different actions to be taken in a task.</para>
+					</listitem>
+				</orderedlist>
+			</listitem>
+		</itemizedlist>
+	</section>
+
+	<section>
+		<title>Persistence And Transactions</title>
+		<mediaobject>
+			<imageobject>
+				<imagedata fileref="../media/persistence.png" align="center" />
+			</imageobject>
+		</mediaobject>
+		<para>To be completed.</para>
+	</section>
+
+
+</chapter>
