@@ -1,109 +1,83 @@
 	[
 		{
-			"name": "Claim",
+			"name": "READY",
 			"isRoot": "true",
 			"isEnd": "false",
-			"next": [
-			{
-					"name":"Start"
+			"transitions": [
+				{
+					"methodMapping":"claim",
+					"action":"claim",
+					"destination": "RESERVED" 
 				},
 				{
-					"name":"Release"
-				},
-				{
-					"name": "Suspend"
+					"methodMapping":"suspend",
+					"action":"suspend",
+					"destination": "SUSPENDED_READY"
 				}
 			]
 		},
 		{
-			"name": "Start",
+			"name": "RESERVED",
 			"isRoot": "false",
 			"isEnd": "false",
-			"next": [
-			{
-					"name":"Stop"
+			"transitions": [
+				{
+					"methodMapping":"start",
+					"action":"start",
+					"destination": "IN_PROGRESS"
 				},
 				{
-					"name":"Release"
+					"methodMapping":"suspend",
+					"action":"suspend",
+					"destination": "SUSPENDED_RESERVED"
 				},
 				{
-					"name": "Suspend"
-				},
-				{
-					"name": "Complete"
-				},
-				{
-					"name": "Fail"
+					"methodMapping":"release",
+					"action":"release",
+					"destination": "CREATED"
 				}
 			]
 		},
 		{
-			"name": "Stop",
+			"name": "IN_PROGRESS",
 			"isRoot": "false",
 			"isEnd": "false",
-			"next": [
-			{
-					"name":"Start"
+			"transitions": [
+				{
+					"methodMapping":"stop",
+					"action":"stop",
+					"destination": "RESERVED"
 				},
 				{
-					"name":"Release"
+					"methodMapping":"suspend",
+					"action":"suspend",
+					"destination": "SUSPENDED_IN_PROGRESS"
 				},
 				{
-					"name": "Suspend"
+					"methodMapping":"release",
+					"action":"release",
+					"destination": "CREATED"
+				},
+				{
+					"methodMapping":"complete",
+					"action":"complete",
+					"destination": "COMPLETED"
+				},
+				{
+					"methodMapping":"fail",
+					"action":"fail",
+					"destination": "FAILED"
 				}
 			]
 		},
 		{
-			"name": "Release",
-			"isRoot": "false",
-			"isEnd": "false",
-			"next": [
-			{
-					"name":"Start"
-				},
-				{
-					"name":"Claim"
-				},
-				{
-					"name": "Suspend"
-				}
-			]
-		},
-		{
-			"name": "Suspend",
-			"isRoot": "false",
-			"isEnd": "false",
-			"next": [
-			{
-					"name":"Resume"
-				}
-			]
-		},
-		{
-			"name": "Resume",
-			"isRoot": "false",
-			"isEnd": "false",
-			"next": [
-			{
-					"name":"Start"
-				},
-				{
-					"name":"Claim"
-				},
-				{
-					"name": "Suspend"
-				}
-			]
-		},
-		{
-			"name": "Complete",
+			"name": "COMPLETED",
 			"isRoot": "false",
 			"isEnd": "true"
 		},
 		{
-			"name": "Fail",
+			"name": "FAILED",
 			"isRoot": "false",
 			"isEnd": "true"
 		}
-	
 	]

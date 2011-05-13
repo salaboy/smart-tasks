@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
@@ -47,25 +49,21 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 
 	}
 
-	/**
-	 * Returns the next tasks given a task. It returns null if its was not able
-	 * to find it.
-	 */
 	@Override
-	public List<String> getNextTasks(String task) {
+	public String getNextState(String originalState, String operation) {
 		for (OperationsDefinition def : this.definition) {
-			if (task.equalsIgnoreCase(def.getName())) {
-				List<String> nextTasks = new ArrayList<String>();
-				if (def.getNext() != null) {
-					for (DestinationDefinition destination : def.getNext()) {
-						nextTasks.add(destination.getName());
+			if (originalState.equals(def.getName())) {
+				if ((def.getTransitions() != null)) {
+					for (DestinationDefinition destination : def
+							.getTransitions()) {
+						if (operation.equals(destination.getAction())) {
+							return destination.getDestination();
+						}
 					}
 				}
-				return nextTasks;
-				
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("Could not find next state");
 	}
 
 	/**
@@ -73,22 +71,31 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 	 */
 	@Override
 	public List<String> getOperationsList() {
-		List<String> operationsList = new ArrayList<String>();
+		Set<String> operationsList = new HashSet<String>();
 		for (OperationsDefinition def : this.definition) {
-			operationsList.add(def.getName());
+			if ((def.getTransitions() != null)) {
+				for (DestinationDefinition destination : def.getTransitions()) {
+					operationsList.add(destination.getAction());
+				}
+			}
 		}
-		return operationsList;
+		return new ArrayList<String>(operationsList);
 	}
 
 	/**
-	 * Returns the starting operations.
+	 * Returns the operations for a given state.
 	 */
 	@Override
-	public List<String> getRootOperations() {
+	public List<String> getOperations(String state) {
 		List<String> operationsList = new ArrayList<String>();
 		for (OperationsDefinition def : this.definition) {
-			if (def.isRoot()) {
-				operationsList.add(def.getName());
+			if (state.equals(def.getName())) {
+				if ((def.getTransitions() != null)) {
+					for (DestinationDefinition operations : def
+							.getTransitions()) {
+						operationsList.add(operations.getAction());
+					}
+				}
 			}
 		}
 		return operationsList;
@@ -102,10 +109,10 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 	 * 
 	 */
 	private static class OperationsDefinition {
-		
+
 		private String name;
 
-		private Collection<DestinationDefinition> next;
+		private Collection<DestinationDefinition> transitions;
 
 		private boolean isRoot;
 
@@ -130,16 +137,16 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 		/**
 		 * @return the next
 		 */
-		public Collection<DestinationDefinition> getNext() {
-			return next;
+		public Collection<DestinationDefinition> getTransitions() {
+			return transitions;
 		}
 
 		/**
 		 * @param next
 		 *            the next to set
 		 */
-		public void setNext(Collection<DestinationDefinition> next) {
-			this.next = next;
+		public void setTransitions(Collection<DestinationDefinition> transitions) {
+			this.transitions = transitions;
 		}
 
 		/**
@@ -173,30 +180,51 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 		}
 
 	}
-	
+
 	/**
 	 * Definition of a destination node.
-	 *
+	 * 
 	 * @author calcacuervo
-	 *
+	 * 
 	 */
 	private static class DestinationDefinition {
-		
-		private String name;
+
+		private String action;
+
+		private String destination;
+
+		private String methodMapping;
 
 		/**
-		 * @return the name
+		 * @return the methodMapping
 		 */
-		public String getName() {
-			return name;
+		public String getMethodMapping() {
+			return methodMapping;
 		}
 
 		/**
-		 * @param name the name to set
+		 * @param methodMapping
+		 *            the methodMapping to set
 		 */
-		public void setName(String name) {
-			this.name = name;
+		public void setMethodMapping(String methodMapping) {
+			this.methodMapping = methodMapping;
 		}
-		
+
+		public String getAction() {
+			return action;
+		}
+
+		public void setAction(String action) {
+			this.action = action;
+		}
+
+		public String getDestination() {
+			return destination;
+		}
+
+		public void setDestination(String destination) {
+			this.destination = destination;
+		}
+
 	}
 }

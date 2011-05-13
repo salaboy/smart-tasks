@@ -35,30 +35,28 @@ public class GraphTaskOperationsTest {
 	@Test
 	public void getOperationsList() {
 		List<String> list = operations.getOperationsList();
-		Assert.assertEquals(8, list.size());
-		Assert.assertTrue(list.contains("Claim"));
-		Assert.assertTrue(list.contains("Start"));
-		Assert.assertTrue(list.contains("Complete"));
-		Assert.assertTrue(list.contains("Fail"));
-		Assert.assertTrue(list.contains("Release"));
-		Assert.assertTrue(list.contains("Suspend"));
-		Assert.assertTrue(list.contains("Stop"));
-		Assert.assertTrue(list.contains("Resume"));
+		Assert.assertEquals(7, list.size());
+		Assert.assertTrue(list.contains("claim"));
+		Assert.assertTrue(list.contains("start"));
+		Assert.assertTrue(list.contains("complete"));
+		Assert.assertTrue(list.contains("fail"));
+		Assert.assertTrue(list.contains("release"));
+		Assert.assertTrue(list.contains("suspend"));
+		Assert.assertTrue(list.contains("stop"));
+//		Assert.assertTrue(list.contains("Resume"));
 	}
 
 	@Test
-	public void getNextTask() {
-		List<String> tasks = operations.getNextTasks("Claim");
-		Assert.assertEquals(3, tasks.size());
-		Assert.assertTrue(tasks.contains("Start"));
-		Assert.assertTrue(tasks.contains("Release"));
-		Assert.assertTrue(tasks.contains("Suspend"));
+	public void getOperations() {
+		List<String> tasks = operations.getOperations("READY");
+		Assert.assertEquals(2, tasks.size());
+		Assert.assertTrue(tasks.contains("claim"));
+		Assert.assertTrue(tasks.contains("suspend"));
 	}
 	
 	@Test
 	public void getRoots() {
-		List<String> tasks = operations.getRootOperations();
-		Assert.assertEquals(1, tasks.size());
-		Assert.assertTrue(tasks.contains("Claim"));
+		String status = operations.getNextState("READY", "claim");
+		Assert.assertEquals("RESERVED", status);
 	}
 }

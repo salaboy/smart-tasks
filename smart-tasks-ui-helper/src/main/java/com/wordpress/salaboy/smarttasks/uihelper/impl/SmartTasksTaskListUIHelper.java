@@ -5,6 +5,14 @@
 
 package com.wordpress.salaboy.smarttasks.uihelper.impl;
 
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.example.ws_ht.api.TTaskAbstract;
+import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
+import org.example.ws_ht.api.wsdl.IllegalStateFault;
+
 import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
@@ -12,14 +20,9 @@ import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableColumnDefinition;
+import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskPropertyDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.model.TaskTableDefinition;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.example.ws_ht.api.TTaskAbstract;
-import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
-import org.example.ws_ht.api.wsdl.IllegalStateFault;
 
 /**
  *
@@ -31,7 +34,7 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
     private final String taskListId;
     private final String entityId;
     private final String taskType;
-    private final TaskTableDefinition taskListTableDefinition;
+    private final TaskListTableDefinition taskListTableDefinition;
     
     public SmartTasksTaskListUIHelper(String taskListId, String entityId, String taskType, UIHelperConfiguration configuration, HumanTaskService humanTaskService ) {
         this.taskListId = taskListId;
@@ -49,7 +52,7 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
         
         String[] headers = new String[this.taskListTableDefinition.getColumns().size()];
         int i=0;
-        for (TaskPropertyDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
+        for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
             headers[i] = taskListTableColumnDefinition.getHeader();
             i++;
         }

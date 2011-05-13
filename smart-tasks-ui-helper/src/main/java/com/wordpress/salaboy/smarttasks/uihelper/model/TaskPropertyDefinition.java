@@ -12,7 +12,7 @@ import com.wordpress.salaboy.smarttasks.uihelper.impl.Formatter;
  * @author esteban
  */
 public class TaskPropertyDefinition {
-   private String header;
+   private String name;
    private String sourceExpresion;
    private Formatter formatter;
 
@@ -24,12 +24,12 @@ public class TaskPropertyDefinition {
         this.formatter = formatter;
     }
 
-    public String getHeader() {
-        return header;
+    public String getName() {
+        return name;
     }
 
-    public void setHeader(String header) {
-        this.header = header;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSourceExpresion() {

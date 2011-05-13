@@ -17,14 +17,32 @@
 	<build>
 		<plugins>
 			<plugin>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.xmlgraphics</groupId>
+						<artifactId>xmlgraphics-commons</artifactId>
+						<version>1.4</version>
+					</dependency>
+				</dependencies>
 				<groupId>com.agilejava.docbkx</groupId>
 				<artifactId>docbkx-maven-plugin</artifactId>
 				<version>2.0.12</version>
 				<executions>
+					<!-- execution>
+						<phase>generate-sources</phase>
+						<id>create-pdf-docs</id>
+						<goals>
+							<goal>generate-pdf</goal>
+						</goals>
+						<configuration>
+							<includes>book.xml</includes>
+							<foCustomization>src/docbkx-stylesheet/book-style.xsl</foCustomization>
+						</configuration>
+					</execution-->
 					<!-- -->
 					<execution>
 						<id>documentation identifier</id>
-						<phase>pre-site</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<!-- <goal>generate-html</goal> <goal>generate-pdf</goal> <goal>generate-...</goal> -->
 							<goal>generate-html</goal>
@@ -33,11 +51,11 @@
 							<!-- per execution configuration -->
 							<includes>book.xml</includes>
 							<draftMode>yes</draftMode>
-		                    <preProcess>
-                                <copy todir="target/docbkx/media">
-                                    <fileset dir="src/docbkx/media" />
-                                </copy>
-                            </preProcess>
+							<preProcess>
+								<copy todir="target/docbkx/media">
+									<fileset dir="src/docbkx/media" />
+								</copy>
+							</preProcess>
 						</configuration>
 					</execution>
 				</executions>
@@ -48,7 +66,7 @@
 					<paperType>A4</paperType>
 					<fop1Extensions>1</fop1Extensions>
 
-					<htmlCustomization>src/docbkx-stylesheet/book-style.xsl</htmlCustomization>
+					<!-- htmlCustomization>src/docbkx-stylesheet/book-style.xsl</htmlCustomization-->
 
 					<customizationParameters>
 						<!-- additional XSLT parameters -->
@@ -69,14 +87,14 @@
 				</configuration>
 			</plugin>
 		</plugins>
-			<resources>
-      <resource>
-        <directory>/src/docbkx/media</directory>
-        <filtering>false</filtering>
-      </resource>
-    </resources>
-		
+		<resources>
+			<resource>
+				<directory>/src/docbkx/media</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+
 	</build>
-	
+
 
 </project>

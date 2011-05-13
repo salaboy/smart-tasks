@@ -91,7 +91,7 @@ public class TaskSupportUIHelperTest {
 		TaskListDataSet data = listHelper.getDataSet(0, 1);
 		TaskSupportUIHelper taskHelper = helper.getTaskSupportHelper(
 				data.getData()[0][0], "some", "salaboy");
-		Map<String, String> details = taskHelper.getTaskDetails();
-		Assert.assertEquals("IN_PROGRESS", details.get("status"));
+		Map<String, String> details = taskHelper.getTaskInput();
+		Assert.assertEquals("IN_PROGRESS", details.get("Status"));
 	}
 }

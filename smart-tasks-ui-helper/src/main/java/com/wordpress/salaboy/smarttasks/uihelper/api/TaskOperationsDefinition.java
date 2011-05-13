@@ -3,7 +3,7 @@ package com.wordpress.salaboy.smarttasks.uihelper.api;
 import java.util.List;
 
 /**
- * Represents a service that gives information about the possible actions to a
+ * Represents a service that gives information about the possible actions that can be applied to a
  * task.
  * 
  * @author calcacuervo
@@ -12,26 +12,26 @@ import java.util.List;
 public interface TaskOperationsDefinition {
 
 	/**
-	 * Returns the name of the initial operations of tasks.
+	 * Returns the name of the allowed operations for a given state.
 	 * 
-	 * @return
+	 * @return the name of the allowed operations for a given state.
 	 */
-	public List<String> getRootOperations();
+	public List<String> getOperations(String state);
 
 	/**
 	 * Returns the operations list.
 	 * 
-	 * @return
+	 * @return the operations list.
 	 */
 	public List<String> getOperationsList();
 
 	/**
-	 * Given a task, returns the next tasks in the graph.
+	 * Given a task and an operation, returns the next tasks in the graph.
 	 * 
 	 * @param task
 	 *            the origin.
 	 * @return the destinations from the origin.
 	 */
-	public List<String> getNextTasks(String task);
+	public String getNextState(String originalState, String operation);
 
 }

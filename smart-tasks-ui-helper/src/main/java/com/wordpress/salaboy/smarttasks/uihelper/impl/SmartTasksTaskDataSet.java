@@ -12,21 +12,22 @@ import com.wordpress.salaboy.smarttasks.uihelper.api.TaskDetailsDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.expression.ExpressionResolver;
 import com.wordpress.salaboy.smarttasks.uihelper.expression.MVELExpressionResolver;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskPropertyDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.model.TaskTableDefinition;
+import com.wordpress.salaboy.smarttasks.uihelper.model.TaskFormDefinition;
 
 /**
- * 
- * @author esteban
+ * This class represents a set of data about a given task. The task is an
+ * instance of {@link MetaTask}, and provides services to get the input and
+ * output of the task, adapting it to the configured configuration.
  */
 public class SmartTasksTaskDataSet implements TaskDetailsDataSet {
 
 	private final MetaTask myTask;
-	private final TaskTableDefinition taskDetailsTableDefinition;
+	private final TaskFormDefinition taskFormDefinition;
 	private final ExpressionResolver expressionResolver;
 
-	public SmartTasksTaskDataSet(
-			TaskTableDefinition taskListTableDefinition, MetaTask myTask) {
-		this.taskDetailsTableDefinition = taskListTableDefinition;
+	public SmartTasksTaskDataSet(TaskFormDefinition taskFormDefinition,
+			MetaTask myTask) {
+		this.taskFormDefinition = taskFormDefinition;
 		this.myTask = myTask;
 		this.expressionResolver = new MVELExpressionResolver();
 	}
@@ -36,10 +37,10 @@ public class SmartTasksTaskDataSet implements TaskDetailsDataSet {
 	 * can be an evaluated expression or some defined value.
 	 */
 	@Override
-	public Map<String, String> getTaskDetails() {
+	public Map<String, String> getTaskInputs() {
 		Map<String, String> taskDetails = new HashMap<String, String>();
-		for (TaskPropertyDefinition column : taskDetailsTableDefinition
-				.getColumns()) {
+		for (TaskPropertyDefinition column : taskFormDefinition
+				.getInputFields()) {
 			Object expresionResult = this.expressionResolver.resolveExpression(
 					column.getSourceExpresion(), myTask);
 			String stringData = null;
@@ -52,7 +53,29 @@ public class SmartTasksTaskDataSet implements TaskDetailsDataSet {
 					stringData = expresionResult.toString();
 				}
 			}
-			taskDetails.put(column.getHeader(), stringData);
+			taskDetails.put(column.getName(), stringData);
+		}
+		return taskDetails;
+	}
+
+	@Override
+	public Map<String, String> getTaskOutputs() {
+		Map<String, String> taskDetails = new HashMap<String, String>();
+		for (TaskPropertyDefinition column : taskFormDefinition
+				.getOutputFields()) {
+			Object expresionResult = this.expressionResolver.resolveExpression(
+					column.getSourceExpresion(), myTask);
+			String stringData = null;
+			if (column.getFormatter() != null) {
+				stringData = column.getFormatter().format(expresionResult);
+			} else {
+				if (expresionResult == null) {
+					stringData = "null";
+				} else {
+					stringData = expresionResult.toString();
+				}
+			}
+			taskDetails.put(column.getName(), stringData);
 		}
 		return taskDetails;
 	}

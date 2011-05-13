@@ -20,17 +20,18 @@ public interface TaskSupportUIHelper {
 	/**
 	 * Returns a map with the details of the {@link TTask}.
 	 */
-	public Map<String, String> getTaskDetails();
+	public Map<String, String> getTaskInput();
 
 	/**
 	 * Return the name of the form inputs as the key, and default values as
 	 * values of the map.
 	 */
-	public Map<String, String> getTaskFormInputs();
+	public Map<String, String> getTaskOutput();
 
 	/**
 	 * Returns the actions graph as an instance of {@link TaskOperationsDefinition}
 	 */
 	public TaskOperationsDefinition getTaskOperations();
 
+	public void executeTaskAction(String actionName, Object data);
 }

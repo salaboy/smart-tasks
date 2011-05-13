@@ -5,17 +5,21 @@
 
 package com.wordpress.salaboy.smarttasks.uihelper.api;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskServiceOperations;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

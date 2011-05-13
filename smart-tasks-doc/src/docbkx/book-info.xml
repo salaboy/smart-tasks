@@ -7,9 +7,4 @@
 	<pubsnumber>1</pubsnumber>
 	<productname>Smart Tasks</productname>
 	<issuenum>1</issuenum>
-	<mediaobject>
-		<imageobject>
-			<imagedata fileref="../media/logo.png" depth="3cm" />
-		</imageobject>
-	</mediaobject>
 </bookinfo>

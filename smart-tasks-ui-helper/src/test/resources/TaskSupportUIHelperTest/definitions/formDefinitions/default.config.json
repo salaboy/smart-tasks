@@ -1,46 +1,57 @@
 [
  {
      "profile": "Default",
-     "columns": [
+     "inputFields": [
          {
-            "header":"Id",
+            "name":"Id",
             "sourceExpresion":"#{task:id}"
          },
          {
-            "header":"Name",
+            "name":"Name",
             "sourceExpresion":"#{task:name}"
          },
          {
-            "header":"An Input",
-            "sourceExpresion":""
+            "name":"Status",
+            "sourceExpresion":"#{task:status}"
          },
          {
-            "header":"Another Input",
-            "sourceExpresion":"With a default value..."
+            "name":"Document",
+            "sourceExpresion":"#{in:0}"
+         }
+     ],
+     "outputFields": [
+         {
+            "name":"Translated Document",
+            "sourceExpresion":""
          }
      ]
  },
  {
-     "profile": "Superuser",
-     "columns": [
+     "profile": "SuperUser",
+     "inputFields": [
          {
-            "header":"Id",
+            "name":"Id",
             "sourceExpresion":"#{task:id}"
-         }
-         ,
+         },
          {
-            "header":"Priority",
+            "name":"Priority",
             "sourceExpresion":"#{task:priority}"
-         }
-         ,
+         },
          {
-            "header":"Name",
+            "name":"Name",
             "sourceExpresion":"#{task:name}"
          },
          {
-            "header":"Status",
-            "sourceExpresion":"#{task:status}"
+            "name":"Document",
+            "sourceExpresion":"#{in:0}"
+         }
+     ],
+     "outputFields": [
+         {
+            "name":"Translated Document",
+            "sourceExpresion":""
          }
      ]
+     
  }
-]
+ ]

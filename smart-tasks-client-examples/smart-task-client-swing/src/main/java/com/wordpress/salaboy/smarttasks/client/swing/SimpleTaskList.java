@@ -244,7 +244,7 @@ public class SimpleTaskList extends javax.swing.JDialog {
 				jTaskIdText.getText(), "tasks",
 				(String) this.orgEntityjComboBox.getSelectedItem());
 
-		Map<String, String> columnHeaders = taskHelper.getTaskDetails();
+		Map<String, String> columnHeaders = taskHelper.getTaskInput();
 		String headers = "";
 		for (String header : columnHeaders.keySet()) {
 			headers += "\t" + header + "|";
@@ -257,7 +257,7 @@ public class SimpleTaskList extends javax.swing.JDialog {
 
 		taskListjTextArea.setText(headers + "----------------------------\n"
 				+ content);
-		Map<String, String> mapInputs = taskHelper.getTaskFormInputs();
+		Map<String, String> mapInputs = taskHelper.getTaskOutput();
 		mapInputs.keySet();
 
 	}// GEN-LAST:event_jButton1ActionPerformed

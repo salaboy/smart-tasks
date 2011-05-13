@@ -4,6 +4,9 @@
  */
 package com.wordpress.salaboy.smarttasks.jbpm5wrapper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +30,11 @@ import org.example.ws_ht.api.wsdl.IllegalOperationFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.example.ws_ht.api.wsdl.RecipientNotAllowed;
 import org.example.ws_ht.api.xsd.TTime;
+import org.jbpm.task.AccessType;
 import org.jbpm.task.Task;
 import org.jbpm.task.query.TaskSummary;
 import org.jbpm.task.service.ContentData;
+import org.jbpm.task.service.FaultData;
 import org.jbpm.task.service.TaskClient;
 import org.jbpm.task.service.responsehandlers.BlockingGetContentResponseHandler;
 import org.jbpm.task.service.responsehandlers.BlockingGetTaskResponseHandler;
@@ -245,11 +250,28 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void complete(String identifier, Object taskData) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
+		ContentData contentData = null;
+		if (taskData != null) {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream out;
+			try {
+				out = new ObjectOutputStream(bos);
+				out.writeObject(taskData);
+				out.close();
+			} catch (IOException ioe) {
+				throw new IllegalAccessFault(ioe.getMessage());
+			}
+			contentData = new ContentData();
+			contentData.setContent(bos.toByteArray());
+			contentData.setAccessType(AccessType.Inline);
+
+		}
+
         long taskId = Long.parseLong(identifier);
         String userId = this.getActiveUserId();
 
         BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
-        client.complete(taskId, userId, (ContentData) taskData, blockingTaskOperationResponseHandler);
+        client.complete(taskId, userId, contentData, blockingTaskOperationResponseHandler);
         //@FIXME: how much time do I need to wait?
         blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
@@ -259,7 +281,14 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void resume(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+    	long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.resume(taskId, userId, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
+
     }
 
     public void claim(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
@@ -275,7 +304,28 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
     }
 
     public void fail(String identifier, String faultName, Object faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
-        throw new UnsupportedOperationException("Not supported yet.");
+		FaultData data = null;
+		if (faultData != null) {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			ObjectOutputStream out;
+			try {
+				out = new ObjectOutputStream(bos);
+				out.writeObject(faultData);
+				out.close();
+			} catch (IOException ioe) {
+				throw new IllegalAccessFault(ioe.getMessage());
+			}
+			data = new FaultData();
+			data.setContent(bos.toByteArray());
+			data.setAccessType(AccessType.Inline);
+		}
+        long taskId = Long.parseLong(identifier);
+        String userId = this.getActiveUserId();
+
+        BlockingTaskOperationResponseHandler blockingTaskOperationResponseHandler = new BlockingTaskOperationResponseHandler();
+        client.fail(taskId, userId, data, blockingTaskOperationResponseHandler);
+        //@FIXME: how much time do I need to wait?
+        blockingTaskOperationResponseHandler.waitTillDone(1000);
     }
 
     public void deleteFault(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {

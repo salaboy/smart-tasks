@@ -20,16 +20,21 @@ import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalAccessFault;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
+import org.example.ws_ht.api.wsdl.IllegalOperationFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 
 /**
- *
+ * Implementation for {@link HumanTaskService}. It delegates the operations in the list of {@link HumanTaskServiceOperations}.
  * @author salaboy
  */
 public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements HumanTaskService{
     private Map<String, HumanTaskServiceOperations> taskOperations;
     private Map<String, ServiceLifeCycleManager> serviceLifeCycleManagers;
     
+    /**
+     * Creates a new {@link HumanTaskServiceImpl} instance.
+     * @param taskOperations the operations to compose.
+     */
     public HumanTaskServiceImpl(List<HumanTaskServiceOperations> taskOperations) {
         this.taskOperations = new HashMap<String, HumanTaskServiceOperations>();
         for (HumanTaskServiceOperations humanTaskServiceOperations : taskOperations) {
@@ -38,6 +43,9 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         }
     }
 
+    /**
+     * Returns the task operations.
+     */
     @Override
     public Map<String, HumanTaskServiceOperations> getTaskOperations() {
         return this.taskOperations;
@@ -194,6 +202,9 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
         return uniqueId.split("\\-@\\-")[0];
     }
     
+    /**
+     * Will return the name of the {@link HumanTaskServiceOperations} which has the given task.
+     */
     public String getTaskOriginatorType(String uniqueId) {
     	for (String operatorId : this.taskOperations.keySet()) {
 			if (uniqueId.contains(operatorId)) {
@@ -201,5 +212,26 @@ public class HumanTaskServiceImpl extends HumanTaskOperationsDefault implements 
 			}
 		}
     	return null;
+    }
+    
+    @Override
+    public void stop(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
+    	String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        this.taskOperations.get(taskOperationId).stop(entityId);
+    }
+    
+    @Override
+    public void release(String identifier) throws IllegalArgumentFault, IllegalStateFault, IllegalAccessFault {
+    	String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        this.taskOperations.get(taskOperationId).release(entityId);
+    }
+    
+    @Override
+    public void fail(String identifier, String faultName, Object faultData) throws IllegalArgumentFault, IllegalStateFault, IllegalOperationFault, IllegalAccessFault {
+    	String entityId = this.getEntityId(identifier);
+        String taskOperationId = this.getTaskOperationId(identifier);
+        this.taskOperations.get(taskOperationId).fail(entityId, faultName, faultData);
     }
 }

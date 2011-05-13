@@ -13,7 +13,7 @@ import java.util.List;
  * The definition of a TaskList table.
  * @author esteban
  */
-public class TaskListTableDefinition {
+public class TaskListTableDefinition implements CustomizableDefinition{
    public static final String DEFAULT_PROFILE_NAME = "Default";
    private String profile = DEFAULT_PROFILE_NAME;
    private String decorator;

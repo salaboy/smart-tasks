@@ -15,6 +15,7 @@ public class MetaTask {
    private Long id;
    private TTask task;
    private TTaskAbstract taskAbstract;
+   String[] inputs;
    
     public MetaTask(TTask task) {
         this.task = task;
@@ -48,7 +49,21 @@ public class MetaTask {
         this.taskAbstract = taskAbstract;
     }
 
-    public String getStringRepresentation() {
+    /**
+	 * @return the inputs
+	 */
+	public String[] getInputs() {
+		return inputs;
+	}
+
+	/**
+	 * @param inputs the inputs to set
+	 */
+	public void setInputs(String[] inputs) {
+		this.inputs = inputs;
+	}
+
+	public String getStringRepresentation() {
         String stringRep = "";
        
         if(task != null){
