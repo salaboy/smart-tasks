@@ -86,10 +86,10 @@ public class TaskSupportUIHelperTest {
 		ConnectionData connectionData = new ConnectionData();
 		connectionData.setEntityId("Some_User");
 		helper.connect(connectionData);
-		TaskListUIHelper listHelper = helper.getTaskListHelper("taskList1",
+		TaskListBuilder listHelper = helper.getTaskListHelper("taskList1",
 				"default");
 		TaskListDataSet data = listHelper.getDataSet(0, 1);
-		TaskSupportUIHelper taskHelper = helper.getTaskSupportHelper(
+		TaskFormBuilder taskHelper = helper.getTaskSupportHelper(
 				data.getData()[0][0], "some", "salaboy");
 		Map<String, String> details = taskHelper.getTaskInput();
 		Assert.assertEquals("IN_PROGRESS", details.get("Status"));

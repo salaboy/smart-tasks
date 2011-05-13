@@ -16,7 +16,7 @@ import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskOperationsDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskSupportUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskFormDefinition;
@@ -32,7 +32,7 @@ import com.wordpress.salaboy.smarttasks.uihelper.model.TaskFormDefinition;
  * @author calcacuervo
  * 
  */
-public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
+public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 
 	private TaskFormDefinition taskFormDefinition;
 
@@ -49,7 +49,7 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 	private TaskOperationsDefinition operationsDefinition;
 
 	/**
-	 * Creates a new {@link SmartTasksTaskSupportUIHelper} instance.
+	 * Creates a new {@link SmartTasksTaskFormBuilder} instance.
 	 * 
 	 * @param configuration
 	 * @param taskId
@@ -61,7 +61,7 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 	 * @param operationsDefinitionFileName
 	 *            the operations definition filename.
 	 */
-	public SmartTasksTaskSupportUIHelper(UIHelperConfiguration configuration,
+	public SmartTasksTaskFormBuilder(UIHelperConfiguration configuration,
 			String taskId, String profile,
 			final HumanTaskService humanTaskService, final String taskType,
 			final String entityId) {
@@ -94,12 +94,12 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 			return new SmartTasksTaskDataSet(taskFormDefinition, myTask)
 					.getTaskInputs();
 		} catch (IllegalArgumentFault fault) {
-			Logger.getLogger(SmartTasksTaskSupportUIHelper.class.getName())
+			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName())
 					.log(Level.SEVERE,
 							"There was an error obtaining task information.",
 							fault);
 		}
-		Logger.getLogger(SmartTasksTaskSupportUIHelper.class.getName()).log(
+		Logger.getLogger(SmartTasksTaskFormBuilder.class.getName()).log(
 				Level.SEVERE, "Could not obtain task input.");
 		return null;
 	}
@@ -126,7 +126,7 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 			String taskinfo = (String) ois.readObject();
 			return taskinfo.split(",");
 		} catch (Exception e) {
-			Logger.getLogger(SmartTasksTaskSupportUIHelper.class.getName())
+			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName())
 					.log(Level.SEVERE, "Could not obtain task input.", e);
 			return null;
 		}
@@ -143,12 +143,12 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 			return new SmartTasksTaskDataSet(this.taskFormDefinition, myTask)
 					.getTaskOutputs();
 		} catch (IllegalArgumentFault fault) {
-			Logger.getLogger(SmartTasksTaskSupportUIHelper.class.getName())
+			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName())
 					.log(Level.SEVERE,
 							"There was an error obtaining task information.",
 							fault);
 		}
-		Logger.getLogger(SmartTasksTaskSupportUIHelper.class.getName()).log(
+		Logger.getLogger(SmartTasksTaskFormBuilder.class.getName()).log(
 				Level.SEVERE, "Could not obtain task input.");
 		return null;
 	}
@@ -163,7 +163,7 @@ public class SmartTasksTaskSupportUIHelper implements TaskSupportUIHelper {
 		ActionExecutionHelper.executeAction(actionName, humanTaskService, taskId, data);
 		}
 		catch (Exception e) {
-			Logger.getLogger(SmartTasksTaskSupportUIHelper.class.getName()).log(
+			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName()).log(
 					Level.SEVERE, "Could not execute action " + actionName, e);
 		}
 	}

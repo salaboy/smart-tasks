@@ -64,7 +64,7 @@ public class TaskListUIHelperTest {
         helper.connect(connectionData);
 
         //taskList1 should take "Default" profile: 2 columns
-        TaskListUIHelper taskListHelper = helper.getTaskListHelper("taskList1", null);
+        TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList1", null);
 
 
         String[] columnHeaders = taskListHelper.getColumnHeaders();
@@ -125,7 +125,7 @@ public class TaskListUIHelperTest {
         helper.connect(connectionData);
 
         //taskList1 should take "Default" profile: 2 columns
-        TaskListUIHelper taskListHelper = helper.getTaskListHelper("taskList1", null);
+        TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList1", null);
 
 
         String[] columnHeaders = taskListHelper.getColumnHeaders();
@@ -178,7 +178,7 @@ public class TaskListUIHelperTest {
         helper.connect(connectionData);
 
         //taskList1 should take "Default" profile: 2 columns, NO metadata
-        TaskListUIHelper taskListHelper = helper.getTaskListHelper("taskList1", null);
+        TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList1", null);
 
         assertNull(taskListHelper.getRowMetadataKeys());
 
@@ -234,7 +234,7 @@ public class TaskListUIHelperTest {
         helper.connect(connectionData);
         
         //taskList1 should take "Default" profile: 2 columns
-        TaskListUIHelper taskListHelper = helper.getTaskListHelper("taskList3", null);
+        TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList3", null);
         
         
         String[] columnHeaders = taskListHelper.getColumnHeaders();

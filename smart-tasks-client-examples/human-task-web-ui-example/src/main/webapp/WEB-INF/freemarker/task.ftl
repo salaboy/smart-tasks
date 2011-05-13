@@ -16,7 +16,7 @@
 		
 		function buttonClicked(element)
 		{
-			var doc = document.getElementById('input_Document');
+			var doc = document.getElementById('input_Output');
 			var url = "/human-task-web-ui-example/task/execute/${user}/${profile}/${id}/${name}/" + element.split("_")[1] + "/" + doc.value;
 			window.location = url;
 		}

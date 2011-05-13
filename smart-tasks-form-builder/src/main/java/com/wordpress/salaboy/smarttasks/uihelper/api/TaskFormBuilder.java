@@ -15,7 +15,7 @@ import org.example.ws_ht.api.TTask;
  * @author calcacuervo
  * 
  */
-public interface TaskSupportUIHelper {
+public interface TaskFormBuilder {
 
 	/**
 	 * Returns a map with the details of the {@link TTask}.

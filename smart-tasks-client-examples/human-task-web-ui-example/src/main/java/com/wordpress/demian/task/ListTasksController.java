@@ -16,10 +16,10 @@ import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.ConnectionData;
 import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskOperationsDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskSupportUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.ActivitiConfigurationHandler;
@@ -38,7 +38,7 @@ public class ListTasksController {
 
 	SmartTaskUIHelper helper;
 
-	TaskSupportUIHelper taskHelper = null;
+	TaskFormBuilder taskHelper = null;
 	
 	public ListTasksController() {
 		MetaTaskDecoratorService.getInstance().registerDecorator("base",
@@ -78,7 +78,7 @@ public class ListTasksController {
 		ConnectionData connectionData = new ConnectionData();
 		connectionData.setEntityId(entity);
 		helper.connect(connectionData);
-		TaskListUIHelper taskListHelper = helper.getTaskListHelper("taskList1",
+		TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList1",
 				profile);
 		TaskListDataSet set = taskListHelper.getDataSet(0,
 				taskListHelper.getDataCount());

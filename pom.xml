@@ -12,7 +12,7 @@
         <module>smart-tasks-api</module>
         <module>smart-tasks-jbpm5-impl</module>
         <module>smart-tasks-activiti-impl</module>
-        <module>smart-tasks-ui-helper</module>
+        <module>smart-tasks-form-builder</module>
     <module>smart-tasks-metamodel-base</module>
     <module>smart-tasks-metamodel-simulation</module>
     <module>smart-tasks-client-examples</module>

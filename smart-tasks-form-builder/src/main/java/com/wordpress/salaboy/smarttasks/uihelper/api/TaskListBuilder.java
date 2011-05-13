@@ -9,7 +9,7 @@ package com.wordpress.salaboy.smarttasks.uihelper.api;
  *
  * @author esteban
  */
-public interface TaskListUIHelper {
+public interface TaskListBuilder {
     
     /**
      * Returns the task list column headers 

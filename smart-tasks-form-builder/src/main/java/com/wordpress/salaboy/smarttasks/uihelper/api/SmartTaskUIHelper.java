@@ -8,8 +8,8 @@ package com.wordpress.salaboy.smarttasks.uihelper.api;
 import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.api.HumanTaskServiceFactory;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskListUIHelper;
-import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskSupportUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskListBuilder;
+import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskFormBuilder;
 
 /**
  *
@@ -51,14 +51,14 @@ public class SmartTaskUIHelper {
         this.connected = false;
     }
     
-    public TaskListUIHelper getTaskListHelper(String taskListId, String taskType){
+    public TaskListBuilder getTaskListHelper(String taskListId, String taskType){
         this.checkIfConnected();
-        return new SmartTasksTaskListUIHelper(taskListId, this.connectionData.getEntityId(), taskType, configuration, humanTaskService );
+        return new SmartTasksTaskListBuilder(taskListId, this.connectionData.getEntityId(), taskType, configuration, humanTaskService );
     }
     
-    public TaskSupportUIHelper getTaskSupportHelper(String taskId, String taskUIId, String profile) {
+    public TaskFormBuilder getTaskSupportHelper(String taskId, String taskUIId, String profile) {
     	this.checkIfConnected();
-    	return new SmartTasksTaskSupportUIHelper(configuration, taskId, profile, humanTaskService, taskUIId, this.connectionData.getEntityId());
+    	return new SmartTasksTaskFormBuilder(configuration, taskId, profile, humanTaskService, taskUIId, this.connectionData.getEntityId());
     }
     
     private void checkIfConnected(){

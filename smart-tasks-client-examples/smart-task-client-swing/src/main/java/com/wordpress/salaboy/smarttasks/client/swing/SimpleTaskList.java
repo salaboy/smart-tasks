@@ -27,9 +27,9 @@ import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.ConnectionData;
 import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskSupportUIHelper;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskClientConfiguration;
@@ -194,7 +194,7 @@ public class SimpleTaskList extends javax.swing.JDialog {
 		helper.connect(connectionData);
 
 		// taskList1 should take "Default" profile: 2 columns
-		TaskListUIHelper taskListHelper = helper.getTaskListHelper(
+		TaskListBuilder taskListHelper = helper.getTaskListHelper(
 				(String) profilejComboBox.getItemAt(profilejComboBox
 						.getSelectedIndex()), null);
 
@@ -240,7 +240,7 @@ public class SimpleTaskList extends javax.swing.JDialog {
 		 connectionData.setEntityId((String)orgEntityjComboBox.getItemAt(orgEntityjComboBox.getSelectedIndex()));
 		 helper.connect(connectionData);
 
-		TaskSupportUIHelper taskHelper = helper.getTaskSupportHelper(
+		TaskFormBuilder taskHelper = helper.getTaskSupportHelper(
 				jTaskIdText.getText(), "tasks",
 				(String) this.orgEntityjComboBox.getSelectedItem());
 

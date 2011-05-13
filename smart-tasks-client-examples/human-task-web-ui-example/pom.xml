@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.wordpress.salaboy.smarttasks</groupId>
-			<artifactId>smart-tasks-ui-helper</artifactId>
+			<artifactId>smart-tasks-form-builder</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 

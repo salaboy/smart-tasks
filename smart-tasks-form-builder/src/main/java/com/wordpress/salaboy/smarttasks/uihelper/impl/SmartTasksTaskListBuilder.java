@@ -17,7 +17,7 @@ import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableColumnDefinition;
@@ -28,7 +28,7 @@ import com.wordpress.salaboy.smarttasks.uihelper.model.TaskPropertyDefinition;
  *
  * @author esteban
  */
-public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
+public class SmartTasksTaskListBuilder implements TaskListBuilder{
 
     private final HumanTaskService humanTaskService;
     private final String taskListId;
@@ -36,7 +36,7 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
     private final String taskType;
     private final TaskListTableDefinition taskListTableDefinition;
     
-    public SmartTasksTaskListUIHelper(String taskListId, String entityId, String taskType, UIHelperConfiguration configuration, HumanTaskService humanTaskService ) {
+    public SmartTasksTaskListBuilder(String taskListId, String entityId, String taskType, UIHelperConfiguration configuration, HumanTaskService humanTaskService ) {
         this.taskListId = taskListId;
         this.entityId = entityId;
         this.taskType = taskType;
@@ -84,10 +84,10 @@ public class SmartTasksTaskListUIHelper implements TaskListUIHelper{
             myTasks = humanTaskService.getMyTaskAbstracts(taskType, entityId, null, null, null, null, null, null, null);
         } catch (IllegalArgumentFault ex) {
             //TODO: throw a more appropiated exception
-            Logger.getLogger(SmartTasksTaskListUIHelper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SmartTasksTaskListBuilder.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalStateFault ex) {
             //TODO: throw a more appropiated exception
-            Logger.getLogger(SmartTasksTaskListUIHelper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SmartTasksTaskListBuilder.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (myTasks == null){
             return 0;
