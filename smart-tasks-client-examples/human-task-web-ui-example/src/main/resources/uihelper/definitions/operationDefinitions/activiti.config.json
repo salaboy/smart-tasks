@@ -1,0 +1,27 @@
+	[
+		{
+			"name": "Claim",
+			"isRoot": "true",
+			"isEnd": "false",
+			"next": [
+			{
+					"name":"Start"
+				}
+			]
+		},
+		{
+			"name": "Start",
+			"isRoot": "false",
+			"isEnd": "false",
+			"next": [
+				{
+					"name":"Complete"
+				}
+			]
+		},
+		{
+			"name": "Complete",
+			"isRoot": "false",
+			"isEnd": "false"
+		}
+	]

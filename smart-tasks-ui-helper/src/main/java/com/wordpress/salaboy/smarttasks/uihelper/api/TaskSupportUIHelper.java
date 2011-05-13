@@ -33,5 +33,10 @@ public interface TaskSupportUIHelper {
 	 */
 	public TaskOperationsDefinition getTaskOperations();
 
+	/**
+	 * Executes the desired action to the task.
+	 * @param actionName the name of the action.
+	 * @param data data given to this action.
+	 */
 	public void executeTaskAction(String actionName, Object data);
 }

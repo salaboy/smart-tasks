@@ -45,12 +45,14 @@ public class ActionExecutionHelper {
 					// two parameters
 					method.invoke(service, tasksId, data);
 				}
-				if (method.getName().equalsIgnoreCase("fail")) {
+				else if (method.getName().equalsIgnoreCase("fail")) {
 					// three parameters
 					// TODO check this parameters
 					method.invoke(service, tasksId, "fail", null);
 				}
-				method.invoke(service, tasksId);
+				else {
+					method.invoke(service, tasksId);
+				}
 			}
 		}
 

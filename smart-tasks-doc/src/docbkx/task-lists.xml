@@ -7,7 +7,19 @@
 		<title>Task Lists
 		</title>
 		<para>
-			In this section we will see in details how to generate task lists using Smart Tasks UI Helper. 
+			In this section we will see in details how to generate task
+			lists using Smart Tasks UI Helper. 
         </para>
+	</section>
+	<section>
+		<title>Task Lists configuration file</title>
+		<example>
+			<title>
+				Task List Configuration
+				</title>
+			<programlisting language="Json"><xi:include
+				href="extras/taskList.config.json" xmlns:xi="http://www.w3.org/2001/XInclude"
+				parse="text" /></programlisting>
+		</example>
 	</section>
 </chapter>

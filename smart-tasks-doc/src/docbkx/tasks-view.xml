@@ -11,4 +11,26 @@
 			interfaces using Smart Tasks Task Support UI Helper.
         </para>
 	</section>
+	<section>
+		<title>Task Form configuration file</title>
+		<example>
+			<title>
+				Task form Configuration
+				</title>
+			<programlisting language="Json"><xi:include
+				href="extras/form.config.json" xmlns:xi="http://www.w3.org/2001/XInclude"
+				parse="text" /></programlisting>
+		</example>
+	</section>
+	<section>
+		<title>Task operations configuration</title>
+		<example>
+			<title>
+				Task operations Configuration
+				</title>
+			<programlisting language="Json"><xi:include
+				href="extras/operations.config.json" xmlns:xi="http://www.w3.org/2001/XInclude"
+				parse="text" /></programlisting>
+		</example>
+	</section>
 </chapter>
