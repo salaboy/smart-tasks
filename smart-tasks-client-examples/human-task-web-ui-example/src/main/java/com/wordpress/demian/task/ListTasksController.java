@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ConnectionData;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.SmartTaskBuilder;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskOperationsDefinition;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.ActivitiConfigurationHandler;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.JBPM5ConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
-import com.wordpress.salaboy.smarttasks.uihelper.api.ConnectionData;
-import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskOperationsDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfigurationProvider;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.ActivitiConfigurationHandler;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.JBPM5ConfigurationHandler;
 
 /**
  * Controller to handle the task requests.

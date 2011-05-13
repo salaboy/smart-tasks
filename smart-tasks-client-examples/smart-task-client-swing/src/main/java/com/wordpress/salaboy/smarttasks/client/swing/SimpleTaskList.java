@@ -23,18 +23,18 @@ import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ConnectionData;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.SmartTaskBuilder;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.mock.MockHumanTaskClientConfiguration;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.mock.MockHumanTaskServiceOperations;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.JBPM5ConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
-import com.wordpress.salaboy.smarttasks.uihelper.api.ConnectionData;
-import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfigurationProvider;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskClientConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskServiceOperations;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.JBPM5ConfigurationHandler;
 
 /**
  * 
