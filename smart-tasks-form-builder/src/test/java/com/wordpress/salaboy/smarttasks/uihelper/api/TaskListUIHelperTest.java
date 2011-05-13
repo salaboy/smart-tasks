@@ -7,8 +7,8 @@ package com.wordpress.salaboy.smarttasks.uihelper.api;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskServiceOperations;
@@ -36,7 +36,7 @@ public class TaskListUIHelperTest {
     public void testProfiles() {
 
         File root = new File(Thread.currentThread().getContextClassLoader().getResource(("TaskListUIHelperTest/testProfiles")).getFile());
-        UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);
+        BuilderConfigurationProvider uIHelperConfigurationProvider = new BuilderConfigurationProvider(root);
         uIHelperConfigurationProvider.addUIHelperConfigurationUriHandler(new MockConfigurationHandler(new MockHumanTaskClientConfiguration() {
 
             @Override
@@ -53,10 +53,10 @@ public class TaskListUIHelperTest {
                 };
             }
         }));
-        UIHelperConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
+        BuilderConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
 
 
-        SmartTaskUIHelper helper = new SmartTaskUIHelper(configuration);
+        SmartTaskBuilder helper = new SmartTaskBuilder(configuration);
 
         //Connection
         ConnectionData connectionData = new ConnectionData();
@@ -112,12 +112,12 @@ public class TaskListUIHelperTest {
         MetaTaskDecoratorService.getInstance().registerDecorator("base", new MetaTaskDecoratorBase());
 
         File root = new File(Thread.currentThread().getContextClassLoader().getResource(("TaskListUIHelperTest/testProfiles")).getFile());
-        UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);
+        BuilderConfigurationProvider uIHelperConfigurationProvider = new BuilderConfigurationProvider(root);
         uIHelperConfigurationProvider.addUIHelperConfigurationUriHandler(new MockConfigurationHandler(new MyHardcodedHumanTaskClientConfigurationMock()));
-        UIHelperConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
+        BuilderConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
 
 
-        SmartTaskUIHelper helper = new SmartTaskUIHelper(configuration);
+        SmartTaskBuilder helper = new SmartTaskBuilder(configuration);
 
         //Connection
         ConnectionData connectionData = new ConnectionData();
@@ -165,12 +165,12 @@ public class TaskListUIHelperTest {
     public void testMetaData() {
         MetaTaskDecoratorService.getInstance().registerDecorator("base", new MetaTaskDecoratorBase());
         File root = new File(Thread.currentThread().getContextClassLoader().getResource(("TaskListUIHelperTest/testProfiles")).getFile());
-        UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);
+        BuilderConfigurationProvider uIHelperConfigurationProvider = new BuilderConfigurationProvider(root);
         uIHelperConfigurationProvider.addUIHelperConfigurationUriHandler(new MockConfigurationHandler(new MyHardcodedHumanTaskClientConfigurationMock()));
-        UIHelperConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
+        BuilderConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
 
 
-        SmartTaskUIHelper helper = new SmartTaskUIHelper(configuration);
+        SmartTaskBuilder helper = new SmartTaskBuilder(configuration);
 
         //Connection
         ConnectionData connectionData = new ConnectionData();
@@ -221,12 +221,12 @@ public class TaskListUIHelperTest {
     public void testBasicMetaModel(){
         MetaTaskDecoratorService.getInstance().registerDecorator("base", new MetaTaskDecoratorBase());
         File root = new File(Thread.currentThread().getContextClassLoader().getResource(("TaskListUIHelperTest/testProfiles")).getFile());
-        UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);
+        BuilderConfigurationProvider uIHelperConfigurationProvider = new BuilderConfigurationProvider(root);
         uIHelperConfigurationProvider.addUIHelperConfigurationUriHandler(new MockConfigurationHandler(new MyHardcodedHumanTaskClientConfigurationMock()));
-        UIHelperConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
+        BuilderConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
 
         
-        SmartTaskUIHelper helper = new SmartTaskUIHelper(configuration);
+        SmartTaskBuilder helper = new SmartTaskBuilder(configuration);
         
         //Connection
         ConnectionData connectionData = new ConnectionData();

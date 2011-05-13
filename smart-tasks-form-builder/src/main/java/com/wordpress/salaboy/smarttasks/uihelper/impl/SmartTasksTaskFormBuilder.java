@@ -17,8 +17,8 @@ import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskOperationsDefinition;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderDefinitionsProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskFormDefinition;
 
 /**
@@ -61,7 +61,7 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 	 * @param operationsDefinitionFileName
 	 *            the operations definition filename.
 	 */
-	public SmartTasksTaskFormBuilder(UIHelperConfiguration configuration,
+	public SmartTasksTaskFormBuilder(BuilderConfiguration configuration,
 			String taskId, String profile,
 			final HumanTaskService humanTaskService, final String taskType,
 			final String entityId) {
@@ -70,7 +70,7 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 		this.taskUIId = taskType;
 		this.entityId = entityId;
 		this.humanTaskService = humanTaskService;
-		UIHelperDefinitionsProvider provider = new UIHelperDefinitionsProvider(
+		BuilderDefinitionsProvider provider = new BuilderDefinitionsProvider(
 				configuration);
 		this.taskFormDefinition = provider.getTaskFormDefinition(this.taskUIId,
 				this.entityId, profile);

@@ -26,7 +26,7 @@ import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
  * 
  * @author esteban
  */
-public class UIHelperDefinitionsProvider {
+public class BuilderDefinitionsProvider {
 
 	public static final String DEFINITIONS_DIRECTORY = "definitions";
 	public static final String TASK_LISTS_DEFINITIONS_DIRECTORY = "taskLists";
@@ -36,13 +36,13 @@ public class UIHelperDefinitionsProvider {
 	private final File definitionsDirectory;
 
 	/**
-	 * Creates a new {@link UIHelperDefinitionsProvider} instance. It creates
+	 * Creates a new {@link BuilderDefinitionsProvider} instance. It creates
 	 * the {@link File} object with the configuration directory.
 	 * 
 	 * @param uiHelperConfiguration
 	 */
-	public UIHelperDefinitionsProvider(
-			UIHelperConfiguration uiHelperConfiguration) {
+	public BuilderDefinitionsProvider(
+			BuilderConfiguration uiHelperConfiguration) {
 		File uiHelperRootDirectory = uiHelperConfiguration
 				.getUiHelperRootDirectory();
 		definitionsDirectory = new File(uiHelperRootDirectory,
@@ -78,11 +78,11 @@ public class UIHelperDefinitionsProvider {
 					taskConfigurationFile);
 			return operationsDefinitions;
 		} catch (JsonParseException e) {
-			Logger.getLogger(UIHelperDefinitionsProvider.class.getName()).log(
+			Logger.getLogger(BuilderDefinitionsProvider.class.getName()).log(
 					Level.SEVERE,
 					"There was a problem getting operations definitions", e);
 		} catch (FileNotFoundException e) {
-			Logger.getLogger(UIHelperDefinitionsProvider.class.getName()).log(
+			Logger.getLogger(BuilderDefinitionsProvider.class.getName()).log(
 					Level.SEVERE,
 					"There was a problem getting operations definitions", e);
 		}

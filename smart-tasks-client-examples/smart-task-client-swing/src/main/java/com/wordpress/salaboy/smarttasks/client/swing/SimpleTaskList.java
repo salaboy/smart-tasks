@@ -26,12 +26,12 @@ import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.ConnectionData;
-import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskServiceOperations;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.JBPM5ConfigurationHandler;
@@ -61,14 +61,14 @@ public class SimpleTaskList extends javax.swing.JDialog {
 				new MetaTaskDecoratorBase());
 		File root = new File(Thread.currentThread().getContextClassLoader()
 				.getResource(("TaskListUIHelperTest/testProfiles")).getFile());
-		UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(
+		BuilderConfigurationProvider uIHelperConfigurationProvider = new BuilderConfigurationProvider(
 				root);
 		uIHelperConfigurationProvider
 				.addUIHelperConfigurationUriHandler(new JBPM5ConfigurationHandler());
-		UIHelperConfiguration configuration = uIHelperConfigurationProvider
+		BuilderConfiguration configuration = uIHelperConfigurationProvider
 				.createConfiguration();
 
-		helper = new SmartTaskUIHelper(configuration);
+		helper = new SmartTaskBuilder(configuration);
 		jScrollPane1 = new javax.swing.JScrollPane();
 		taskListjTextArea = new javax.swing.JTextArea();
 		orgEntityjComboBox = new javax.swing.JComboBox();
@@ -293,7 +293,7 @@ public class SimpleTaskList extends javax.swing.JDialog {
 	private javax.swing.JComboBox orgEntityjComboBox;
 	private javax.swing.JComboBox profilejComboBox;
 	private javax.swing.JTextArea taskListjTextArea;
-	SmartTaskUIHelper helper;
+	SmartTaskBuilder helper;
 	// End of variables declaration//GEN-END:variables
 }
 

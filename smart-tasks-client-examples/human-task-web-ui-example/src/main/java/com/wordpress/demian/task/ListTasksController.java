@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.ConnectionData;
-import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskUIHelper;
+import com.wordpress.salaboy.smarttasks.uihelper.api.SmartTaskBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskFormBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskOperationsDefinition;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.ActivitiConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.JBPM5ConfigurationHandler;
 
@@ -36,7 +36,7 @@ public class ListTasksController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(ListTasksController.class);
 
-	SmartTaskUIHelper helper;
+	SmartTaskBuilder helper;
 
 	TaskFormBuilder taskHelper = null;
 	
@@ -45,15 +45,15 @@ public class ListTasksController {
 				new MetaTaskDecoratorBase());
 		File root = new File(Thread.currentThread().getContextClassLoader()
 				.getResource("uihelper").getFile());
-		UIHelperConfigurationProvider configurationProvider = new UIHelperConfigurationProvider(
+		BuilderConfigurationProvider configurationProvider = new BuilderConfigurationProvider(
 				root);
 		configurationProvider
 				.addUIHelperConfigurationUriHandler(new JBPM5ConfigurationHandler());
 		configurationProvider
 				.addUIHelperConfigurationUriHandler(new ActivitiConfigurationHandler());
-		UIHelperConfiguration config = configurationProvider
+		BuilderConfiguration config = configurationProvider
 				.createConfiguration();
-		helper = new SmartTaskUIHelper(config);
+		helper = new SmartTaskBuilder(config);
 
 	}
 

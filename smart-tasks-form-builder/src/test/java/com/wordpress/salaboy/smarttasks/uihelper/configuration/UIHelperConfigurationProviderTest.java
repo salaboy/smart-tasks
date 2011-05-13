@@ -48,7 +48,7 @@ public class UIHelperConfigurationProviderTest {
     @Test(expected=IllegalArgumentException.class)
     public void testNoConfigFile() throws IOException{
         File root = tempFolder.newFolder("emptyFolder");
-        new UIHelperConfigurationProvider(root).createConfiguration();
+        new BuilderConfigurationProvider(root).createConfiguration();
     }
     
     
@@ -57,7 +57,7 @@ public class UIHelperConfigurationProviderTest {
         
         File root = new File(Thread.currentThread().getContextClassLoader().getResource(("UIHelperConfigurationProviderTest/configurationParser")).getFile());
         
-        UIHelperConfiguration configuration = new UIHelperConfigurationProvider(root).createConfiguration();
+        BuilderConfiguration configuration = new BuilderConfigurationProvider(root).createConfiguration();
         
         assertEquals(root, configuration.getUiHelperRootDirectory());
 
@@ -84,11 +84,11 @@ public class UIHelperConfigurationProviderTest {
     public void testCustomHumanTaskOperationsConfigurationParser() throws IOException{
         
         File root = new File(Thread.currentThread().getContextClassLoader().getResource(("UIHelperConfigurationProviderTest/customHumanTaskOperationsTest")).getFile());
-        UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(root);
+        BuilderConfigurationProvider uIHelperConfigurationProvider = new BuilderConfigurationProvider(root);
         uIHelperConfigurationProvider.addUIHelperConfigurationUriHandler(new MockConfigurationHandler());
         
         
-        UIHelperConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
+        BuilderConfiguration configuration = uIHelperConfigurationProvider.createConfiguration();
         
         assertEquals(root, configuration.getUiHelperRootDirectory());
 

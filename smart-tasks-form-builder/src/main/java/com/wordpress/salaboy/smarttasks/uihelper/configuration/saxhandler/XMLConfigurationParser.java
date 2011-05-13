@@ -5,7 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler;
 
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,11 +21,11 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public class XMLConfigurationParser extends DefaultHandler{
     
-    private final UIHelperConfiguration configuration;
+    private final BuilderConfiguration configuration;
     private List<String> errorMessages = new ArrayList<String>();
     private Map<String,UIHelperConfigurationUriHandler> uriHandlers = new HashMap<String, UIHelperConfigurationUriHandler>();
 
-    public XMLConfigurationParser(UIHelperConfiguration configuration) {
+    public XMLConfigurationParser(BuilderConfiguration configuration) {
         this.configuration = configuration;
     }
     

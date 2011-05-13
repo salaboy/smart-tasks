@@ -7,7 +7,7 @@ package com.wordpress.salaboy.smarttasks.uihelper.api;
 
 import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.api.HumanTaskServiceFactory;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskListBuilder;
 import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskFormBuilder;
 
@@ -15,14 +15,14 @@ import com.wordpress.salaboy.smarttasks.uihelper.impl.SmartTasksTaskFormBuilder;
  *
  * @author esteban
  */
-public class SmartTaskUIHelper {
+public class SmartTaskBuilder {
 
     private boolean connected;
     private ConnectionData connectionData;
     private HumanTaskService humanTaskService;
-    private UIHelperConfiguration configuration;
+    private BuilderConfiguration configuration;
 
-    public SmartTaskUIHelper(UIHelperConfiguration configuration) {
+    public SmartTaskBuilder(BuilderConfiguration configuration) {
         this.configuration = configuration;
         this.humanTaskService = HumanTaskServiceFactory.newHumanTaskService(configuration.getHumanTaskServiceConfiguration());
     }

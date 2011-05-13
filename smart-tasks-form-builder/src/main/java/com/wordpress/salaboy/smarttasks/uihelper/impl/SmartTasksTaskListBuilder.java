@@ -18,8 +18,8 @@ import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.uihelper.api.TaskListBuilder;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperDefinitionsProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderDefinitionsProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableColumnDefinition;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskListTableDefinition;
 import com.wordpress.salaboy.smarttasks.uihelper.model.TaskPropertyDefinition;
@@ -36,13 +36,13 @@ public class SmartTasksTaskListBuilder implements TaskListBuilder{
     private final String taskType;
     private final TaskListTableDefinition taskListTableDefinition;
     
-    public SmartTasksTaskListBuilder(String taskListId, String entityId, String taskType, UIHelperConfiguration configuration, HumanTaskService humanTaskService ) {
+    public SmartTasksTaskListBuilder(String taskListId, String entityId, String taskType, BuilderConfiguration configuration, HumanTaskService humanTaskService ) {
         this.taskListId = taskListId;
         this.entityId = entityId;
         this.taskType = taskType;
         this.humanTaskService = humanTaskService;
         
-        this.taskListTableDefinition = new UIHelperDefinitionsProvider(configuration).getTaskListTableDefinition(taskListId, entityId, taskType);
+        this.taskListTableDefinition = new BuilderDefinitionsProvider(configuration).getTaskListTableDefinition(taskListId, entityId, taskType);
     }
     
     

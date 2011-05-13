@@ -23,14 +23,14 @@ import javax.xml.parsers.SAXParserFactory;
  *
  * @author esteban
  */
-public class UIHelperConfigurationProvider {
+public class BuilderConfigurationProvider {
     
     public static final String UI_HELPER_FILE_NAME="UIHelper.config.xml";
 
     private File rootDirectory;
     private Set<UIHelperConfigurationUriHandler> uiHelperConfigurationUriHandlers = new HashSet<UIHelperConfigurationUriHandler>();
     
-    public UIHelperConfigurationProvider(File rootDirectory){
+    public BuilderConfigurationProvider(File rootDirectory){
         if (rootDirectory == null){
             rootDirectory = new File(".");
         }
@@ -46,7 +46,7 @@ public class UIHelperConfigurationProvider {
         this.uiHelperConfigurationUriHandlers.add(uiHelperConfigurationUriHandler);
     }
     
-    public UIHelperConfiguration createConfiguration() {
+    public BuilderConfiguration createConfiguration() {
         
         File configFile = new File(this.rootDirectory,UI_HELPER_FILE_NAME);
         
@@ -55,7 +55,7 @@ public class UIHelperConfigurationProvider {
         }
         
         try {
-            UIHelperConfiguration configuration = this.parse(new FileInputStream(configFile));
+            BuilderConfiguration configuration = this.parse(new FileInputStream(configFile));
             configuration.setUiHelperRootDirectory(this.rootDirectory);
             return configuration;
         } catch (FileNotFoundException ex) {
@@ -63,13 +63,13 @@ public class UIHelperConfigurationProvider {
         }
     }
 
-    private UIHelperConfiguration parse(InputStream source) {
+    private BuilderConfiguration parse(InputStream source) {
         SAXParser saxParser;
         SAXParserFactory factory = SAXParserFactory.newInstance();
         factory.setNamespaceAware(true);
         factory.setValidating(false);
 
-        UIHelperConfiguration configuration = new UIHelperConfiguration();
+        BuilderConfiguration configuration = new BuilderConfiguration();
         XMLConfigurationParser configurationHandler = new XMLConfigurationParser(configuration);
 
         //Register configuration handlers

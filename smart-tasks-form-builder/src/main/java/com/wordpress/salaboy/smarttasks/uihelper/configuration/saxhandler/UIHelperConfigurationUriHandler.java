@@ -5,7 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler;
 
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -24,5 +24,5 @@ public interface UIHelperConfigurationUriHandler {
      * @param configuration
      * @throws SAXException 
      */
-    void startElement(String tagName, Attributes attributes, UIHelperConfiguration configuration ) throws SAXException;
+    void startElement(String tagName, Attributes attributes, BuilderConfiguration configuration ) throws SAXException;
 }

@@ -12,11 +12,11 @@ import java.io.File;
  * 
  * @author esteban
  */
-public class UIHelperConfiguration {
+public class BuilderConfiguration {
     private File uiHelperRootDirectory;
     private HumanTaskServiceConfiguration humanTaskServiceConfiguration;
 
-    protected UIHelperConfiguration() {
+    protected BuilderConfiguration() {
     }
 
     public void setHumanTaskServiceConfiguration(HumanTaskServiceConfiguration humanTaskServiceConfiguration) {

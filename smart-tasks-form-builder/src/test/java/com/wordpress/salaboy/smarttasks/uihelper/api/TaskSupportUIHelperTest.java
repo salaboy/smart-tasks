@@ -17,8 +17,8 @@ import org.junit.Test;
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfigurationProvider;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.mock.MockHumanTaskServiceOperations;
@@ -31,7 +31,7 @@ public class TaskSupportUIHelperTest {
 				new MetaTaskDecoratorBase());
 		File root = new File(Thread.currentThread().getContextClassLoader()
 				.getResource(("TaskSupportUIHelperTest")).getFile());
-		UIHelperConfigurationProvider uIHelperConfigurationProvider = new UIHelperConfigurationProvider(
+		BuilderConfigurationProvider uIHelperConfigurationProvider = new BuilderConfigurationProvider(
 				root);
 		uIHelperConfigurationProvider
 				.addUIHelperConfigurationUriHandler(new MockConfigurationHandler(
@@ -77,10 +77,10 @@ public class TaskSupportUIHelperTest {
 								};
 							}
 						}));
-		UIHelperConfiguration configuration = uIHelperConfigurationProvider
+		BuilderConfiguration configuration = uIHelperConfigurationProvider
 				.createConfiguration();
 
-		SmartTaskUIHelper helper = new SmartTaskUIHelper(configuration);
+		SmartTaskBuilder helper = new SmartTaskBuilder(configuration);
 
 		// Connection
 		ConnectionData connectionData = new ConnectionData();

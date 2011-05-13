@@ -5,7 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.uihelper.configuration.mock;
 
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.uihelper.configuration.saxhandler.UIHelperConfigurationUriHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -37,7 +37,7 @@ public class MockConfigurationHandler implements UIHelperConfigurationUriHandler
     }
 
 
-    public void startElement(String tagName, Attributes attributes, UIHelperConfiguration configuration) throws SAXException {
+    public void startElement(String tagName, Attributes attributes, BuilderConfiguration configuration) throws SAXException {
         if ("MockHumanTaskServiceConfiguration".equals(tagName)){
             
             String attr1 = attributes.getValue("attr1");

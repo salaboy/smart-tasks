@@ -10,7 +10,7 @@ import org.xml.sax.SAXException;
 
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5MinaHumanTaskClientConfiguration;
-import com.wordpress.salaboy.smarttasks.uihelper.configuration.UIHelperConfiguration;
+import com.wordpress.salaboy.smarttasks.uihelper.configuration.BuilderConfiguration;
 
 /**
  * UIHelperConfigurationUriHandler implementation that handles JBPM5
@@ -27,7 +27,7 @@ public class JBPM5ConfigurationHandler implements UIHelperConfigurationUriHandle
     }
 
     @Override
-    public void startElement(String tagName, Attributes attributes, UIHelperConfiguration configuration) throws SAXException {
+    public void startElement(String tagName, Attributes attributes, BuilderConfiguration configuration) throws SAXException {
         if ("JBPM5HumanTaskServiceConfiguration".equals(tagName)){
             
             String name = attributes.getValue("name");
