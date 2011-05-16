@@ -67,6 +67,12 @@ public class TaskFormDefinition implements CustomizableDefinition {
 	public void setOutputFields(List<TaskPropertyDefinition> outputFields) {
 		this.outputFields = outputFields;
 	}
-   
+
+	/**
+	 * @param profile the profile to set
+	 */
+	public void setProfile(String profile) {
+		this.profile = profile;
+	}
     
 }

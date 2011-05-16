@@ -1,0 +1,25 @@
+This module is intended to have an unified entry poing to place command line utils that smart tasks offers.
+
+****************
+COMPILE
+****************
+To compile the module, run mvn clean install. To generate the jar with dependencies, run mvn assembly:single. It will generate the jar with dependencies inside target folder.
+
+****************
+TOOLS
+****************
+Currently, there is only one tool.
+
+This tool is intended to generate sample configuration files that will be used by the form builder to show the customized UI for the task form view. This sample files will be based in the input and output of the file.
+
+By running the jar with the following parameters:
+directory_to_put_output
+java -jar smart-tasks-console-utils-1.0-SNAPSHOT-jar-with-dependencies.jar taskformconfig full_path_of_bpmn directory_to_put_output
+
+Where:
+taskformconfig is the identifier of this tool
+full_path_of_bpmn has to be replaced by the full path of the bpmn file.
+directory_to_put_output has to be replaced by the directory you want the application to put the files
+
+After run, the tools will generate one file per each human task found into the bpmn file, and will put it into the given directory, with the name of the file in the following pattern:
+<<Name of the task>>.config.json.

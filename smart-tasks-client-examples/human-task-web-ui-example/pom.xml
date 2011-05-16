@@ -6,7 +6,7 @@
 	<artifactId>human-task-web-ui-example</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>webTaskUi</name>
+	<name>Smart Tasks :: Web Client Example</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
