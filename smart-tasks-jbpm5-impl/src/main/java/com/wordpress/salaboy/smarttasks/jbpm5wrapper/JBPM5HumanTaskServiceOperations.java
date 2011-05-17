@@ -52,6 +52,7 @@ import com.wordpress.salaboy.smarttasks.jbpm5wrapper.model.JBPM5TAttachmentInfo;
  */
 public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperations {
 
+	private JBPM5AttachmentContentAdapter attachmentContentAdapter = new JBPM5AttachmentContentAdapter();
     private TaskClient client;
     private String authorizedEntityId;
     private String locale = "en-UK";
@@ -155,7 +156,7 @@ public class JBPM5HumanTaskServiceOperations implements HumanTaskServiceOperatio
             //@FIXME: is this the way to get the attachment content?
             BlockingGetContentResponseHandler blockingGetContentResponseHandler = new BlockingGetContentResponseHandler();
             client.getContent(tAttachmentInfo.getId(), blockingGetContentResponseHandler);
-            tAttachment.setValue(blockingGetContentResponseHandler.getContent());
+            tAttachment.setValue(attachmentContentAdapter.adapt(blockingGetContentResponseHandler.getContent()));
             tAttachments.add(tAttachment);
         }
 

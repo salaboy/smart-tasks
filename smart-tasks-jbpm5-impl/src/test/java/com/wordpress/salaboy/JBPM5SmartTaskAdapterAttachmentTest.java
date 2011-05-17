@@ -8,6 +8,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,11 +76,11 @@ public class JBPM5SmartTaskAdapterAttachmentTest extends BaseTest {
             assertEquals(1, attachments.size());
 
             TAttachment attachment = attachments.get(0);
-            assertTrue(attachment.getValue() instanceof Content);
+            assertTrue(attachment.getValue() instanceof String[]);
 
-            Content content = (Content) attachment.getValue();
+            String content =  ((String[]) attachment.getValue())[0];
 
-            assertEquals("content", new String(content.getContent()));
+            assertEquals("content", content);
         }finally{
             if (humanTaskService != null){
                 humanTaskService.cleanUpService();
@@ -131,11 +134,16 @@ public class JBPM5SmartTaskAdapterAttachmentTest extends BaseTest {
         });
         task1.setPeopleAssignments(people);
         
-        
+        String contentString = "content";
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(contentString);
+        oos.flush();
+        oos.close();
         ContentData data = new ContentData();
         data.setAccessType(AccessType.Inline);
         data.setType("type");
-        data.setContent("content".getBytes());
+        data.setContent(baos.toByteArray());
         
         BlockingAddTaskResponseHandler handler = new BlockingAddTaskResponseHandler();
 

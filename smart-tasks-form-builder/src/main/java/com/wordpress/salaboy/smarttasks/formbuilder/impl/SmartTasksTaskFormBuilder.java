@@ -120,11 +120,17 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 			TAttachment attachment = humanTaskService.getAttachments(
 					this.taskId, firstAttachmentInfo.getName()).get(0);
 
-			ByteArrayInputStream bais = new ByteArrayInputStream(
-					((Content) attachment.getValue()).getContent());
-			ObjectInputStream ois = new ObjectInputStream(bais);
-			String taskinfo = (String) ois.readObject();
-			return taskinfo.split(",");
+			Object attachmentValue = attachment.getValue();
+			//TODO check how to define an universal way for this attachment!!
+			if (attachmentValue instanceof String[]) {
+				return (String[]) attachmentValue;
+			}
+			else if (attachmentValue instanceof String) {
+				String[] inputs = new String[1];
+				inputs[0] = (String) attachmentValue;
+				return inputs;
+			}
+			return new String[0];
 		} catch (Exception e) {
 			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName())
 					.log(Level.SEVERE, "Could not obtain task input.", e);

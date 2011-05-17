@@ -7,9 +7,12 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
+import org.example.ws_ht.api.TAttachment;
+import org.example.ws_ht.api.TAttachmentInfo;
 import org.example.ws_ht.api.TStatus;
 import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.TTaskAbstract;
+import org.example.ws_ht.api.wsdl.IllegalAccessFault;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.junit.Test;
@@ -60,6 +63,35 @@ public class TaskSupportUIHelperTest {
 										return task;
 									}
 
+									@Override
+									public List<TAttachmentInfo> getAttachmentInfos(
+											String identifier)
+											throws IllegalArgumentFault,
+											IllegalStateFault,
+											IllegalAccessFault {
+										TAttachmentInfo att = new TAttachmentInfo();
+										att.setName("attname");
+										List<TAttachmentInfo> list = new ArrayList<TAttachmentInfo>();
+										list.add(att);
+										return list;
+									}
+									
+									@Override
+									public List<TAttachment> getAttachments(
+											String identifier,
+											String attachmentName)
+											throws IllegalArgumentFault,
+											IllegalStateFault,
+											IllegalAccessFault {
+										if ("attname".equals(attachmentName)) {
+											TAttachment att = new TAttachment();
+											att.setValue("Test");
+											List<TAttachment> list = new ArrayList<TAttachment>();
+											list.add(att);
+											return list;
+										}
+										return null;
+									}
 									@Override
 									public List<TTaskAbstract> getMyTaskAbstracts(
 											String taskType,

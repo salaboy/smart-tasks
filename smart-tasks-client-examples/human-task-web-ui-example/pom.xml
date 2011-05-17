@@ -221,29 +221,29 @@
 		</repository>
 
 		<repository>
-		    <id>slickrepo</id>
-		    <name>slickrepo</name>
-		    <url>http://slick.cokeandcode.com/mavenrepo/</url>
+			<id>slickrepo</id>
+			<name>slickrepo</name>
+			<url>http://slick.cokeandcode.com/mavenrepo/</url>
 		</repository>
 
 		<repository>
-		    <id>jboss</id>
-		    <name>jboss</name>
-		    <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+			<id>jboss</id>
+			<name>jboss</name>
+			<url>https://repository.jboss.org/nexus/content/groups/public/</url>
 		</repository>
-		
+
 		<repository>
-		    <id>OW2</id>
-		    <url>http://maven.ow2.org/maven2/</url>
+			<id>OW2</id>
+			<url>http://maven.ow2.org/maven2/</url>
 		</repository>
 		<repository>
-		    <id>PlugTree</id>
-		    <name>PlugTree-Snapshots-CloudBees</name>
-		    <url>https://repository-plugtree.forge.cloudbees.com/snapshot/</url>
-		    <!--snapshots-->
-		        <!--enabled>true</enabled-->
-		        <!--updatePolicy>always</updatePolicy-->
-		    <!--/snapshots-->
+			<id>PlugTree</id>
+			<name>PlugTree-Snapshots-CloudBees</name>
+			<url>https://repository-plugtree.forge.cloudbees.com/snapshot/</url>
+			<!--snapshots -->
+			<!--enabled>true</enabled -->
+			<!--updatePolicy>always</updatePolicy -->
+			<!--/snapshots -->
 		</repository>
 	</repositories>
 
@@ -270,6 +270,11 @@
 				<version>6.1.25</version>
 				<configuration>
 					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>8081</port>
+						</connector>
+					</connectors>
 				</configuration>
 			</plugin>
 
