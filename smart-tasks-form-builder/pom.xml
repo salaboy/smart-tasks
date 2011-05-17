@@ -8,7 +8,7 @@
     <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>Smart Tasks :: UI Helper</name>
+  <name>Smart Tasks :: Form Builder</name>
   <url>http://maven.apache.org</url>
 
   <properties>

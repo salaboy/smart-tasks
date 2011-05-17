@@ -10,7 +10,7 @@
 	<groupId>com.wordpress.salaboy.smarttasks</groupId>
 	<artifactId>smart-tasks-doc</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<name>Smart Tasks documentation</name>
+	<name>Smart Tasks :: Documentation</name>
 	<packaging>pom</packaging>
 
 
