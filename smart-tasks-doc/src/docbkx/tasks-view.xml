@@ -20,6 +20,13 @@
 			<programlisting language="Json"><xi:include
 				href="extras/form.config.json" xmlns:xi="http://www.w3.org/2001/XInclude"
 				parse="text" /></programlisting>
+			<para>This shows a sample configuration for the task form view. Let's see
+			the element it has:</para>
+			<itemizedlist>
+				<listitem><para>A List of profiles. Each profile has its own configuration. When getting a task form, a profile must be provided. If no profile matches, it will take "Default".</para></listitem>
+				<listitem><para>A set of inputFields. Each inputField has the name and the expression to get the values. Possibilities of expressions are: #{task:name}, which gets information about the task, or #{in:0}, which will get the first input parameter (attachment)</para></listitem>
+				<listitem><para>A set of outputFields. Eeach outputField has the name of the field, and maybe a default value.</para></listitem>
+			</itemizedlist>
 		</example>
 	</section>
 	<section>
@@ -31,6 +38,18 @@
 			<programlisting language="Json"><xi:include
 				href="extras/operations.config.json" xmlns:xi="http://www.w3.org/2001/XInclude"
 				parse="text" /></programlisting>
+			<para>We can configure the task operations per human task provider, as each one can 
+			have its own defined states. Concepts behind this definitions are:</para>
+			<itemizedlist>
+				<listitem><para>Each configuration file must be named "provider_name".config.json,
+				where the provider named is provided in the implementation of
+				HumanTaskServiceOperation, the method getTaskOriginatorType</para></listitem>
+				<listitem><para>Each node in the configuration has: The name of the origin
+				 state and a list of transitions. Each transition 
+				 has the action and destination state.</para></listitem>
+				 <listitem><para>Each transition also has a methodMapping attribute. It refers to 
+				 the method name in TaskOperations interface that will execute this action.</para></listitem>
+			</itemizedlist>
 		</example>
 	</section>
 </chapter>

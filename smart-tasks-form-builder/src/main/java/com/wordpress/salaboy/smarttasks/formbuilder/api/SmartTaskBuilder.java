@@ -12,7 +12,10 @@ import com.wordpress.salaboy.smarttasks.formbuilder.impl.SmartTasksTaskFormBuild
 import com.wordpress.salaboy.smarttasks.formbuilder.impl.SmartTasksTaskListBuilder;
 
 /**
- *
+ * This class is the main one for this module. It will provide de UI, based in
+ * the given configuration, the necessary services to build the tsak list and
+ * task forms.
+ * 
  * @author esteban
  */
 public class SmartTaskBuilder {
