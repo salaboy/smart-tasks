@@ -25,13 +25,4 @@ public interface TaskOperationsDefinition {
 	 */
 	public List<String> getOperationsList();
 
-	/**
-	 * Given a task and an operation, returns the next tasks in the graph.
-	 * 
-	 * @param task
-	 *            the origin.
-	 * @return the destinations from the origin.
-	 */
-	public String getNextState(String originalState, String operation);
-
 }

@@ -81,7 +81,7 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 	}
 
 	/**
-	 * Returns the task details and inputs for the task
+	 * Returns the task details and inputs for the task.
 	 */
 	@Override
 	public Map<String, String> getTaskInput() {

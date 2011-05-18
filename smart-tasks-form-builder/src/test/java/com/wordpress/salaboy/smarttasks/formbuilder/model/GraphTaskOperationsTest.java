@@ -45,7 +45,6 @@ public class GraphTaskOperationsTest {
 		Assert.assertTrue(list.contains("release"));
 		Assert.assertTrue(list.contains("suspend"));
 		Assert.assertTrue(list.contains("stop"));
-//		Assert.assertTrue(list.contains("Resume"));
 	}
 
 	@Test
@@ -56,9 +55,4 @@ public class GraphTaskOperationsTest {
 		Assert.assertTrue(tasks.contains("suspend"));
 	}
 	
-	@Test
-	public void getRoots() {
-		String status = operations.getNextState("READY", "claim");
-		Assert.assertEquals("RESERVED", status);
-	}
 }

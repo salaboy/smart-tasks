@@ -68,7 +68,8 @@ public class TaskFormJsonGenerator implements Action {
 						humanTaskRepository));
 		// ProcessDialectRegistry.setDialect("XPath", new XPathDialect());
 		XmlProcessReader processReader = new XmlProcessReader(
-				((PackageBuilderConfiguration) conf).getSemanticModules());
+				((PackageBuilderConfiguration) conf).getSemanticModules(),
+				TaskFormJsonGenerator.class.getClassLoader());
 		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
 				.newKnowledgeBuilder(conf);
 		List<org.drools.definition.process.Process> processes = processReader

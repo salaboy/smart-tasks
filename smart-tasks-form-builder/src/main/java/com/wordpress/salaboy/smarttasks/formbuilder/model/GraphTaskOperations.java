@@ -49,23 +49,6 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 
 	}
 
-	@Override
-	public String getNextState(String originalState, String operation) {
-		for (OperationsDefinition def : this.definition) {
-			if (originalState.equals(def.getName())) {
-				if ((def.getTransitions() != null)) {
-					for (DestinationDefinition destination : def
-							.getTransitions()) {
-						if (operation.equals(destination.getAction())) {
-							return destination.getDestination();
-						}
-					}
-				}
-			}
-		}
-		throw new IllegalArgumentException("Could not find next state");
-	}
-
 	/**
 	 * Returns a list with all possible operations.
 	 */
@@ -191,16 +174,7 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 
 		private String action;
 
-		private String destination;
-
 		private String methodMapping;
-
-		/**
-		 * @return the methodMapping
-		 */
-		public String getMethodMapping() {
-			return methodMapping;
-		}
 
 		/**
 		 * @param methodMapping
@@ -216,14 +190,6 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 
 		public void setAction(String action) {
 			this.action = action;
-		}
-
-		public String getDestination() {
-			return destination;
-		}
-
-		public void setDestination(String destination) {
-			this.destination = destination;
 		}
 
 	}
