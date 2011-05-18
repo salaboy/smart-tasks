@@ -1,0 +1,83 @@
+	[
+		{
+			"name": "READY",
+			"isRoot": "true",
+			"isEnd": "false",
+			"transitions": [
+				{
+					"methodMapping":"claim",
+					"action":"claim",
+					"destination": "RESERVED" 
+				},
+				{
+					"methodMapping":"suspend",
+					"action":"suspend",
+					"destination": "SUSPENDED_READY"
+				}
+			]
+		},
+		{
+			"name": "RESERVED",
+			"isRoot": "false",
+			"isEnd": "false",
+			"transitions": [
+				{
+					"methodMapping":"start",
+					"action":"start",
+					"destination": "IN_PROGRESS"
+				},
+				{
+					"methodMapping":"suspend",
+					"action":"suspend",
+					"destination": "SUSPENDED_RESERVED"
+				},
+				{
+					"methodMapping":"release",
+					"action":"release",
+					"destination": "CREATED"
+				}
+			]
+		},
+		{
+			"name": "IN_PROGRESS",
+			"isRoot": "false",
+			"isEnd": "false",
+			"transitions": [
+				{
+					"methodMapping":"stop",
+					"action":"stop",
+					"destination": "RESERVED"
+				},
+				{
+					"methodMapping":"suspend",
+					"action":"suspend",
+					"destination": "SUSPENDED_IN_PROGRESS"
+				},
+				{
+					"methodMapping":"release",
+					"action":"release",
+					"destination": "CREATED"
+				},
+				{
+					"methodMapping":"complete",
+					"action":"complete",
+					"destination": "COMPLETED"
+				},
+				{
+					"methodMapping":"fail",
+					"action":"fail",
+					"destination": "FAILED"
+				}
+			]
+		},
+		{
+			"name": "COMPLETED",
+			"isRoot": "false",
+			"isEnd": "true"
+		},
+		{
+			"name": "FAILED",
+			"isRoot": "false",
+			"isEnd": "true"
+		}
+	]

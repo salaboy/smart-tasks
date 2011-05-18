@@ -15,6 +15,7 @@
     <!--module>smart-tasks-client-console</module-->
     <module>smart-task-client-swing</module>
     <module>human-task-web-ui-example</module>
+    <module>smart-tasks-sample-server-management</module>
   </modules>
 <build>
         <plugins>

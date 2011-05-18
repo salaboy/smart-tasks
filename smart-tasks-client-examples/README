@@ -1,0 +1,20 @@
+This is the examples module of smart tasks.
+
+It has 2 parts:
+- A simple swing application to manage sample processes. This application allows us to:
+	* Start a JBPM5/Activiti server.
+	* Run sample processes of JBPM5/Activiti process.
+To run it, go to smart-tasks-sample-server-management and run
+mvn exec:java
+
+- A web UI that uses smart tasks form builder to render a task management page. It is configured to use a jbpm5 task server. The idea is that we can start the server and processes with human tasks from the swing application, and this web can use the data from the server.
+To run it, go to
+human-task-web-ui-example and run
+mvn jetty:run
+The application will be up in:
+http://localhost:8081/human-task-web-ui-example/new/
+
+Enjoy!
+
+
+
