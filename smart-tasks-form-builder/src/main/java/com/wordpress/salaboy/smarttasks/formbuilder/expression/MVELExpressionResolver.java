@@ -40,8 +40,8 @@ public class MVELExpressionResolver extends ExpressionResolver {
         }
         //TODO check this "in". This is not an MVEL expression to be evaluated, so it should not be here.
         else if(context.equals("in")){
-        	if (metaTask.getInputs() != null && metaTask.getInputs().length>=Integer.parseInt(realExpression)) {
-        		return metaTask.getInputs()[Integer.parseInt(realExpression)];
+        	if (metaTask.getInputs() != null) {
+        		return metaTask.getInputs().get(realExpression);
         	}
         	return "";
          }

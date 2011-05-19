@@ -4,6 +4,8 @@
  */
 package com.wordpress.salaboy.smarttasks.metamodel;
 
+import java.util.Map;
+
 import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.TTaskAbstract;
 
@@ -15,7 +17,7 @@ public class MetaTask {
    private Long id;
    private TTask task;
    private TTaskAbstract taskAbstract;
-   String[] inputs;
+   private Map<String, Object> inputs;
    
     public MetaTask(TTask task) {
         this.task = task;
@@ -52,14 +54,14 @@ public class MetaTask {
     /**
 	 * @return the inputs
 	 */
-	public String[] getInputs() {
+	public Map<String, Object> getInputs() {
 		return inputs;
 	}
 
 	/**
 	 * @param inputs the inputs to set
 	 */
-	public void setInputs(String[] inputs) {
+	public void setInputs(Map<String, Object> inputs) {
 		this.inputs = inputs;
 	}
 

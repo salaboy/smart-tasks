@@ -1,7 +1,6 @@
 package com.wordpress.salaboy.smarttasks.formbuilder.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ObjectInputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -10,7 +9,6 @@ import java.util.logging.Logger;
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
-import org.jbpm.task.Content;
 
 import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
@@ -89,7 +87,7 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 			MetaTask myTask = MetaTaskDecoratorService.getInstance().decorate(
 					"base", humanTaskService.getTaskInfo(this.taskId));
 			// TODO, see if we can put this in a decorator.
-			String[] inputs = this.getTaskInputFields(taskId);
+			Map<String, Object> inputs = this.getMapTaskInputFields(taskId);
 			myTask.setInputs(inputs);
 			return new SmartTasksTaskDataSet(taskFormDefinition, myTask)
 					.getTaskInputs();
@@ -112,7 +110,7 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 	 *            the task id to search.
 	 * @return the attachments.
 	 */
-	private String[] getTaskInputFields(String taskId) {
+	private Map<String, Object> getMapTaskInputFields(String taskId) {
 		try {
 			List<TAttachmentInfo> attachmentsInfo = humanTaskService
 					.getAttachmentInfos(taskId);
@@ -122,15 +120,14 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 
 			Object attachmentValue = attachment.getValue();
 			//TODO check how to define an universal way for this attachment!!
-			if (attachmentValue instanceof String[]) {
-				return (String[]) attachmentValue;
+			if (attachmentValue instanceof Map) {
+				return (Map<String, Object>) attachmentValue;
 			}
-			else if (attachmentValue instanceof String) {
-				String[] inputs = new String[1];
-				inputs[0] = (String) attachmentValue;
-				return inputs;
+			else {
+				Map<String, Object> newMap = new HashMap<String, Object>();
+				newMap.put("Content", attachmentValue);
+				return newMap;
 			}
-			return new String[0];
 		} catch (Exception e) {
 			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName())
 					.log(Level.SEVERE, "Could not obtain task input.", e);

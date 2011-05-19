@@ -9,10 +9,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
@@ -20,7 +20,6 @@ import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.jbpm.process.workitem.wsht.BlockingAddTaskResponseHandler;
 import org.jbpm.task.AccessType;
-import org.jbpm.task.Content;
 import org.jbpm.task.I18NText;
 import org.jbpm.task.OrganizationalEntity;
 import org.jbpm.task.PeopleAssignments;
@@ -34,6 +33,7 @@ import org.junit.Test;
 import com.wordpress.salaboy.api.HumanTaskService;
 import com.wordpress.salaboy.api.HumanTaskServiceFactory;
 import com.wordpress.salaboy.conf.HumanTaskServiceConfiguration;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.JBPM5AttachmentContentAdapter;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5MinaHumanTaskClientConfiguration;
 
 /**
@@ -76,11 +76,11 @@ public class JBPM5SmartTaskAdapterAttachmentTest extends BaseTest {
             assertEquals(1, attachments.size());
 
             TAttachment attachment = attachments.get(0);
-            assertTrue(attachment.getValue() instanceof String[]);
+            assertTrue(attachment.getValue() instanceof Map);
 
-            String content =  ((String[]) attachment.getValue())[0];
+            Map<String, Object> content =  (Map<String, Object>) attachment.getValue();
 
-            assertEquals("content", content);
+            assertEquals("content", content.get(JBPM5AttachmentContentAdapter.defaultAttachmentKey));
         }finally{
             if (humanTaskService != null){
                 humanTaskService.cleanUpService();
