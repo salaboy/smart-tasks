@@ -12,7 +12,7 @@ Business Machines Corporation, Oracle Inc., and SAP AG. All rights reserved.
   elementFormDefault="qualified" blockDefault="#all">
   <!-- other namespaces used here -->
   <xsd:import namespace="http://www.w3.org/XML/1998/namespace"
-    schemaLocation="http://www.w3.org/2001/xml.xsd" />
+    schemaLocation="xml.xsd" />
   <!-- human task coordination protocol WS-Policy Assertion -->
   <xsd:element name="HumanTaskPolicyAssertion">
     <xsd:complexType>
