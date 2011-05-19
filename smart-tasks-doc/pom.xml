@@ -14,6 +14,11 @@
 	<packaging>pom</packaging>
 	<profiles>
 		<profile>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
 			<id>doc</id>
 			<build>
 				<plugins>

@@ -18,6 +18,11 @@
 	<profiles>
 		<profile>
 			<id>codegen</id>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
 			<build>
 				<plugins>
 					<plugin>
