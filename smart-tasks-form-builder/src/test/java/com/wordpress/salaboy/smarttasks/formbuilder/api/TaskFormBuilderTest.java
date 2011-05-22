@@ -23,6 +23,7 @@ import com.wordpress.salaboy.smarttasks.formbuilder.api.SmartTaskBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.exception.InvalidTaskException;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.mock.MockConfigurationHandler;
@@ -31,10 +32,10 @@ import com.wordpress.salaboy.smarttasks.formbuilder.configuration.mock.MockHuman
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorBase;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 
-public class TaskSupportUIHelperTest {
+public class TaskFormBuilderTest {
 
 	@Test
-	public void getTaskDetails() {
+	public void getTaskDetails() throws InvalidTaskException {
 		MetaTaskDecoratorService.getInstance().registerDecorator("base",
 				new MetaTaskDecoratorBase());
 		File root = new File(Thread.currentThread().getContextClassLoader()

@@ -1,27 +1,24 @@
 	[
 		{
-			"name": "Claim",
+			"name": "READY",
 			"isRoot": "true",
 			"isEnd": "false",
-			"next": [
-			{
-					"name":"Start"
+			"transitions": [
+				{
+					"methodMapping":"claim",
+					"action":"claim" 
 				}
 			]
 		},
 		{
-			"name": "Start",
+			"name": "IN_PROGRESS",
 			"isRoot": "false",
 			"isEnd": "false",
-			"next": [
+			"transitions": [
 				{
-					"name":"Complete"
+					"methodMapping":"complete",
+					"action":"complete"
 				}
 			]
-		},
-		{
-			"name": "Complete",
-			"isRoot": "false",
-			"isEnd": "false"
 		}
 	]

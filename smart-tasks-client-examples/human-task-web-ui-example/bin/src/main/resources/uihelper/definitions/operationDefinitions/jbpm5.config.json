@@ -6,13 +6,11 @@
 			"transitions": [
 				{
 					"methodMapping":"claim",
-					"action":"claim",
-					"destination": "RESERVED" 
+					"action":"claim"
 				},
 				{
 					"methodMapping":"suspend",
-					"action":"suspend",
-					"destination": "SUSPENDED_READY"
+					"action":"suspend"
 				}
 			]
 		},
@@ -23,18 +21,15 @@
 			"transitions": [
 				{
 					"methodMapping":"start",
-					"action":"start",
-					"destination": "IN_PROGRESS"
+					"action":"start"
 				},
 				{
 					"methodMapping":"suspend",
-					"action":"suspend",
-					"destination": "SUSPENDED_RESERVED"
+					"action":"suspend"
 				},
 				{
 					"methodMapping":"release",
-					"action":"release",
-					"destination": "CREATED"
+					"action":"release"
 				}
 			]
 		},
@@ -45,28 +40,23 @@
 			"transitions": [
 				{
 					"methodMapping":"stop",
-					"action":"stop",
-					"destination": "RESERVED"
+					"action":"stop"
 				},
 				{
 					"methodMapping":"suspend",
-					"action":"suspend",
-					"destination": "SUSPENDED_IN_PROGRESS"
+					"action":"suspend"
 				},
 				{
 					"methodMapping":"release",
-					"action":"release",
-					"destination": "CREATED"
+					"action":"release"
 				},
 				{
 					"methodMapping":"complete",
-					"action":"complete",
-					"destination": "COMPLETED"
+					"action":"complete"
 				},
 				{
 					"methodMapping":"fail",
-					"action":"fail",
-					"destination": "FAILED"
+					"action":"fail"
 				}
 			]
 		},

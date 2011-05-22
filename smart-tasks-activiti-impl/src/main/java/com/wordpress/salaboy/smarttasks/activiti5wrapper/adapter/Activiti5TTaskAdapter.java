@@ -13,6 +13,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import javax.xml.namespace.QName;
 import org.activiti.engine.task.Task;
+import org.example.ws_ht.TSavingTaskHistory;
+import org.example.ws_ht.api.TStatus;
 import org.example.ws_ht.api.TTask;
 
 /**
@@ -51,10 +53,17 @@ public class Activiti5TTaskAdapter implements TaskAdapter<TTask, Task>{
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(vendorTask.getCreateTime());
         task.setCreatedOn(new XMLGregorianCalendarImpl(calendar));
-        task.setPriority(BigInteger.valueOf(vendorTask.getPriority()));                       
+        task.setPriority(BigInteger.valueOf(vendorTask.getPriority()));
+        task.setStatus(this.resolveStatus(vendorTask));
         return task;                        
-                                  
-                                  
+    }
+    
+    //As Activiti does not manage states directly, let's manage it.
+    private TStatus resolveStatus(Task vendorTask) {
+    	if (vendorTask.getAssignee() == null) {
+    		return TStatus.READY;
+    	}
+    	return TStatus.IN_PROGRESS;
     }
 
 }

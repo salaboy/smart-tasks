@@ -1,13 +1,9 @@
 package com.wordpress.salaboy.smarttasks.ui;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.awt.Panel;
-import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -15,25 +11,14 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JToggleButton;
 import javax.swing.LayoutStyle;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderError;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.builder.ResourceType;
-import org.drools.io.impl.ClassPathResource;
-import org.drools.logger.KnowledgeRuntimeLogger;
-import org.drools.logger.KnowledgeRuntimeLoggerFactory;
-import org.drools.runtime.StatefulKnowledgeSession;
-import org.jbpm.process.workitem.wsht.WSHumanTaskHandler;
 import org.jdesktop.application.Application;
 
-import com.wordpress.salaboy.smarttasks.server.jbpm5.TaskServerDaemon;
+import com.wordpress.salaboy.smarttasks.server.activiti.ActivitiHumanTaskManagement;
+import com.wordpress.salaboy.smarttasks.server.jbpm5.JBPM5TaskManager;
 
 /**
  * This code was edited or generated using CloudGarden's Jigloo SWT/Swing GUI
@@ -48,6 +33,7 @@ import com.wordpress.salaboy.smarttasks.server.jbpm5.TaskServerDaemon;
 public class ApplicationFrame extends javax.swing.JFrame {
 	private JButton startJBPM5Process;
 	private JButton startJBPM5ServerButton;
+	private JButton ActivitiProcessImg;
 	private JButton jbpm5;
 	private JLabel statusLabel;
 	private JButton stopActivitiServerButton;
@@ -55,7 +41,7 @@ public class ApplicationFrame extends javax.swing.JFrame {
 	private JButton startActivitiServerButton;
 	private JButton startActivitiSampleButton;
 	final JFrame theframe = this;
-	
+
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -81,6 +67,11 @@ public class ApplicationFrame extends javax.swing.JFrame {
 			{
 				stopActivitiServerButton = new JButton();
 				stopActivitiServerButton.setText("stopActivitiServer");
+				stopActivitiServerButton.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent evt) {
+						stopActivitiServerButtonMouseClicked(evt);
+					}
+				});
 				stopActivitiServerButton.setEnabled(false);
 			}
 			{
@@ -98,6 +89,11 @@ public class ApplicationFrame extends javax.swing.JFrame {
 			{
 				startActivitiServerButton = new JButton();
 				startActivitiServerButton.setText("StartActivitiServer");
+				startActivitiServerButton.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent evt) {
+						startActivitiServerButtonMouseClicked(evt);
+					}
+				});
 			}
 			{
 				startJBPM5ServerButton = new JButton();
@@ -130,8 +126,22 @@ public class ApplicationFrame extends javax.swing.JFrame {
 
 			}
 			{
+				ActivitiProcessImg = new JButton();
+				ActivitiProcessImg.setText("ActivitiProcessImg");
+				ActivitiProcessImg.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent evt) {
+						ActivitiProcessImgMouseClicked(evt);
+					}
+				});
+			}
+			{
 				startActivitiSampleButton = new JButton();
-				startActivitiSampleButton.setText("startActivitiSampleButton");
+				startActivitiSampleButton.setText("StartActivitiSample");
+				startActivitiSampleButton.addMouseListener(new MouseAdapter() {
+					public void mouseClicked(MouseEvent evt) {
+						startActivitiSampleButtonMouseClicked(evt);
+					}
+				});
 			}
 			{
 				startJBPM5Process = new JButton();
@@ -158,7 +168,9 @@ public class ApplicationFrame extends javax.swing.JFrame {
 				    .addComponent(startActivitiSampleButton, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 33, GroupLayout.PREFERRED_SIZE)
 				    .addComponent(startJBPM5Process, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE))
 				.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-				.addComponent(jbpm5, 0, 26, Short.MAX_VALUE)
+				.addGroup(thisLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+				    .addComponent(ActivitiProcessImg, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+				    .addComponent(jbpm5, GroupLayout.Alignment.BASELINE, 0, 26, Short.MAX_VALUE))
 				.addContainerGap());
 			thisLayout.setHorizontalGroup(thisLayout.createParallelGroup()
 				.addComponent(statusLabel, GroupLayout.Alignment.LEADING, 0, 523, Short.MAX_VALUE)
@@ -169,18 +181,17 @@ public class ApplicationFrame extends javax.swing.JFrame {
 				        .addComponent(stopJBPM5ServerButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
 				        .addComponent(startJBPM5ServerButton, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE)
 				        .addComponent(jbpm5, GroupLayout.Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 229, GroupLayout.PREFERRED_SIZE))
-				    .addGap(21)
+				    .addGap(23)
 				    .addGroup(thisLayout.createParallelGroup()
 				        .addGroup(thisLayout.createSequentialGroup()
-				            .addComponent(startActivitiSampleButton, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE)
-				            .addGap(0, 0, Short.MAX_VALUE))
+				            .addComponent(startActivitiSampleButton, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE))
 				        .addGroup(thisLayout.createSequentialGroup()
-				            .addGap(0, 0, Short.MAX_VALUE)
 				            .addComponent(stopActivitiServerButton, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE))
 				        .addGroup(thisLayout.createSequentialGroup()
-				            .addComponent(startActivitiServerButton, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE)
-				            .addGap(0, 0, Short.MAX_VALUE)))
-				    .addContainerGap(19, 19)));
+				            .addComponent(startActivitiServerButton, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE))
+				        .addGroup(thisLayout.createSequentialGroup()
+				            .addComponent(ActivitiProcessImg, GroupLayout.PREFERRED_SIZE, 242, GroupLayout.PREFERRED_SIZE)))
+				    .addContainerGap(17, Short.MAX_VALUE)));
 			pack();
 			this.setSize(533, 261);
 			Application.getInstance().getContext().getResourceMap(getClass())
@@ -191,29 +202,30 @@ public class ApplicationFrame extends javax.swing.JFrame {
 		}
 	}
 
-	private TaskServerDaemon taskServerDaemon;
+	private JBPM5TaskManager taskServerDaemon;
 
 	private void startJBPM5ServerButtonMouseClicked(MouseEvent evt) {
 		System.out.println("startJBPM5ServerButton.mouseClicked, event=" + evt);
 		try {
-			taskServerDaemon = new TaskServerDaemon();
+			taskServerDaemon = new JBPM5TaskManager();
 
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				public void run() {
 					System.out.println("\n");
 					try {
-						taskServerDaemon.stopServer();
+						taskServerDaemon.stopService();
 						System.out.println("server stoped...");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			});
-			taskServerDaemon.startServer();
+			taskServerDaemon.startService();
 			this.statusLabel.setText("Started JBPM5 Server...");
 			System.out.println("server started... (ctrl-c to stop it)");
 		} catch (Exception e) {
-			this.statusLabel.setText("Error starting JBPM5 Server: " + e.getMessage());
+			this.statusLabel.setText("Error starting JBPM5 Server: "
+					+ e.getMessage());
 			e.printStackTrace(); // TODO show an error
 		}
 	}
@@ -221,48 +233,75 @@ public class ApplicationFrame extends javax.swing.JFrame {
 	private void stopJBPM5ServerButtonMouseClicked(MouseEvent evt) {
 		System.out.println("stopJBPM5ServerButton.mouseClicked, event=" + evt);
 		try {
-			taskServerDaemon.stopServer();
+			taskServerDaemon.stopService();
 			this.statusLabel.setText("Stopped JBPM5 Server...");
 		} catch (Exception e) {
-			e.printStackTrace(); // TODO show an error
+			this.statusLabel.setText("Coudl not stop JBPM5 server...");
+			e.printStackTrace();
 		}
 	}
 
-	private KnowledgeRuntimeLogger logger;
-	private StatefulKnowledgeSession ksession;
-
 	private void startJBPM5ProcessMouseClicked(MouseEvent evt) {
 		try {
-		KnowledgeBuilder kbuilder = KnowledgeBuilderFactory
-				.newKnowledgeBuilder();
-
-		kbuilder.add(new ClassPathResource("process/jbpm5/humanTask.bpmn"),
-				ResourceType.BPMN2);
-		System.out.println("Compiling resources");
-		if (kbuilder.hasErrors()) {
-			if (kbuilder.getErrors().size() > 0) {
-				for (KnowledgeBuilderError error : kbuilder.getErrors()) {
-					System.out.println("Error building kbase: "
-							+ error.getMessage());
-				}
-			}
-			throw new RuntimeException("Error building kbase!");
-		}
-
-		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-		kbase.addKnowledgePackages(kbuilder.getKnowledgePackages());
-
-		ksession = kbase.newStatefulKnowledgeSession();
-		logger = KnowledgeRuntimeLoggerFactory.newConsoleLogger(ksession);
-		ksession.getWorkItemManager().registerWorkItemHandler("Human Task",
-				new WSHumanTaskHandler());
-			ksession.startProcess(
-					"org.plugtree.training.jbpm.humantasks.client", null);
+			this.taskServerDaemon.startSampleInstance();
 			this.statusLabel.setText("Started JBPM5 Sample Process...");
 		} catch (Exception ex) {
-			this.statusLabel.setText("Error starting jbpm5 sample process." + ex.getMessage());
-			throw new RuntimeException(ex.getMessage());
+			this.statusLabel.setText("Error starting jbpm5 sample process."
+					+ ex.getMessage());
+			ex.printStackTrace();
 		}
+	}
+
+	ActivitiHumanTaskManagement activitiManager = new ActivitiHumanTaskManagement();
+
+	private void startActivitiServerButtonMouseClicked(MouseEvent evt) {
+		try {
+			System.out.println("startActivitiServerButton.mouseClicked, event="
+					+ evt);
+			activitiManager.startService();
+			this.statusLabel.setText("Started Activiti Server...");
+			this.startActivitiServerButton.setEnabled(false);
+			this.stopActivitiServerButton.setEnabled(true);
+		} catch (RuntimeException e) {
+			this.statusLabel.setText("Could not start Activiti Server...");
+			e.printStackTrace();
+		}
+	}
+
+	private void startActivitiSampleButtonMouseClicked(MouseEvent evt) {
+		try {
+		System.out.println("startActivitiSampleButton.mouseClicked, event="
+				+ evt);
+		this.statusLabel.setText("Started Activiti Sample Process...");
+		this.activitiManager.startSampleInstance();
+		}
+		catch (RuntimeException e) {
+			this.startActivitiSampleButton.setText("Could not start activiti sample process");
+			e.printStackTrace();
+		}
+	}
+
+	private void stopActivitiServerButtonMouseClicked(MouseEvent evt) {
+		System.out.println("stopActivitiServerButton.mouseClicked, event="
+				+ evt);
+		try {
+			this.activitiManager.stopService();
+			this.stopActivitiServerButton.setEnabled(false);
+			this.startActivitiServerButton.setEnabled(true);
+			this.statusLabel.setText("Stopped Activiti server...");
+		} catch (Exception e) {
+			this.statusLabel.setText("Could not stop Activiti server...");
+			e.printStackTrace();
+		}
+	}
+	
+	private void ActivitiProcessImgMouseClicked(MouseEvent evt) {
+		System.out.println("ActivitiProcessImg.mouseClicked, event="+evt);
+		JDialog frame = new JDialog(theframe, "Image");
+		Panel panel = new ShowImage("activiti-sample.png");
+		frame.getContentPane().add(panel);
+		frame.setSize(panel.getWidth(), panel.getHeight());
+		frame.setVisible(true);
 	}
 
 }

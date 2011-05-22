@@ -15,13 +15,13 @@
             "sourceExpresion":"#{task:status}"
          },
          {
-            "name":"Input",
-            "sourceExpresion":"#{in:0}"
+            "name":"Document",
+            "sourceExpresion":"#{in:Document.document}"
          }
      ],
      "outputFields": [
          {
-            "name":"Output",
+            "name":"Translation",
             "sourceExpresion":""
          }
      ]
@@ -42,13 +42,13 @@
             "sourceExpresion":"#{task:name}"
          },
          {
-            "name":"Input",
-            "sourceExpresion":"#{in:0}"
+            "name":"Document",
+            "sourceExpresion":"#{in:Document.document}"
          }
      ],
      "outputFields": [
          {
-            "name":"output",
+            "name":"Translation",
             "sourceExpresion":""
          }
      ]

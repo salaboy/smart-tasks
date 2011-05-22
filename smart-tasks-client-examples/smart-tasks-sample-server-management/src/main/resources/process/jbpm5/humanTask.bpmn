@@ -12,14 +12,14 @@
              xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
              xmlns:tns="http://www.jboss.org/drools">
 
-  <itemDefinition id="_approval.documentItem" structureRef="String" />
+  <itemDefinition id="_documentItem" structureRef="String" />
   <itemDefinition id="_approval.translatedDocumentItem" structureRef="String" />
   <itemDefinition id="_approval.reviewCommentItem" structureRef="String" />
 
   <process processType="Private" isExecutable="true" id="org.plugtree.training.jbpm.humantasks.client" name="Sample Human Task" tns:packageName="org.plugtree.training.jbpm.humantasks.client" >
 
     <!-- process variables -->
-    <property id="approval.document" itemSubjectRef="_approval.documentItem"/>
+    <property id="Pdocument" itemSubjectRef="_documentItem"/>
     <property id="approval.translatedDocument" itemSubjectRef="_approval.translatedDocumentItem"/>
     <property id="approval.reviewComment" itemSubjectRef="_approval.reviewCommentItem"/>
 
@@ -28,7 +28,7 @@
     <endEvent id="_7" name="End" >
         <terminateEventDefinition/>
     </endEvent>
-    <userTask id="_8" name="Write Document - JBPM5" >
+    <userTask id="_8" name="Write Document" >
       <ioSpecification>
         <dataInput id="_8_CommentInput" name="Comment" />
         <dataInput id="_8_SkippableInput" name="Skippable" />
@@ -84,7 +84,7 @@
       </dataInputAssociation>
       <dataOutputAssociation>
         <sourceRef>_8_ResultOutput</sourceRef>
-        <targetRef>approval.document</targetRef>
+        <targetRef>Pdocument</targetRef>
       </dataOutputAssociation>
       <potentialOwner>
         <resourceAssignmentExpression>
@@ -92,19 +92,19 @@
         </resourceAssignmentExpression>
       </potentialOwner>
     </userTask>
-    <userTask id="_9" name="Translate Document - JBPM5" >
+    <userTask id="_9" name="Translate Document" >
       <ioSpecification>
         <dataInput id="_9_CommentInput" name="Comment" />
         <dataInput id="_9_SkippableInput" name="Skippable" />
         <dataInput id="_9_TaskNameInput" name="TaskName" />
-        <dataInput id="_9_ContentInput" name="Content" />
+        <dataInput id="_9_DocumentInput" name="Document" />
         <dataInput id="_9_PriorityInput" name="Priority" />
         <dataOutput id="_9_ResultOutput" name="Result" />
         <inputSet>
           <dataInputRefs>_9_CommentInput</dataInputRefs>
           <dataInputRefs>_9_SkippableInput</dataInputRefs>
           <dataInputRefs>_9_TaskNameInput</dataInputRefs>
-          <dataInputRefs>_9_ContentInput</dataInputRefs>
+          <dataInputRefs>_9_DocumentInput</dataInputRefs>
           <dataInputRefs>_9_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
@@ -133,11 +133,8 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_9_ContentInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{approval.document}</from>
-          <to xsi:type="tFormalExpression">_9_ContentInput</to>
-        </assignment>
+      	<sourceRef>Pdocument</sourceRef>
+        <targetRef>_9_DocumentInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_9_PriorityInput</targetRef>
@@ -156,19 +153,19 @@
         </resourceAssignmentExpression>
       </potentialOwner>
     </userTask>
-    <userTask id="_10" name="Review Document - JBPM5" >
+    <userTask id="_10" name="Review Document" >
       <ioSpecification>
         <dataInput id="_10_CommentInput" name="Comment" />
         <dataInput id="_10_SkippableInput" name="Skippable" />
         <dataInput id="_10_TaskNameInput" name="TaskName" />
-        <dataInput id="_10_ContentInput" name="Content" />
+        <dataInput id="_10_DocumentInput" name="Document" />
         <dataInput id="_10_PriorityInput" name="Priority" />
         <dataOutput id="_10_ResultOutput" name="Result" />
         <inputSet>
           <dataInputRefs>_10_CommentInput</dataInputRefs>
           <dataInputRefs>_10_SkippableInput</dataInputRefs>
           <dataInputRefs>_10_TaskNameInput</dataInputRefs>
-          <dataInputRefs>_10_ContentInput</dataInputRefs>
+          <dataInputRefs>_10_DocumentInput</dataInputRefs>
           <dataInputRefs>_10_PriorityInput</dataInputRefs>
         </inputSet>
         <outputSet>
@@ -197,11 +194,8 @@
         </assignment>
       </dataInputAssociation>
       <dataInputAssociation>
-        <targetRef>_10_ContentInput</targetRef>
-        <assignment>
-          <from xsi:type="tFormalExpression">#{approval.document}</from>
-          <to xsi:type="tFormalExpression">_10_ContentInput</to>
-        </assignment>
+      	<sourceRef>Pdocument</sourceRef>
+        <targetRef>_10_DocumentInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>
         <targetRef>_10_PriorityInput</targetRef>
@@ -236,7 +230,7 @@
         </outputSet>
       </ioSpecification>
       <dataInputAssociation>
-        <sourceRef>approval.document</sourceRef>
+        <sourceRef>Pdocument</sourceRef>
         <targetRef>_14_DocumentInput</targetRef>
       </dataInputAssociation>
       <dataInputAssociation>

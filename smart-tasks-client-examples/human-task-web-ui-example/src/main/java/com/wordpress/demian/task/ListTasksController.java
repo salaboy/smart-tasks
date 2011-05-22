@@ -18,6 +18,7 @@ import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskOperationsDefinition;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.exception.InvalidTaskException;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.ActivitiConfigurationHandler;
@@ -123,7 +124,9 @@ public class ListTasksController {
 		connectionData.setEntityId(entity);
 		helper.connect(connectionData);
 		taskHelper = helper.getTaskSupportHelper(id, name.trim(), profile);
-		Map<String, String> taskInfo = taskHelper.getTaskInput();
+		Map<String, String> taskInfo;
+		try {
+			taskInfo = taskHelper.getTaskInput();
 		
 		Map<String, String> taskOutput = taskHelper.getTaskOutput();
 		TaskOperationsDefinition operationsDef = taskHelper.getTaskOperations();
@@ -135,6 +138,10 @@ public class ListTasksController {
 		model.addAttribute("name", name);
 		model.addAttribute("id", taskInfo.get("Id"));
 		return "task";
+		} catch (InvalidTaskException e) {
+			logger.warn("Did not find any task for this id.", e);
+			return "redirect:/new/";
+		}
 	}
 
 	@RequestMapping(value = "/task/execute/{entity}/{profile}/{id}/{name}/{action}/{document}", method = RequestMethod.GET)
@@ -145,7 +152,14 @@ public class ListTasksController {
 			@PathVariable("document") String document,
 			@PathVariable("profile") String profile, Model model) {
 		if (taskHelper != null) {
-			taskHelper.executeTaskAction(action, document);
+			try {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("document", document);
+				taskHelper.executeTaskAction(action, map);
+			} catch (InvalidTaskException e) {
+				logger.error("Could not execute this action, because the task does not exist!");
+				return "redirect:new";
+			}
 		}
 		return this.taskInfo(taskId, entity, name, profile, model);
 	}
