@@ -49,7 +49,35 @@ public class HumanTaskRepository {
 		newIo.setOutputFields(outputs);
 		this.humanTasks.add(newIo);
 	}
+	
+	public void addIncrementalOutput(String name, String output) {
+		for (HumanTaskIO taskIo : this.humanTasks) {
+			if (name.equals(taskIo.getName())) {
+				//exists...
+				taskIo.addOutputField(output);
+				return;
+			}
+		}
+		//not exists
+		HumanTaskIO newTaskIO = new HumanTaskIO();
+		newTaskIO.setName(name);
+		newTaskIO.addOutputField(output);
+		this.humanTasks.add(newTaskIO);
+	}
 
+	public void addIncrementalInput(String name, String input) {
+		for (HumanTaskIO taskIo : this.humanTasks) {
+			if (name.equals(taskIo.getName())) {
+				//exists...
+				taskIo.addInputField(input);
+				return;
+			}
+		}
+		HumanTaskIO newTaskIO = new HumanTaskIO();
+		newTaskIO.setName(name);
+		newTaskIO.addInputField(input);
+		this.humanTasks.add(newTaskIO);
+	}
 	/**
 	 * @return the humanTasks
 	 */

@@ -16,5 +16,6 @@ public class HumanTaskSemanticModule extends BPMNSemanticModule {
 	 */
 	public HumanTaskSemanticModule(HumanTaskRepository humanTaskRepository) {
 		addHandler("userTask", new HumanTaskGetInformationHandler(humanTaskRepository));
+		addHandler("property", new GetProcessInputHandler(humanTaskRepository));
 	}
 }

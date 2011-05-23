@@ -42,7 +42,7 @@ public class FormBuilderHelperTest {
 			params[2] = outputDir.getAbsolutePath();
 			UtilsExecutor.main(params);
 			String[] children = outputDir.list();
-			Assert.assertEquals(2, children.length);
+			Assert.assertEquals(3, children.length);
 			for (int i = 0; i < children.length; i++) {
 				String filename = children[i];
 				FileReader fileReader = new FileReader(

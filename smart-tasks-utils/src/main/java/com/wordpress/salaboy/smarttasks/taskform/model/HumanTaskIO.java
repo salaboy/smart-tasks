@@ -67,6 +67,25 @@ public class HumanTaskIO {
 		this.outputFields = outputFields;
 	}
 	
+	public void addOutputField(String output) {
+		this.outputFields.add(output);
+	}
+	
+	public void addInputField(String input) {
+		this.inputFields.add(input);
+	}
+
+	public boolean equals(Object o) {
+		if (!(o instanceof HumanTaskIO)) {
+			return false;
+		}
+		HumanTaskIO otherTaskIO = (HumanTaskIO) o;
+		if (this == otherTaskIO) {
+			return true;
+		}
+		return this.getName().endsWith(otherTaskIO.getName());
+	}
+	
 	
 
 }

@@ -111,7 +111,7 @@ public class TaskFormJsonGenerator implements Action {
 		for (String output : outputs) {
 			TaskPropertyDefinition propertyDefinition = new TaskPropertyDefinition();
 			propertyDefinition.setName(output);
-			propertyDefinition.setSourceExpresion("in:0");
+			propertyDefinition.setSourceExpresion("");
 			outputDefinitions.add(propertyDefinition);
 		}
 		def.setInputFields(inputDefinitions);
