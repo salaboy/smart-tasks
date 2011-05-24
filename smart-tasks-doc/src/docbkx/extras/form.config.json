@@ -16,7 +16,7 @@
          },
          {
             "name":"Input",
-            "sourceExpresion":"#{in:0}"
+            "sourceExpresion":"#{in:input}"
          }
      ],
      "outputFields": [
@@ -43,7 +43,7 @@
          },
          {
             "name":"Input",
-            "sourceExpresion":"#{in:0}"
+            "sourceExpresion":"#{in:input}"
          }
      ],
      "outputFields": [

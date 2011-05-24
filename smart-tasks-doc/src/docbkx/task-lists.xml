@@ -21,5 +21,47 @@
 				href="extras/taskList.config.json" xmlns:xi="http://www.w3.org/2001/XInclude"
 				parse="text" /></programlisting>
 		</example>
+		<para>
+			In this configuration file, there are some interesting components
+			<itemizedlist>
+				<listitem>
+					<para>You can define different profiles which can show different
+						details of the task summary. There must always be provided a
+						"Default" profile, which will be used in case no other one matches
+						with the given profile and task type.</para>
+					<para>The name of the profile can be composed by:</para>
+					<itemizedlist>
+						<listitem>
+							<para>ProfileName</para>
+						</listitem>
+						<listitem>
+							<para>ProfileName_TaskType</para>
+						</listitem>
+					</itemizedlist>
+				</listitem>
+				<listitem>
+					<para>The columns definitions. Each column in composed by a name,
+						and the definition of the value that will be shown in each column.
+						This definition is expressed with a MVEL expression. This
+						expression will be evaluated with the TTaskAbstract for the given
+						task. The expression will have the form
+						"sourceExpresion":"#{field}"". You can also assign static values
+						directly using "sourceExpresion":"value". 
+					</para>
+				</listitem>
+			</itemizedlist>
+		</para>
+	</section>
+	<section>
+		<title>API</title>
+		<para>
+			In order to use the task lists, you have to use
+			<classname>SmartTaskBuilder</classname>
+			class. It has a method getTaskListHelper, which will provide an
+			instance
+			<classname>TaskListBuilder</classname>
+			. This instance will provide the columns and data of the tasks for
+			the given user.
+		</para>
 	</section>
 </chapter>
