@@ -5,10 +5,14 @@
 
 package com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler;
 
+import org.jbpm.task.service.TaskClientConnector;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import com.wordpress.salaboy.api.HumanTaskServiceOperations;
+import com.wordpress.salaboy.conf.HumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
+import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HornetQHumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5HumanTaskClientConfiguration;
 import com.wordpress.salaboy.smarttasks.jbpm5wrapper.conf.JBPM5MinaHumanTaskClientConfiguration;
 
@@ -46,7 +50,15 @@ public class JBPM5ConfigurationHandler implements UIHelperConfigurationUriHandle
             }
             int intPort = Integer.parseInt(port);
             
-            JBPM5HumanTaskClientConfiguration clientConfiguration = new JBPM5MinaHumanTaskClientConfiguration(host,intPort);
+            String serverType = attributes.getValue("serverType");
+            HumanTaskClientConfiguration clientConfiguration = null;
+            if ("hornetq".equalsIgnoreCase(serverType)) {
+                clientConfiguration = new JBPM5HornetQHumanTaskClientConfiguration(
+                    host, intPort);
+            } else {
+                clientConfiguration = new JBPM5MinaHumanTaskClientConfiguration(
+                    host, intPort);
+            }
             configuration.getHumanTaskServiceConfiguration().addHumanTaskClientConfiguration(name,clientConfiguration);
         }
     }
