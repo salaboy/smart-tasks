@@ -5,7 +5,9 @@
 
 package com.wordpress.salaboy.smarttasks.formbuilder.expression;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.mvel2.MVEL;
@@ -25,6 +27,17 @@ public class MVELExpressionResolver extends ExpressionResolver {
         expression = expression.trim();
         
         if (this.isPlainValue(expression)){
+            if (this.isListPlainValue(expression)) {
+                expression = this.removeListPlainValueDelimiters(expression);
+                String[] splittedExpression = expression.replace(" ", "")
+                        .split(",");
+                List<String> values = new ArrayList<String>();
+                for (int i = 0; i < splittedExpression.length; i++) {
+                    String string = splittedExpression[i];
+                    values.add(string);
+                }
+                return values;
+            }
             return expression;
         }
         

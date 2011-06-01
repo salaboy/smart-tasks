@@ -18,7 +18,8 @@ public abstract class ExpressionResolver {
 
     public final static String EXPRESSION_START_DELIMITER = "#{";
     public final static String EXPRESSION_END_DELIMITER = "}";
-    
+    public final static String LIST_START_PLAIN_VALUE_DELIMITER = "[";
+    public final static String LIST_END_PLAIN_VALUE_DELIMITER = "]";
     /**
      * Resolves the given expression.
      * @param expression the experssion.
@@ -39,9 +40,26 @@ public abstract class ExpressionResolver {
         return !(expression.startsWith(ExpressionResolver.EXPRESSION_START_DELIMITER) && expression.endsWith(ExpressionResolver.EXPRESSION_END_DELIMITER));
     }
     
+    protected boolean isListPlainValue(String expression) {
+        return !(expression
+                .startsWith(ExpressionResolver.EXPRESSION_START_DELIMITER) && expression
+                .endsWith(ExpressionResolver.EXPRESSION_END_DELIMITER))
+                && expression
+                        .startsWith(ExpressionResolver.LIST_START_PLAIN_VALUE_DELIMITER)
+                && expression
+                        .endsWith(ExpressionResolver.LIST_END_PLAIN_VALUE_DELIMITER);
+    }
+    
     protected String removeExpressionDelimiters(String expression){
         expression = expression.replace(ExpressionResolver.EXPRESSION_START_DELIMITER, "");
         expression = expression.replace(ExpressionResolver.EXPRESSION_END_DELIMITER, "");
+        
+        return expression;
+    }
+    
+    protected String removeListPlainValueDelimiters(String expression){
+        expression = expression.replace(ExpressionResolver.LIST_START_PLAIN_VALUE_DELIMITER, "");
+        expression = expression.replace(ExpressionResolver.LIST_END_PLAIN_VALUE_DELIMITER, "");
         
         return expression;
     }

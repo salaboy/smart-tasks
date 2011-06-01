@@ -44,7 +44,7 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
     @Override
     public String getData() {
 
-        Object[][] data = new String[myTasks.size()][this.taskListTableDefinition
+        Object[][] data = new Object[myTasks.size()][this.taskListTableDefinition
                 .getColumns().size()];
 
         int i = 0;
