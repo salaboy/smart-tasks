@@ -15,6 +15,10 @@
             "sourceExpresion":"#{task:status}"
          },
          {
+            "name":"Dictionary",
+            "sourceExpresion":"#{ext:mockExternalService.getDictionaryForTask(task.id)}"
+         },
+         {
             "name":"Document",
             "sourceExpresion":"#{in:Document.document}"
          }

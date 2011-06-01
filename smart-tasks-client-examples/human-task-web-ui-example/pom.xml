@@ -199,12 +199,22 @@
 			<artifactId>freemarker</artifactId>
 			<version>2.3.16</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>1.9-SNAPSHOT</version>
+		</dependency>
 
 	</dependencies>
 
 	<repositories>
 		<!-- JBoss Repository used for Java EE 6 pieces -->
+		<repository>
+			<id>Sonatype-public</id>
+			<name>SnakeYAML repository</name>
+			<url>http://oss.sonatype.org/content/groups/public/</url>
+		</repository>
+
 		<repository>
 			<id>repository.jboss.org</id>
 			<name>JBoss Repository</name>

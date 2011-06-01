@@ -17,6 +17,12 @@
 		function buttonClicked(element)
 		{
 			var doc = document.getElementById('input_Output');
+			if (doc == null) {
+				doc = document.getElementById('input_Translation');
+				if (doc == null) {
+					doc = document.getElementById('input_Review');
+				}
+			}
 			var url = "/human-task-web-ui-example/task/execute/${user}/${profile}/${id}/${name}/" + element.split("_")[1] + "/" + doc.value;
 			window.location = url;
 		}
@@ -65,7 +71,17 @@ Details:
 	</tr>
 	<tr>	
 		<#list taskInput?keys as keys>
-			<td id='td_${keys}'><div id = 'div_${keys}'>${taskInput[keys]}</div></td>
+					<#if taskInput[keys]?is_string>
+						<#assign val = taskInput[keys]/> 
+					<#else>
+						<#if taskInput[keys]?is_hash>
+							<#assign val = ''/>
+							<#list taskInput[keys]?keys as ink>
+								<#assign val = val + ' || ' + ink + '-' + taskInput[keys][ink]/>
+							</#list>						
+						</#if>		
+					</#if>
+			<td id='td_${keys}'><div id = 'div_${keys}'>${val}</div></td>
 		</#list>
 	</tr>
 </table>

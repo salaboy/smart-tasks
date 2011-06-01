@@ -6,15 +6,23 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.management.openmbean.TabularDataSupport;
+
 import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TAttachmentInfo;
 import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
+import org.yaml.snakeyaml.Dumper;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 import com.wordpress.salaboy.api.HumanTaskService;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskOperationsDefinition;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.exception.InvalidTaskException;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskFormInput;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskFormOutput;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderDefinitionsProvider;
 import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskFormDefinition;
@@ -48,6 +56,8 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 
 	private TaskOperationsDefinition operationsDefinition;
 
+	private Map<String, ExternalData> externalContexts;
+	
 	/**
 	 * Creates a new {@link SmartTasksTaskFormBuilder} instance.
 	 * 
@@ -78,6 +88,7 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 				.getTaskOperationsDefinition(this.humanTaskService
 						.getTaskOriginatorType(this.taskId).toLowerCase());
 		this.humanTaskService.setAuthorizedEntityId(entityId);
+		this.externalContexts = configuration.getContexts();
 	}
 
 	/**
@@ -85,7 +96,7 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 	 * @throws InvalidTaskException if the task is not found.
 	 */
 	@Override
-	public Map<String, String> getTaskInput() throws InvalidTaskException {
+	public String getTaskInput() throws InvalidTaskException {
 		try {
 			TTask task = humanTaskService.getTaskInfo(this.taskId);
 			if (task == null) {
@@ -97,8 +108,11 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 			// TODO, see if we can put this in a decorator.
 			Map<String, Object> inputs = this.getMapTaskInputFields(taskId);
 			myTask.setInputs(inputs);
-			return new SmartTasksTaskDataSet(taskFormDefinition, myTask)
+			Map<String, Object> data = new SmartTasksTaskDataSet(taskFormDefinition, myTask, this.externalContexts)
 					.getTaskInputs();
+			TaskFormInput formInput = new TaskFormInput(data);
+			Yaml yaml = new Yaml();
+			return yaml.dump(formInput);
 		} catch (IllegalArgumentFault fault) {
 			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName())
 					.log(Level.SEVERE,
@@ -154,12 +168,15 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 	 * Returns task needed output and default values.
 	 */
 	@Override
-	public Map<String, String> getTaskOutput() throws InvalidTaskException {
+	public String getTaskOutput() throws InvalidTaskException {
 		try {
 			MetaTask myTask = MetaTaskDecoratorService.getInstance().decorate(
 					"base", humanTaskService.getTaskInfo(this.taskId));
-			return new SmartTasksTaskDataSet(this.taskFormDefinition, myTask)
+            Map<String, Object> data = new SmartTasksTaskDataSet(this.taskFormDefinition, myTask,
+                    this.externalContexts)
 					.getTaskOutputs();
+            TaskFormOutput formOutput = new TaskFormOutput(data);
+            return new Yaml().dump(formOutput);
 		} catch (IllegalArgumentFault fault) {
 			Logger.getLogger(SmartTasksTaskFormBuilder.class.getName())
 					.log(Level.SEVERE,

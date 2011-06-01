@@ -16,6 +16,7 @@ import org.example.ws_ht.api.wsdl.IllegalAccessFault;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
 
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.ConnectionData;
@@ -24,6 +25,8 @@ import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.exception.InvalidTaskException;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskFormInput;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListsData;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.mock.MockConfigurationHandler;
@@ -127,9 +130,14 @@ public class TaskFormBuilderTest {
 		TaskListBuilder listHelper = helper.getTaskListHelper("taskList1",
 				"default");
 		TaskListDataSet data = listHelper.getDataSet(0, 1);
+		String stringData = data.getData();
+		Yaml yaml = new Yaml();
+		TaskListsData tasklistdata = (TaskListsData) yaml.load(stringData);
 		TaskFormBuilder taskHelper = helper.getTaskSupportHelper(
-				data.getData()[0][0], "some", "salaboy");
-		Map<String, String> details = taskHelper.getTaskInput();
-		Assert.assertEquals("IN_PROGRESS", details.get("Status"));
+				(String)tasklistdata.getData()[0][0], "some", "salaboy");
+		String taskinput = taskHelper.getTaskInput();
+		TaskFormInput input = (TaskFormInput) yaml.load(taskinput);
+		Map<String, Object> details = input.getInputs();
+		Assert.assertEquals("IN_PROGRESS", details.get("Status").toString());
 	}
 }

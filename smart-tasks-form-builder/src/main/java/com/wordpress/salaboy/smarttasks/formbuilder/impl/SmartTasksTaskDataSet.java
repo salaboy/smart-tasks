@@ -7,6 +7,9 @@ package com.wordpress.salaboy.smarttasks.formbuilder.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.namespace.QName;
+
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskDetailsDataSet;
 import com.wordpress.salaboy.smarttasks.formbuilder.expression.ExpressionResolver;
 import com.wordpress.salaboy.smarttasks.formbuilder.expression.MVELExpressionResolver;
@@ -24,12 +27,14 @@ public class SmartTasksTaskDataSet implements TaskDetailsDataSet {
 	private final MetaTask myTask;
 	private final TaskFormDefinition taskFormDefinition;
 	private final ExpressionResolver expressionResolver;
-
+	private final Map<String, ExternalData> externalData;
+	
 	public SmartTasksTaskDataSet(TaskFormDefinition taskFormDefinition,
-			MetaTask myTask) {
+			MetaTask myTask, Map<String, ExternalData> externalData) {
 		this.taskFormDefinition = taskFormDefinition;
 		this.myTask = myTask;
 		this.expressionResolver = new MVELExpressionResolver();
+		this.externalData = externalData;
 	}
 
 	/**
@@ -37,45 +42,33 @@ public class SmartTasksTaskDataSet implements TaskDetailsDataSet {
 	 * can be an evaluated expression or some defined value.
 	 */
 	@Override
-	public Map<String, String> getTaskInputs() {
-		Map<String, String> taskDetails = new HashMap<String, String>();
+	public Map<String, Object> getTaskInputs() {
+		Map<String, Object> taskDetails = new HashMap<String, Object>();
 		for (TaskPropertyDefinition column : taskFormDefinition
 				.getInputFields()) {
 			Object expresionResult = this.expressionResolver.resolveExpression(
-					column.getSourceExpresion(), myTask);
-			String stringData = null;
-			if (column.getFormatter() != null) {
-				stringData = column.getFormatter().format(expresionResult);
-			} else {
-				if (expresionResult == null) {
-					stringData = "null";
-				} else {
-					stringData = expresionResult.toString();
-				}
-			}
-			taskDetails.put(column.getName(), stringData);
+					column.getSourceExpresion(), myTask, this.externalData);
+            if (expresionResult != null) {
+                if (expresionResult instanceof QName) {
+                    //TODO this is a hack because Yaml doesn't like QNAME!
+                    expresionResult = expresionResult.toString();
+                }
+                taskDetails.put(column.getName(), expresionResult);
+            }
 		}
 		return taskDetails;
 	}
 
 	@Override
-	public Map<String, String> getTaskOutputs() {
-		Map<String, String> taskDetails = new HashMap<String, String>();
+	public Map<String, Object> getTaskOutputs() {
+		Map<String, Object> taskDetails = new HashMap<String, Object>();
 		for (TaskPropertyDefinition column : taskFormDefinition
 				.getOutputFields()) {
 			Object expresionResult = this.expressionResolver.resolveExpression(
-					column.getSourceExpresion(), myTask);
-			String stringData = null;
-			if (column.getFormatter() != null) {
-				stringData = column.getFormatter().format(expresionResult);
-			} else {
-				if (expresionResult == null) {
-					stringData = "null";
-				} else {
-					stringData = expresionResult.toString();
-				}
-			}
-			taskDetails.put(column.getName(), stringData);
+					column.getSourceExpresion(), myTask, this.externalData);
+			if (expresionResult != null) {
+                taskDetails.put(column.getName(), expresionResult);
+            }
 		}
 		return taskDetails;
 	}

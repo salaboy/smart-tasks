@@ -14,7 +14,7 @@ public interface TaskListBuilder {
     /**
      * Returns the task list column headers 
      */
-    public String[] getColumnHeaders();
+    public String getColumnHeaders();
     
     /**
      * Return a TaskListDataSet
@@ -30,7 +30,7 @@ public interface TaskListBuilder {
      */
     public int getDataCount();
     
-    public String[] getRowMetadataKeys();
+    public String getRowMetadataKeys();
     
     
 }

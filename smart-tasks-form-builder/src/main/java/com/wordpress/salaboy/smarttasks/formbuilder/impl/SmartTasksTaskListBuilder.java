@@ -6,21 +6,25 @@
 package com.wordpress.salaboy.smarttasks.formbuilder.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
+import org.yaml.snakeyaml.Yaml;
 
 import com.wordpress.salaboy.api.HumanTaskService;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListColumHeaders;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListRowMetadataKeys;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderDefinitionsProvider;
 import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskListTableColumnDefinition;
 import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskListTableDefinition;
-import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskPropertyDefinition;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTaskDecoratorService;
 
@@ -35,6 +39,7 @@ public class SmartTasksTaskListBuilder implements TaskListBuilder{
     private final String entityId;
     private final String taskType;
     private final TaskListTableDefinition taskListTableDefinition;
+    private Map<String, ExternalData> externalContexts;
     
     public SmartTasksTaskListBuilder(String taskListId, String entityId, String taskType, BuilderConfiguration configuration, HumanTaskService humanTaskService ) {
         this.taskListId = taskListId;
@@ -43,12 +48,13 @@ public class SmartTasksTaskListBuilder implements TaskListBuilder{
         this.humanTaskService = humanTaskService;
         
         this.taskListTableDefinition = new BuilderDefinitionsProvider(configuration).getTaskListTableDefinition(taskListId, entityId, taskType);
+        this.externalContexts = configuration.getContexts();
     }
     
     
     
     @Override
-    public String[] getColumnHeaders() {
+    public String getColumnHeaders() {
         
         String[] headers = new String[this.taskListTableDefinition.getColumns().size()];
         int i=0;
@@ -56,8 +62,9 @@ public class SmartTasksTaskListBuilder implements TaskListBuilder{
             headers[i] = taskListTableColumnDefinition.getHeader();
             i++;
         }
-        
-        return headers;
+        TaskListColumHeaders columnHeaders =  new TaskListColumHeaders(headers);
+        Yaml yaml = new Yaml();
+        return yaml.dump(columnHeaders);
     }
 
     @Override
@@ -68,7 +75,8 @@ public class SmartTasksTaskListBuilder implements TaskListBuilder{
                         "base",
                         humanTaskService.getMyTaskAbstracts(taskListId, entityId, null, null, null, null, null, amount, from));
             
-            return new SmartTasksTaskListDataSet(taskListTableDefinition, myTasks);
+            return new SmartTasksTaskListDataSet(taskListTableDefinition,
+                    myTasks, this.externalContexts);
         } catch (IllegalArgumentFault ex) {
             throw new IllegalArgumentException(ex);
         } catch (IllegalStateFault ex) {
@@ -96,7 +104,7 @@ public class SmartTasksTaskListBuilder implements TaskListBuilder{
     }
     
     @Override
-    public String[] getRowMetadataKeys() {
+    public String getRowMetadataKeys() {
         String[][] rowMetadata = this.taskListTableDefinition.getRowsMetaData();
         
         if (rowMetadata == null){
@@ -109,8 +117,9 @@ public class SmartTasksTaskListBuilder implements TaskListBuilder{
         for (int i = 0; i < rowMetadata.length; i++) {
             keys[i] = rowMetadata[i][0];
         }
-        
-        return keys;
+        TaskListRowMetadataKeys rowMetadataKeys = new TaskListRowMetadataKeys(keys);
+        Yaml yaml = new Yaml();
+        return yaml.dump(rowMetadataKeys);
     }
     
 }

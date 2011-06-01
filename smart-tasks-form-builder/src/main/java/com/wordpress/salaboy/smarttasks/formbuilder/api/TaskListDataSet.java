@@ -11,7 +11,7 @@ package com.wordpress.salaboy.smarttasks.formbuilder.api;
  */
 public interface TaskListDataSet {
     
-    String[][] getData();
-    String[][] getRowsMetaData();
+    String getData();
+    String getRowsMetaData();
 
 }

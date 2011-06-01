@@ -4,18 +4,25 @@
  */
 package com.wordpress.salaboy.smarttasks.formbuilder.impl;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.namespace.QName;
+
+import org.yaml.snakeyaml.Yaml;
+
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListMetadata;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListsData;
 import com.wordpress.salaboy.smarttasks.formbuilder.expression.ExpressionResolver;
 import com.wordpress.salaboy.smarttasks.formbuilder.expression.MVELExpressionResolver;
-import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskFormDefinition;
 import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskListTableColumnDefinition;
 import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskListTableDefinition;
-import com.wordpress.salaboy.smarttasks.formbuilder.model.TaskPropertyDefinition;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
-import java.util.List;
 
 /**
- *
+ * 
  * @author esteban
  */
 public class SmartTasksTaskListDataSet implements TaskListDataSet {
@@ -23,66 +30,71 @@ public class SmartTasksTaskListDataSet implements TaskListDataSet {
     private final List<MetaTask> myTasks;
     private final TaskListTableDefinition taskListTableDefinition;
     private final ExpressionResolver expressionResolver;
+    private final Map<String, ExternalData> externalData;
 
-    public SmartTasksTaskListDataSet(TaskListTableDefinition taskListTableDefinition, List<MetaTask> myTasks) {
+    public SmartTasksTaskListDataSet(
+            TaskListTableDefinition taskListTableDefinition,
+            List<MetaTask> myTasks, Map<String, ExternalData> externalData) {
         this.taskListTableDefinition = taskListTableDefinition;
         this.myTasks = myTasks;
         this.expressionResolver = new MVELExpressionResolver();
+        this.externalData = externalData;
     }
 
     @Override
-    public String[][] getData() {
-        
-        String[][] data = new String[myTasks.size()][this.taskListTableDefinition.getColumns().size()]; 
-            
-            int i = 0;
-            for (MetaTask metaTask : myTasks) {
-                int j = 0;
-                for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition.getColumns()) {
-                    Object expresionResult = this.expressionResolver.resolveExpression(taskListTableColumnDefinition.getSourceExpresion(), metaTask);
-                    
-                    String stringData = null;
-                    if (taskListTableColumnDefinition.getFormatter() != null){
-                        stringData = taskListTableColumnDefinition.getFormatter().format(expresionResult);
-                    }else{
-                        if (expresionResult == null){
-                            stringData = "null";
-                        }else{
-                            stringData = expresionResult.toString();
-                        }
-                    }
-                    
-                    data[i][j] = stringData;
-                    j++;
+    public String getData() {
+
+        Object[][] data = new String[myTasks.size()][this.taskListTableDefinition
+                .getColumns().size()];
+
+        int i = 0;
+        for (MetaTask metaTask : myTasks) {
+            int j = 0;
+            for (TaskListTableColumnDefinition taskListTableColumnDefinition : this.taskListTableDefinition
+                    .getColumns()) {
+                Object expresionResult = this.expressionResolver
+                        .resolveExpression(taskListTableColumnDefinition
+                                .getSourceExpresion(), metaTask,
+                                this.externalData);
+                if (expresionResult instanceof QName) {
+                    expresionResult = expresionResult.toString();
                 }
-                i++;
-            }
-            
-            return data;
-    }
-    
-    @Override
-    public String[][] getRowsMetaData() {
-        String[][] rowMetadata = this.taskListTableDefinition.getRowsMetaData();
-        
-        if (rowMetadata == null){
-            //No metadata defined
-            return null;
-        }
-        
-        String[][] metaData = new String[this.myTasks.size()][];
-        
-        int i =0;
-        for (MetaTask metaTask : this.myTasks) {
-            metaData[i] = new String[rowMetadata.length];
-            for (int j = 0; j < metaData[i].length; j++) {
-                Object expressionResult = this.expressionResolver.resolveExpression(rowMetadata[j][1],metaTask);
-                metaData[i][j] = expressionResult == null? "null":expressionResult.toString(); 
+                data[i][j] = expresionResult;
+                j++;
             }
             i++;
         }
-        
-        
-        return metaData;
+        TaskListsData taskListData = new TaskListsData(data);
+        Yaml yaml = new Yaml();
+        return yaml.dump(taskListData);
+    }
+
+    @Override
+    public String getRowsMetaData() {
+        String[][] rowMetadata = this.taskListTableDefinition.getRowsMetaData();
+
+        if (rowMetadata == null) {
+            // No metadata defined
+            return null;
+        }
+
+        Object[][] metaData = new String[this.myTasks.size()][];
+
+        int i = 0;
+        for (MetaTask metaTask : this.myTasks) {
+            metaData[i] = new String[rowMetadata.length];
+            for (int j = 0; j < metaData[i].length; j++) {
+                Object expressionResult = this.expressionResolver
+                        .resolveExpression(rowMetadata[j][1], metaTask, null);
+                if (expressionResult instanceof QName) {
+                    expressionResult = expressionResult.toString();
+                }
+                metaData[i][j] = expressionResult;
+            }
+            i++;
+        }
+        TaskListMetadata tasklistmetadata = new TaskListMetadata(metaData);
+        Yaml yaml = new Yaml();
+        return yaml.dump(tasklistmetadata);
     }
 }

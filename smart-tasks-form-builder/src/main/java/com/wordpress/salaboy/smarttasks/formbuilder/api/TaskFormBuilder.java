@@ -24,14 +24,14 @@ public interface TaskFormBuilder {
 	 * @return a map with the details
 	 * @throws InvalidTaskException if the task is not found.
 	 */
-	public Map<String, String> getTaskInput() throws InvalidTaskException;
+	public String getTaskInput() throws InvalidTaskException;
 
 	/**
 	 * Return the name of the form inputs as the key, and default values as
 	 * values of the map.
 	 * @throws InvalidTaskException if the task is not found.
 	 */
-	public Map<String, String> getTaskOutput() throws InvalidTaskException;
+	public String getTaskOutput() throws InvalidTaskException;
 
 	/**
 	 * Returns the actions graph as an instance of {@link TaskOperationsDefinition}

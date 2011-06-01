@@ -8,6 +8,11 @@ import com.wordpress.salaboy.smarttasks.formbuilder.api.ConnectionData;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.SmartTaskBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskFormInput;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListColumHeaders;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListMetadata;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListRowMetadataKeys;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListsData;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.mock.MockConfigurationHandler;
@@ -20,11 +25,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
+
+import junit.framework.Assert;
+
 import org.example.ws_ht.api.TStatus;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.example.ws_ht.api.wsdl.IllegalArgumentFault;
 import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
+
 import static org.junit.Assert.*;
 
 /**
@@ -36,6 +46,8 @@ public class TaskListUIHelperTest {
     public TaskListUIHelperTest() {
     }
 
+    Yaml yaml = new Yaml();
+    
     @Test
     public void testProfiles() {
 
@@ -70,8 +82,10 @@ public class TaskListUIHelperTest {
         //taskList1 should take "Default" profile: 2 columns
         TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList1", null);
 
-
-        String[] columnHeaders = taskListHelper.getColumnHeaders();
+        
+        String stringColumnHeaders = taskListHelper.getColumnHeaders();
+        TaskListColumHeaders input = (TaskListColumHeaders) yaml.load(stringColumnHeaders);
+        String[] columnHeaders = input.getColumnHeaders();
         assertEquals(2, columnHeaders.length);
         assertEquals("Id", columnHeaders[0]);
         assertEquals("Name", columnHeaders[1]);
@@ -79,8 +93,10 @@ public class TaskListUIHelperTest {
         //taskList2 should take "Some_User" profile: 1 columns
         taskListHelper = helper.getTaskListHelper("taskList2", null);
 
-
-        columnHeaders = taskListHelper.getColumnHeaders();
+        stringColumnHeaders = taskListHelper.getColumnHeaders();
+        input = (TaskListColumHeaders) yaml.load(stringColumnHeaders);
+        columnHeaders = input.getColumnHeaders();
+        
         assertEquals(1, columnHeaders.length);
         assertEquals("Id", columnHeaders[0]);
 
@@ -88,8 +104,9 @@ public class TaskListUIHelperTest {
         //taskList2 should take "Some_User_TaskType1" profile now, because 
         //the task type is provided: 1 columns
         taskListHelper = helper.getTaskListHelper("taskList2", "TaskType1");
-
-        columnHeaders = taskListHelper.getColumnHeaders();
+        stringColumnHeaders = taskListHelper.getColumnHeaders();
+        input = (TaskListColumHeaders) yaml.load(stringColumnHeaders);
+        columnHeaders = input.getColumnHeaders();
         assertEquals(1, columnHeaders.length);
         assertEquals("Status", columnHeaders[0]);
 
@@ -102,8 +119,10 @@ public class TaskListUIHelperTest {
 
         //taskList2 should take "TaskType1" profile now: 2 columns
         taskListHelper = helper.getTaskListHelper("taskList2", "TaskType1");
+        stringColumnHeaders = taskListHelper.getColumnHeaders();
+        input = (TaskListColumHeaders) yaml.load(stringColumnHeaders);
+        columnHeaders = input.getColumnHeaders();
 
-        columnHeaders = taskListHelper.getColumnHeaders();
         assertEquals(2, columnHeaders.length);
         assertEquals("Status", columnHeaders[0]);
         assertEquals("Priority", columnHeaders[1]);
@@ -132,7 +151,10 @@ public class TaskListUIHelperTest {
         TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList1", null);
 
 
-        String[] columnHeaders = taskListHelper.getColumnHeaders();
+        String stringColumnHeaders = taskListHelper.getColumnHeaders();
+        TaskListColumHeaders input = (TaskListColumHeaders) yaml.load(stringColumnHeaders);
+        String[] columnHeaders = input.getColumnHeaders();
+
         assertEquals(2, columnHeaders.length);
         assertEquals("Id", columnHeaders[0]);
         assertEquals("Name", columnHeaders[1]);
@@ -142,7 +164,9 @@ public class TaskListUIHelperTest {
 
         //give me the first 2 tasks
         TaskListDataSet dataSet = taskListHelper.getDataSet(0, 2);
-        String[][] data = dataSet.getData();
+        String stringDataset = dataSet.getData();
+        TaskListsData listdata = (TaskListsData)yaml.load(stringDataset);
+        Object[][] data = listdata.getData();
         assertEquals(2, data.length);
         assertEquals(2, data[0].length);
         assertEquals(2, data[1].length);
@@ -153,7 +177,10 @@ public class TaskListUIHelperTest {
 
         //give me 2 mores tasks
         dataSet = taskListHelper.getDataSet(2, 2);
-        data = dataSet.getData();
+        
+        stringDataset = dataSet.getData();
+        listdata = (TaskListsData)yaml.load(stringDataset);
+        data = listdata.getData();
         assertEquals(2, data.length);
         assertEquals(2, data[0].length);
         assertEquals(2, data[1].length);
@@ -197,7 +224,9 @@ public class TaskListUIHelperTest {
         //taskList1 should take "Esteban" profile: 2 columns with metadata
         taskListHelper = helper.getTaskListHelper("taskList1", null);
 
-        String[] rowMetadataKeys = taskListHelper.getRowMetadataKeys();
+        String stringRowMetadata = taskListHelper.getRowMetadataKeys();
+        TaskListRowMetadataKeys keys = (TaskListRowMetadataKeys) yaml.load(stringRowMetadata);
+        String[] rowMetadataKeys = keys.getKeys();
         
         assertNotNull(taskListHelper.getRowMetadataKeys());
         assertEquals(3, rowMetadataKeys.length);
@@ -206,12 +235,14 @@ public class TaskListUIHelperTest {
         assertEquals("metaData3", rowMetadataKeys[2]);
 
         TaskListDataSet dataSet = taskListHelper.getDataSet(0, 4);
-
-        String[][] rowsMetaData = dataSet.getRowsMetaData();
+        
+        stringRowMetadata = dataSet.getRowsMetaData();
+        TaskListMetadata metadata = (TaskListMetadata)yaml.load(stringRowMetadata);
+        Object[][] rowsMetaData = metadata.getData();
         assertEquals(4, rowsMetaData.length);
 
         for (int i = 0; i < rowsMetaData.length; i++) {
-            String[] value = rowsMetaData[i];
+            Object[] value = rowsMetaData[i];
             assertEquals("metaDataValue1", value[0]);
             assertEquals("metaDataValue2", value[1]);
             assertEquals("Task "+i, value[2]);
@@ -240,8 +271,10 @@ public class TaskListUIHelperTest {
         //taskList1 should take "Default" profile: 2 columns
         TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList3", null);
         
-        
-        String[] columnHeaders = taskListHelper.getColumnHeaders();
+        String stringColumnHeaders = taskListHelper.getColumnHeaders();
+        TaskListColumHeaders input = (TaskListColumHeaders) yaml.load(stringColumnHeaders);
+        String[] columnHeaders = input.getColumnHeaders();
+
         assertEquals(1, columnHeaders.length);
         assertEquals("StringRep",columnHeaders[0]);
        
@@ -251,8 +284,10 @@ public class TaskListUIHelperTest {
         
         //give me the first 2 tasks
         TaskListDataSet dataSet = taskListHelper.getDataSet(0, 2);
-        String[][] data = dataSet.getData();
-        
+        String stringData = dataSet.getData();
+        TaskListsData listData = (TaskListsData) yaml.load(stringData);
+        Object[][] data = listData.getData();
+        Assert.assertEquals(2, data.length);
         
         
         helper.disconnect();

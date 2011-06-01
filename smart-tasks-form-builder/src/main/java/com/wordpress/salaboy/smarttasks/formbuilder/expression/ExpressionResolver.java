@@ -5,6 +5,9 @@
 
 package com.wordpress.salaboy.smarttasks.formbuilder.expression;
 
+import java.util.Map;
+
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 
 /**
@@ -16,7 +19,15 @@ public abstract class ExpressionResolver {
     public final static String EXPRESSION_START_DELIMITER = "#{";
     public final static String EXPRESSION_END_DELIMITER = "}";
     
-    public abstract Object resolveExpression(String expression, MetaTask metaTask);
+    /**
+     * Resolves the given expression.
+     * @param expression the experssion.
+     * @param metaTask the {@link MetaTask} instance to get data if needed by expression.
+     * @param contexts a map with different contexts where external information can be found.
+     * @return
+     */
+    public abstract Object resolveExpression(String expression,
+            MetaTask metaTask, Map<String, ExternalData> contexts);
     
     /**
      * Returns whether the given expression is a plain value or if it is an expression

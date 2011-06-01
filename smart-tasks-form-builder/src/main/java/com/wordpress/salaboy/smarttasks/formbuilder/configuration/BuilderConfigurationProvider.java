@@ -5,6 +5,7 @@
 
 package com.wordpress.salaboy.smarttasks.formbuilder.configuration;
 
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.ActivitiConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.JBPM5ConfigurationHandler;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.UIHelperConfigurationHandler;
@@ -15,7 +16,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -30,8 +33,13 @@ public class BuilderConfigurationProvider {
 
     private File rootDirectory;
     private Set<UIHelperConfigurationUriHandler> uiHelperConfigurationUriHandlers = new HashSet<UIHelperConfigurationUriHandler>();
+    private Map<String, ExternalData> externalContexts;
     
     public BuilderConfigurationProvider(File rootDirectory){
+        this(rootDirectory, new HashMap<String, ExternalData>());
+    }
+    
+    public BuilderConfigurationProvider(File rootDirectory, Map<String, ExternalData> externalContexts){
         if (rootDirectory == null){
             rootDirectory = new File(".");
         }
@@ -41,6 +49,7 @@ public class BuilderConfigurationProvider {
         this.uiHelperConfigurationUriHandlers.add(new UIHelperConfigurationHandler());
         this.uiHelperConfigurationUriHandlers.add(new ActivitiConfigurationHandler());
         this.uiHelperConfigurationUriHandlers.add(new JBPM5ConfigurationHandler());
+        this.externalContexts = externalContexts;
     }
     
     public void addUIHelperConfigurationUriHandler(UIHelperConfigurationUriHandler uiHelperConfigurationUriHandler){
@@ -58,6 +67,7 @@ public class BuilderConfigurationProvider {
         try {
             BuilderConfiguration configuration = this.parse(new FileInputStream(configFile));
             configuration.setUiHelperRootDirectory(this.rootDirectory);
+            configuration.setContexts(this.externalContexts);
             return configuration;
         } catch (FileNotFoundException ex) {
             throw new IllegalArgumentException("No configuration file found at "+configFile.getAbsolutePath());

@@ -5,8 +5,12 @@
 
 package com.wordpress.salaboy.smarttasks.formbuilder.expression;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mvel2.MVEL;
 
+import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 
 /**
@@ -16,7 +20,8 @@ import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 public class MVELExpressionResolver extends ExpressionResolver {
 
     @Override
-    public Object resolveExpression(String expression, MetaTask metaTask){
+    public Object resolveExpression(String expression, MetaTask metaTask,
+            Map<String, ExternalData> contexts) {
         expression = expression.trim();
         
         if (this.isPlainValue(expression)){
@@ -38,15 +43,30 @@ public class MVELExpressionResolver extends ExpressionResolver {
         else if(context.equals("task")){
            return MVEL.eval(realExpression,metaTask.getTask());
         }
-        //TODO check this "in". This is not an MVEL expression to be evaluated, so it should not be here.
         else if(context.equals("in")){
         	if (metaTask.getInputs() != null) {
         		return MVEL.eval(realExpression,metaTask.getInputs());
         	}
-        	return "";
-         }
+        	return null;
+        }
+        else if(context.equals("ext")) {
+            if (contexts != null) {
+                return MVEL.eval(realExpression, contexts, this.getPossibleParameters(metaTask, contexts));
+            }
+            return null;
+        }
         else{
             throw new IllegalArgumentException("Unsupported context \""+context+"\" in "+expression);
         }
+    }
+    
+    private Map<String, Object> getPossibleParameters(MetaTask metaTask,
+            Map<String, ExternalData> contexts) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("task", metaTask.getTask());
+        params.put("", metaTask.getTaskAbstract());
+        params.put("in", metaTask.getInputs());
+        params.put("ext", contexts);
+        return params;
     }
 }
