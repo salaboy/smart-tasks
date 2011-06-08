@@ -172,6 +172,9 @@ public class SmartTasksTaskFormBuilder implements TaskFormBuilder {
 		try {
 			MetaTask myTask = MetaTaskDecoratorService.getInstance().decorate(
 					"base", humanTaskService.getTaskInfo(this.taskId));
+			// TODO, see if we can put this in a decorator.
+            Map<String, Object> inputs = this.getMapTaskInputFields(taskId);
+            myTask.setInputs(inputs);
             Map<String, Object> data = new SmartTasksTaskDataSet(this.taskFormDefinition, myTask,
                     this.externalContexts)
 					.getTaskOutputs();

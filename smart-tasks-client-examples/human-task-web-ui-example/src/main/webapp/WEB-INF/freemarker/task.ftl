@@ -6,9 +6,9 @@
 		var mymap = new Array();
 		
 		function init() {
-			<#list operations.getOperationsList() as operation>
-				document.getElementById('button_${operation}').disabled = true;
-			</#list>
+		<#list operations.getOperationsList() as operation>
+			document.getElementById('button_${operation}').disabled = true;
+		</#list>
 		<#list operations.getOperations(taskInput['Status']) as operation>
 			document.getElementById('button_${operation}').disabled = false;
 		</#list>
@@ -91,7 +91,9 @@ Task Form:
     <P>
     <#list taskOutput?keys as inputKey>
      	<LABEL for="${inputKey}">${inputKey}: </LABEL>
-        <INPUT type="text" id="input_${inputKey}" value="${taskOutput[inputKey]}"/><br/>
+        <INPUT type="text" id="input_${inputKey}" value="${taskOutput[inputKey]}"
+        <#if taskInput['Status']!='IN_PROGRESS'> disabled=true</#if>
+        /><br/>
     </#list>
     <#list operations.getOperationsList() as operation>
     	<INPUT type="button" id="button_${operation}" value=${operation} onClick="buttonClicked('button_${operation}')">

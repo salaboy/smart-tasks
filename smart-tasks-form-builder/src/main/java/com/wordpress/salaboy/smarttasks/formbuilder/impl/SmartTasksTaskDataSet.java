@@ -4,8 +4,9 @@
  */
 package com.wordpress.salaboy.smarttasks.formbuilder.impl;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.namespace.QName;
 
@@ -43,7 +44,7 @@ public class SmartTasksTaskDataSet implements TaskDetailsDataSet {
 	 */
 	@Override
 	public Map<String, Object> getTaskInputs() {
-		Map<String, Object> taskDetails = new HashMap<String, Object>();
+		Map<String, Object> taskDetails = new LinkedHashMap<String, Object>();
 		for (TaskPropertyDefinition column : taskFormDefinition
 				.getInputFields()) {
 			Object expresionResult = this.expressionResolver.resolveExpression(
@@ -61,16 +62,16 @@ public class SmartTasksTaskDataSet implements TaskDetailsDataSet {
 
 	@Override
 	public Map<String, Object> getTaskOutputs() {
-		Map<String, Object> taskDetails = new HashMap<String, Object>();
+		Map<String, Object> taskOutputs = new LinkedHashMap<String, Object>();
 		for (TaskPropertyDefinition column : taskFormDefinition
 				.getOutputFields()) {
 			Object expresionResult = this.expressionResolver.resolveExpression(
 					column.getSourceExpresion(), myTask, this.externalData);
 			if (expresionResult != null) {
-                taskDetails.put(column.getName(), expresionResult);
+                taskOutputs.put(column.getName(), expresionResult);
             }
 		}
-		return taskDetails;
+		return taskOutputs;
 	}
 
 }
