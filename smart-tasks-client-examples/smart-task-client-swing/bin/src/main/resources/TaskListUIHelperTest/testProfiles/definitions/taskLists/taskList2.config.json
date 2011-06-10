@@ -1,0 +1,46 @@
+[
+ {
+     "profile": "Default",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{id}"
+         },
+         {
+            "header":"Name",
+            "sourceExpresion":"#{name}"
+         }
+     ]
+ },
+ {
+     "profile": "Some_User",
+     "columns": [
+         {
+            "header":"Id",
+            "sourceExpresion":"#{id}"
+         }
+     ]
+ },
+ {
+     "profile": "Some_User_TaskType1",
+     "columns": [
+         {
+            "header":"Status",
+            "sourceExpresion":"#{status}"
+         }
+     ]
+ },
+ {
+     "profile": "TaskType1",
+     "columns": [
+         {
+            "header":"Status",
+            "sourceExpresion":"status"
+         },
+         {
+            "header":"Priority",
+            "sourceExpresion":"#{priority}"
+         }
+     ]
+ }
+]
