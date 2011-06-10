@@ -19,13 +19,8 @@ import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.ConnectionData;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.SmartTaskBuilder;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.exception.InvalidTaskException;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskFormInput;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskForm;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListsData;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
@@ -124,19 +119,14 @@ public class TaskFormBuilderTest {
 		SmartTaskBuilder helper = new SmartTaskBuilder(configuration);
 
 		// Connection
-		ConnectionData connectionData = new ConnectionData();
-		connectionData.setEntityId("Some_User");
+		ConnectionData connectionData = new ConnectionData("Some_User");
 		helper.connect(connectionData);
-		TaskListBuilder listHelper = helper.getTaskListHelper("taskList1",
-				"default");
-		TaskListDataSet data = listHelper.getDataSet(0, 1);
-		String stringData = data.getData();
+		String stringData = helper.getTaskList("default");
 		Yaml yaml = new Yaml();
 		TaskListsData tasklistdata = (TaskListsData) yaml.load(stringData);
-		TaskFormBuilder taskHelper = helper.getTaskSupportHelper(
+		String taskinput = helper.getTaskForm(
 				(String)tasklistdata.getData()[0][0], "some", "salaboy");
-		String taskinput = taskHelper.getTaskInput();
-		TaskFormInput input = (TaskFormInput) yaml.load(taskinput);
+		TaskForm input = (TaskForm) yaml.load(taskinput);
 		Map<String, Object> details = input.getInputs();
 		Assert.assertEquals("IN_PROGRESS", details.get("Status").toString());
 	}

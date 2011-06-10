@@ -13,7 +13,6 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.springframework.core.io.Resource;
 
-import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.UIHelperConfigurationUriHandler;
@@ -40,7 +39,7 @@ public class ResourceBasedBuilderConfiguration extends BuilderConfiguration {
      */
     public ResourceBasedBuilderConfiguration(
             Resource rootDirectory,
-            Map<String, ExternalData> externalContexts,
+            Map<String, Object> externalContexts,
             Set<UIHelperConfigurationUriHandler> uiHelperConfigurationUriHandlers,
             String uiHelperFileName) {
         File configFile = null;

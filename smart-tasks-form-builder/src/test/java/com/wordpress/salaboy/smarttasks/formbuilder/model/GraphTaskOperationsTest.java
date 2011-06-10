@@ -1,6 +1,7 @@
 package com.wordpress.salaboy.smarttasks.formbuilder.model;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -8,8 +9,6 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.DirectFieldAccessor;
-
-import com.wordpress.salaboy.smarttasks.formbuilder.model.GraphTaskOperations;
 
 /**
  * Tests for {@link GraphTaskOperations}
@@ -26,7 +25,7 @@ public class GraphTaskOperationsTest {
 				.getResource(("operations/testOperations.config.json"))
 				.getFile());
 		try {
-			operations = new GraphTaskOperations(root);
+			operations = new GraphTaskOperations(new FileInputStream(root));
 		} catch (Exception e) {
 			Assert.fail(e.getMessage());
 		}

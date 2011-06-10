@@ -66,8 +66,7 @@ public class SmartTaskUIHelperTest {
         SmartTaskBuilder helper = new SmartTaskBuilder(configuration);
         
         //Connection
-        ConnectionData connectionData = new ConnectionData();
-        connectionData.setEntityId("Some_User");
+        ConnectionData connectionData = new ConnectionData("Some_User");
         helper.connect(connectionData);
         
         assertEquals(1, eventList.size());

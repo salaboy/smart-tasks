@@ -3,9 +3,8 @@ package com.wordpress.demian.task;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 
-public class MockExternalContext implements ExternalData{
+public class MockExternalContext{
 
     public Map<String, String> getDictionary() {
         Map<String, String> mockMap = new HashMap<String, String>();

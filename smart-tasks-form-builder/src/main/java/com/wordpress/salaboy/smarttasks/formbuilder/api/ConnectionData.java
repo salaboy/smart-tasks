@@ -16,6 +16,11 @@ public class ConnectionData {
     private String entityId;
     private Locale locale = Locale.US;
 
+    public ConnectionData(String entityId) {
+        super();
+        this.entityId = entityId;
+    }
+
     public String getEntityId() {
         return entityId;
     }

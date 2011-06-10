@@ -14,16 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.yaml.snakeyaml.Yaml;
 
 import com.wordpress.salaboy.smarttasks.formbuilder.api.ConnectionData;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.SmartTaskBuilder;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskFormBuilder;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListBuilder;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskListDataSet;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.TaskOperationsDefinition;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.exception.InvalidTaskException;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskFormInput;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskFormOutput;
-import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListColumHeaders;
+import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskForm;
 import com.wordpress.salaboy.smarttasks.formbuilder.api.output.TaskListsData;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfiguration;
 import com.wordpress.salaboy.smarttasks.formbuilder.configuration.BuilderConfigurationProvider;
@@ -45,14 +39,12 @@ public class ListTasksController {
 
     SmartTaskBuilder helper;
 
-    TaskFormBuilder taskHelper = null;
-
     public ListTasksController() {
         MetaTaskDecoratorService.getInstance().registerDecorator("base",
                 new MetaTaskDecoratorBase());
         File root = new File(Thread.currentThread().getContextClassLoader()
                 .getResource("uihelper").getFile());
-        Map<String, ExternalData> contexts = new HashMap<String, ExternalData>();
+        Map<String, Object> contexts = new HashMap<String, Object>();
         contexts.put("mockExternalService", new MockExternalContext());
         BuilderConfigurationProvider configurationProvider = new BuilderConfigurationProvider(
                 root, contexts);
@@ -84,20 +76,16 @@ public class ListTasksController {
     public String list(@PathVariable("entity") String entity,
             @PathVariable("profile") String profile, Model model) {
         logger.info("Let's get the Task List!");
-        ConnectionData connectionData = new ConnectionData();
-        connectionData.setEntityId(entity);
+        ConnectionData connectionData = new ConnectionData(entity);
         helper.connect(connectionData);
-        TaskListBuilder taskListHelper = helper.getTaskListHelper("taskList1",
-                profile);
-        TaskListDataSet set = taskListHelper.getDataSet(0,
-                taskListHelper.getDataCount());
+        String set = helper.getTaskList(profile);
+//        TaskListDataSet set = taskListHelper.getDataSet(0,
+//                taskListHelper.getDataCount());
         Yaml yaml = new Yaml();
-        TaskListsData taskListdata = (TaskListsData) yaml.load(set.getData());
+        TaskListsData taskListdata = (TaskListsData) yaml.load(set);
         Object[][] data = taskListdata.getData();
         model.addAttribute("data", data);
-
-        TaskListColumHeaders columHeaders = (TaskListColumHeaders) yaml.load(taskListHelper.getColumnHeaders());
-        String[] headers = columHeaders.getColumnHeaders();
+        String[] headers = taskListdata.getColumnHeaders();
         model.addAttribute("headers", headers);
         int idIndex = -1;
         for (int i = 0; i < headers.length; i++) {
@@ -134,23 +122,19 @@ public class ListTasksController {
             @PathVariable("name") String name,
             @PathVariable("profile") String profile, Model model) {
         logger.info("Let's get the Task List!");
-        ConnectionData connectionData = new ConnectionData();
-        connectionData.setEntityId(entity);
+        ConnectionData connectionData = new ConnectionData(entity);
         helper.connect(connectionData);
-        taskHelper = helper.getTaskSupportHelper(id, name.trim(), profile);
+//        taskHelper = helper.getTaskSupportHelper(id, name.trim(), profile);
         try {
-            String stringTaskInfo = taskHelper.getTaskInput();
+            String stringTaskInfo = helper.getTaskForm(id, name.trim(), profile);
             Yaml yaml = new Yaml();
-            TaskFormInput deserializedInput = (TaskFormInput) yaml
+            TaskForm deserializedInfo = (TaskForm) yaml
                     .load(stringTaskInfo);
-            Map<String, Object> taskInfo = deserializedInput.getInputs();
+            Map<String, Object> taskInfo = deserializedInfo.getInputs();
             
-            String stringTaskOutput = taskHelper.getTaskOutput();
-            TaskFormOutput deserializedOutput = (TaskFormOutput) yaml
-            .load(stringTaskOutput);
-            Map<String, Object> taskOutput = deserializedOutput.getOutputs();
-            TaskOperationsDefinition operationsDef = taskHelper
-                    .getTaskOperations();
+            Map<String, Object> taskOutput = deserializedInfo.getOutputs();
+            TaskOperationsDefinition operationsDef = helper
+                    .getTaskOperations(id);
             model.addAttribute("operations", operationsDef);
             model.addAttribute("taskInput", taskInfo);
             model.addAttribute("taskOutput", taskOutput);
@@ -172,11 +156,12 @@ public class ListTasksController {
             @PathVariable("name") String name,
             @PathVariable("document") String document,
             @PathVariable("profile") String profile, Model model) {
-        if (taskHelper != null) {
+        if (helper != null) {
+        	helper.connect(new ConnectionData(entity));
             try {
                 Map<String, Object> map = new HashMap<String, Object>();
                 map.put("document", document);
-                taskHelper.executeTaskAction(action, map);
+                helper.executeTaskAction(action, map, taskId);
             } catch (InvalidTaskException e) {
                 logger.error("Could not execute this action, because the task does not exist!");
                 return "redirect:new";

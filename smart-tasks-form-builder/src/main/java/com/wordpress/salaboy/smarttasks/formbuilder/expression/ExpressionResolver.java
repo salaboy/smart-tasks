@@ -7,7 +7,6 @@ package com.wordpress.salaboy.smarttasks.formbuilder.expression;
 
 import java.util.Map;
 
-import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 
 /**
@@ -28,7 +27,7 @@ public abstract class ExpressionResolver {
      * @return
      */
     public abstract Object resolveExpression(String expression,
-            MetaTask metaTask, Map<String, ExternalData> contexts);
+            MetaTask metaTask, Map<String, Object> contexts);
     
     /**
      * Returns whether the given expression is a plain value or if it is an expression

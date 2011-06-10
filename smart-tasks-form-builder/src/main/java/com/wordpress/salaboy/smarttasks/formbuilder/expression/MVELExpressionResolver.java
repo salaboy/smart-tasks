@@ -12,7 +12,6 @@ import java.util.Map;
 
 import org.mvel2.MVEL;
 
-import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
 import com.wordpress.salaboy.smarttasks.metamodel.MetaTask;
 
 /**
@@ -23,7 +22,7 @@ public class MVELExpressionResolver extends ExpressionResolver {
 
     @Override
     public Object resolveExpression(String expression, MetaTask metaTask,
-            Map<String, ExternalData> contexts) {
+            Map<String, Object> contexts) {
         expression = expression.trim();
         
         if (this.isPlainValue(expression)){
@@ -74,7 +73,7 @@ public class MVELExpressionResolver extends ExpressionResolver {
     }
     
     private Map<String, Object> getPossibleParameters(MetaTask metaTask,
-            Map<String, ExternalData> contexts) {
+            Map<String, Object> contexts) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("task", metaTask.getTask());
         params.put("", metaTask.getTaskAbstract());

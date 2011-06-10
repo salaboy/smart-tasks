@@ -10,7 +10,7 @@ import java.util.Map;
  * @author calcacuervo
  * 
  */
-public class TaskFormInput implements Serializable {
+public class TaskForm implements Serializable {
 
     /**
      *  The UID.
@@ -22,11 +22,15 @@ public class TaskFormInput implements Serializable {
      */
     public Map<String, Object> inputs;
 
-    public TaskFormInput() {
+    /**
+     * The outputs map.
+     */
+    public Map<String, Object> outputs;
+    public TaskForm() {
         // needed for yaml.
     }
 
-    public TaskFormInput(Map<String, Object> inputs) {
+    public TaskForm(Map<String, Object> inputs) {
         this.inputs = inputs;
     }
 
@@ -44,5 +48,19 @@ public class TaskFormInput implements Serializable {
     public void setInputs(Map<String, Object> inputs) {
         this.inputs = inputs;
     }
+
+	/**
+	 * @return the outputs
+	 */
+	public Map<String, Object> getOutputs() {
+		return outputs;
+	}
+
+	/**
+	 * @param outputs the outputs to set
+	 */
+	public void setOutputs(Map<String, Object> outputs) {
+		this.outputs = outputs;
+	}
 
 }

@@ -5,13 +5,6 @@
 
 package com.wordpress.salaboy.smarttasks.formbuilder.configuration;
 
-import com.wordpress.salaboy.smarttasks.formbuilder.api.ExternalData;
-import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.ActivitiConfigurationHandler;
-import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.JBPM5ConfigurationHandler;
-import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.UIHelperConfigurationHandler;
-import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.UIHelperConfigurationUriHandler;
-import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.XMLConfigurationParser;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,8 +13,15 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.ActivitiConfigurationHandler;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.JBPM5ConfigurationHandler;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.UIHelperConfigurationHandler;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.UIHelperConfigurationUriHandler;
+import com.wordpress.salaboy.smarttasks.formbuilder.configuration.saxhandler.XMLConfigurationParser;
 
 /**
  *
@@ -33,13 +33,13 @@ public class BuilderConfigurationProvider {
 
     private File rootDirectory;
     private Set<UIHelperConfigurationUriHandler> uiHelperConfigurationUriHandlers = new HashSet<UIHelperConfigurationUriHandler>();
-    private Map<String, ExternalData> externalContexts;
+    private Map<String, Object> externalContexts;
     
     public BuilderConfigurationProvider(File rootDirectory){
-        this(rootDirectory, new HashMap<String, ExternalData>());
+        this(rootDirectory, new HashMap<String, Object>());
     }
     
-    public BuilderConfigurationProvider(File rootDirectory, Map<String, ExternalData> externalContexts){
+    public BuilderConfigurationProvider(File rootDirectory, Map<String, Object> externalContexts){
         if (rootDirectory == null){
             rootDirectory = new File(".");
         }

@@ -3,6 +3,8 @@ package com.wordpress.salaboy.smarttasks.formbuilder.model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -39,11 +41,11 @@ public class GraphTaskOperations implements TaskOperationsDefinition {
 	 * @throws FileNotFoundException
 	 *             if json config file was not found.
 	 */
-	public GraphTaskOperations(File graphConfigurationFile)
+	public GraphTaskOperations(InputStream graphConfigurationFile)
 			throws JsonParseException, FileNotFoundException {
 		Gson gson = new Gson();
 
-		this.definition = gson.fromJson(new FileReader(graphConfigurationFile),
+		this.definition = gson.fromJson(new InputStreamReader(graphConfigurationFile),
 				new TypeToken<Collection<OperationsDefinition>>() {
 				}.getType());
 
