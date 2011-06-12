@@ -1,99 +1,64 @@
-<?xml version='1.0' encoding='utf-8' ?>
-<!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" >
-<preface id="pref-Hibernate_Development_Guide-Preface">
-
-
-	<title>Preface</title>
-	<para>If you read about BPM Systems you probably notice that some of
-		the advantages that they propose are:</para>
-	<itemizedlist>
-		<listitem>
-			<para>Automation of the company processes.</para>
-		</listitem>
-		<listitem>
-			<para>Coordination between human tasks and systems.</para>
-		</listitem>
-		<listitem>
-			<para>Data handling.</para>
-		</listitem>
-		<listitem>
-			<para>Declarative approach of expressing how business works.</para>
-		</listitem>
-		<listitem>
-			<para>Performance metrics.</para>
-		</listitem>
-	</itemizedlist>
-	<para>
-		When you understand these points you start asking about how your
-		applications will look like. 
-</para>
-	<para>
-		One of the biggest abstraction that BPM Systems provide is the
-		unified /
-		task list based User Interface approach.
-</para>
-	<para>
-		You will notice that most of the current BPM Systems will
-		generate for
-		you an unified UI that will contain a task list for each
-		user role
-		inside your company.
-		The main idea behind this decision is to
-		be able to guide each user into
-		his/her dialy tasks.
-</para>
-	<para>
-		We will end up having a main screen that will contain a task list with
-		all the task that the current user must work on.\
-</para>
-	<para>
-		Most of the BPM Systems right now allow you to define a Task Form to each
-		different task that you define in your business processes. So, if you
-		have 1000 processes (definitions, not instances) and each of them
-		define two human tasks you will end up defining 2000 different task
-		forms.
-</para>
-	<para>
-		Clicking in a Task List entry the user will access to the defined Task Form
-		that will allow him/her to work on that specific task.
-</para>
-	<para>
-		The task list will be populated according the process instances that are
-		being created by the company.
-</para>
-	<para>
-		Each BPM System provide a way (a set of APIs) to interact with human
-		tasks. There is a good standard that define the Human Task Life Cycle
-		(WS-HT). 
-</para>
-	<para>
-		This framework do not try to override each specific Human Task API neither
-		the Human Task Life Cycle.
-</para>
-	<para>
-		This framework wraps the Human Task APIs created by different vendors to
-		provide an unified set of abstractions and User Interface components
-		to allow a Rapid Application Development approach.
-</para>
-
-	<section>
-		<title>Get Involved</title>
-		<itemizedlist>
-			<listitem>
-				<para>
-					Try Smart Tasks and get involved with the code
-					<ulink url="http://github.com/Salaboy/smart-tasks" />
-					.
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					Mailing List / Google Groups for Dev and Design:
-					<ulink url="http://groups.google.com/group/smart-tasks" />
-					.
-				</para>
-			</listitem>
-		</itemizedlist>
-	</section>
-
-</preface>
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. --><!DOCTYPE preface PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
+<preface id="pref-Hibernate_Development_Guide-Preface"><title>Preface</title><para>Nowadays in the BPM Arena you can find multiple vendors that provides you different solutions that allows you to formalize and optimize how your company is working. Using Business Processes Models to understand, describe and guide your business in your everyday activity you can be continously improving how a company is working to increase profit and reduce costs. </para>If you analyze what kind of features are providing most of the BPM vendors you will notice that most of them will offer you the following features:<para/><itemizedlist>
+    <listitem>
+      <para>Business Processes Formalization and Automation</para>
+    </listitem>
+    <listitem>
+      <para>Simplified Mechanisms to Coordinate Human and System Interactions</para>
+    </listitem>
+    <listitem>
+      <para>Simplified Mechanisms for Data Handling</para>
+    </listitem>
+    <listitem>
+      <para>Performance Metrics and Business Activity Monitoring</para>
+    </listitem>
+    <listitem>
+      <para>Business Activity Monitoring</para>
+    </listitem>
+  </itemizedlist><para>
+  If you are looking a specific vendor to provide you all these features you will need to think about all these features will be integrated into your business. Most of the time Business Processes Management Systems or Suites provides you a generic set of tools to design your business processes and all the surrounding artifacts that are needed to automate your business activity.</para><para>The big problem during the implementation of these systems is to customize to a particular business activity the generic tools provided by the vendors.</para><para>In the Open Source scene we can find multiple Open Source projects that offers these generic tools as well as access to the internal Process Engine and Runtime to be able to customize and embed the provided features in the company internal development process.</para><para>In contrast with propietary software, you will have full access to the Business Process Engine and to the surrounding mechanisms to adapt to your specific needs the provided tools. This approach obviously introduce new technical  chalanges as opposed with the &quot;Developer Free&quot; approach of the closed source vendors.</para><para>For Open Source projects you will find a myrad of approaches and mixed technologies to provide the same set of features and you will need to choose one of them and understand technically and at the business level how you will integrate that project with your existing environment.</para><para>Once you decide for one of these projects there will be some extra definitions that needs to be done related to how to integrate all your existing systems with your business processes activities. Most of these definitions are purely technical and most of the vendors offers a way to create simple connectors to be able to interact with third party systems or applications that were written in different languages. </para><para>But one of the most important points to define that affects to the business is how our system will enable our business actors to do their daily tasks. We will need a set of mechanisms in order to be able to gather and present to each user the information that they required to do their work.</para><para>Most of the time getting the right information to the right user in an unified way becomes extremely complicated. For this reason the Smart Tasks project  was born. We decide to create a set of mechanisms that can be used together to provide the ultimate flexibility to gather and present information that is relevant for different users across an organization. We also realize that it&apos;s not enough with just getting the information and show it to the end user. We also need to transform, decorate, customize and improve  the view and the interaction of the user with the information provided. </para><para>For presenting this information and allowing each user to interact with it most of the BPM Systems offers you and unified view and approach usually called: Tasks List Based User Interfaces. This approach organize all the activities that must be done by a business user in a task list that give a quick 
+overview about the work that needs to be done. The users then can pick a task from their tasks list and start working on it. For interacting with each task, a task form will be rendered containing the information required to work with that task and a set of components to introduce or modify required to complete the task will be displayed. </para><para>Each of these tasks that will be represented by a task form will have a life cycle that will represent the states in which the task can be from its begining to its completion. This life cycle is described in a standard specification called Web Services  - Human Task (WS-HT for short). </para><para>Based on this standard and on a common set of challanges that adopting an Open Source BPM System presents the project Smart Tasks was designed to solve common pitfalls and to reduce the amount of time and effort that it&apos;s wasted during these adoptions and customizations.</para><para>The Smart Tasks project attack right now three different topics that are usually required by every implementation (starting from the most technical topic to  more business related ones):</para><para/><itemizedlist>
+    <listitem>
+      <para>Data unification  between different components and legacy applications</para>
+      <para>When we have legacy systems that handle the concept of Human Activities or when we are upgrading our current implementation from an old version of a BPM System we need to deal with changes of the Data Structures that were used to store information. Smart Tasks provides mechanisms to unify the information that it&apos;s  being used by different components using the Standard proposed structures. Allowing our implementations to support multiple systems and unifying the way of data handling. </para>
+      <para/>
+    </listitem>
+    <listitem>
+      <para>Rapid Application Development Approach for End Users Interfaces</para>
+      <para>As it was mentioned in the begining of the preface, the project provides a way to gather the information that is required to render the user interfaces based on what each particular user needs to see. A set of mechanisms are provided to speed up the definition, generation and binding of the information required by the presentation layer of your application. A set of light Helpers are provided to easily retrieve the information that will be sent using simple structures represented using well known standards as  YAML and JSON to the rendering layer. This approach allow the developers to from the user interfaces to create simple and domain specific components to improve the business users interactions.</para>
+      <para> </para>
+    </listitem>
+    <listitem>
+      <para>Declarative Way to Represent Business Perspectives and Decorators</para>
+      <para>For each user and each different task we will want to expose only the information that its relevant to solve a particular activity. Most of the time the information available for all the users is the same but we need to structure and filter all the unnecesary bits in order to not confuse and delay the work.  The Smart Task Project allow us to create the definitions that will be used to present the information to each particular user allowing us to define different perspectives for the same application. </para>
+    </listitem>
+  </itemizedlist><para> To provide mechanisms to solve particular problems that appears in these three different topics the Smart Tasks project is composed by a set of modules that can be used together to provide a robust and unified way of dealing with Human Interactions. You can also pick different modules if you only want to solve particular problems and not the complete solution. </para><para>It&apos;s important to make clear that the Smart Tasks project does not implement the rendering layer of your application. The scope of this project is only to gather and structure all the information that will be required to render the user interfaces.   As a separate effort we will provide a reference implementation and some guidelines to create your own implementations with the rendering technology that you choose.  It&apos;s extremely important to understand that the project allows you choose any rendering technology to create your application. We truly believe that rendering frameworks are evolving and you will choose one based on your previous experiences or based on your legacy applications where you want to include and integrate your new User Interfaces. We stronlgy encourage you to define a stack of technologies that you know how to use in order to build successful implementations. We will add and improve the current mechanisms to provide you quicker ways to build your tasks list user interfaces.</para><section>
+    <title>Getting Involved</title>
+    <itemizedlist>
+      <para>As in every community effort we need your feedback about the features that we are providing in the project. We are open to suggestions and we are willing to help people that is interested in using Smart Tasks in their implementations. We are also available to train people that wants to get involved with the project and contribute with patches, tests, documentation,  new modules and utilities. We can help you to get involved and introduce you to different topics that can be developed for the Smart Tasks initiative.  </para>
+    </itemizedlist>
+    <itemizedlist>
+      <para><listitem>
+          <para>Try Smart Tasks and get involved with the code
+     <ulink url="http://github.com/Salaboy/smart-tasks"/>
+     .
+    </para>
+        </listitem><listitem>
+          <para>
+     Mailing List / Google Groups for Dev and Design:
+     <ulink url="http://groups.google.com/group/smart-tasks"/>
+     .
+    </para>
+          <para>Right now we are only three community developers working on the project:</para>
+        </listitem><listitem>Demian &quot;@calcacuervo&quot; Calcaprina</listitem><listitem>Esteban &quot;@ilesteban&quot; Aliverti</listitem><listitem>Mauricio &quot;@salaboy&quot; Salatino</listitem><listitem>
+          <para>And we receive a couple contributions from the following people:</para>
+        </listitem><listitem>
+          <para><para>Mariano de Maio</para></para>
+        </listitem></para>
+      <para/>
+    </itemizedlist>
+    <itemizedlist>
+      <para/>
+    </itemizedlist>
+  </section></preface>

@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
- "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- This document was created with Syntext Serna Free. -->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" []>
 <book>
-	<title>meSmart Tasks Documentation</title>
-	<titleabbrev>STD</titleabbrev>
-	<xi:include href="book-info.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-	<mediaobject>
-		<imageobject>
-			<imagedata fileref="../media/logo.png" depth="3cm" />
-		</imageobject>
-	</mediaobject>
-	<xi:include href="preface.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-	<xi:include href="components.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-	<xi:include href="api.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-	<xi:include href="task-lists.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
-	<xi:include href="tasks-view.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+  <title>Smart Tasks Documentation</title>
+  <titleabbrev>STD</titleabbrev>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="book-info.xml"/>
+  <mediaobject>
+    <imageobject>
+      <imagedata depth="3cm" fileref="../media/logo.png"/>
+    </imageobject>
+  </mediaobject>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="preface.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="components.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="api.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="task-lists.xml"/>
+  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" href="tasks-view.xml"/>
 </book>
