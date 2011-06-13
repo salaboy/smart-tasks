@@ -11,7 +11,6 @@ import java.io.FileReader;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -73,13 +72,9 @@ public class BuilderDefinitionsProvider {
 	 * @return an instance of {@link TaskOperationsDefinition}.
 	 */
 	public TaskOperationsDefinition getTaskOperationsDefinition(String fileName) {
-		// File taskConfigurationFile = new File(new File(
-		// this.definitionsDirectory, TASK_OPERATIONS_DIRECTORY), fileName
-		// + ".config.json");
 		InputStream taskConfigurationFile = BuilderDefinitionsProvider.class
-				.getClassLoader()
-				.getResourceAsStream(
-						 TASK_OPERATIONS_DIRECTORY
+				.getClassLoader().getResourceAsStream(
+						TASK_OPERATIONS_DIRECTORY
 								+ System.getProperty("file.separator")
 								+ fileName + ".config.json");
 		TaskOperationsDefinition operationsDefinitions;
@@ -128,42 +123,48 @@ public class BuilderDefinitionsProvider {
 					new TypeToken<Collection<TaskFormDefinition>>() {
 					}.getType());
 			// TODO populate cache here
+			if (profile != null) {
+				// check if a profile is defined for the entityId and taskType
+				if (entityId != null && taskType != null) {
+					String profileName = profile + "_" + entityId + "_"
+							+ taskType;
+					TaskFormDefinition definition = (TaskFormDefinition) this
+							.getTaskTableDefinition(definitions, profileName);
+					if (definition != null) {
+						return definition;
+					}
+				}
 
-			// check if a profile is defined for the entityId and taskType
-			if (entityId != null && taskType != null) {
-				String profileName = entityId + "_" + taskType;
+				// no entityId-taskType profile defined. Lets check for entityId
+				// then
+				if (entityId != null) {
+					String profileName = profile + "_" + entityId;
+					TaskFormDefinition definition = (TaskFormDefinition) this
+							.getTaskTableDefinition(definitions, profileName);
+					if (definition != null) {
+						return definition;
+					}
+				}
+
+				// no entityId profile defined. Lets check for taskType then
+				if (taskType != null) {
+					String profileName = profile + "_" + taskType;
+					TaskFormDefinition definition = (TaskFormDefinition) this
+							.getTaskTableDefinition(definitions, profileName);
+					if (definition != null) {
+						return definition;
+					}
+				}
 				TaskFormDefinition definition = (TaskFormDefinition) this
-						.getTaskTableDefinition(definitions, profileName);
+						.getTaskTableDefinition(definitions, profile);
 				if (definition != null) {
 					return definition;
 				}
 			}
-
-			// no entityId-taskType profile defined. Lets check for entityId
-			// then
-			if (entityId != null) {
-				String profileName = entityId;
-				TaskFormDefinition definition = (TaskFormDefinition) this
-						.getTaskTableDefinition(definitions, profileName);
-				if (definition != null) {
-					return definition;
-				}
-			}
-
-			// no entityId profile defined. Lets check for taskType then
-			if (taskType != null) {
-				String profileName = taskType;
-				TaskFormDefinition definition = (TaskFormDefinition) this
-						.getTaskTableDefinition(definitions, profileName);
-				if (definition != null) {
-					return definition;
-				}
-			}
-
 			// no specicial profile foind. Let's find the Default:
 			String profileName = TaskFormDefinition.DEFAULT_PROFILE_NAME;
-			TaskFormDefinition definition = (TaskFormDefinition) this
-					.getTaskTableDefinition(definitions, profileName);
+			TaskFormDefinition definition = (TaskFormDefinition) this.getTaskTableDefinition(
+					definitions, profileName);
 
 			if (definition != null) {
 				return definition;
