@@ -75,7 +75,7 @@ public class BuilderDefinitionsProvider {
 		InputStream taskConfigurationFile = BuilderDefinitionsProvider.class
 				.getClassLoader().getResourceAsStream(
 						TASK_OPERATIONS_DIRECTORY
-								+ System.getProperty("file.separator")
+								+ "/"
 								+ fileName + ".config.json");
 		TaskOperationsDefinition operationsDefinitions;
 		try {
