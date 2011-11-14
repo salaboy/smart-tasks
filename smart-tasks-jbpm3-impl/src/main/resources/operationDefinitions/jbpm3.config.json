@@ -1,0 +1,33 @@
+	[
+		{
+			"name": "READY",
+			"isRoot": "true",
+			"isEnd": "false",
+			"transitions": [
+				{
+					"methodMapping":"start",
+					"action":"start"
+				},
+				{
+					"methodMapping":"complete",
+					"action":"complete"
+				}
+			]
+		},
+		{
+			"name": "STARTED",
+			"isRoot": "false",
+			"isEnd": "false",
+			"transitions": [
+				{
+					"methodMapping":"complete",
+					"action":"complete"
+				}
+			]
+		},
+		{
+			"name": "COMPLETED",
+			"isRoot": "false",
+			"isEnd": "true"
+		}
+	]
