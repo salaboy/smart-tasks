@@ -8,11 +8,13 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ProcessInstance;
+import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +25,7 @@ import com.wordpress.salaboy.smarttasks.jbpm3wrapper.conf.JBPM3HumanTaskClientCo
 
 /**
  * 
- * @author salaboy
+ * @author calcacuervo
  */
 public class JBPM3SmartTaskAdapterTest {
 
@@ -44,10 +46,17 @@ public class JBPM3SmartTaskAdapterTest {
 			humanTaskService.initializeService();
 			humanTaskService.setLocale("en-UK");
 
-			List<TTaskAbstract> tasks = humanTaskService.getMyTaskAbstracts(
+			List<TTaskAbstract> taskAbtracts = humanTaskService.getMyTaskAbstracts(
+					null, "salaboy", null, null, null, null, null, null, null);
+			assertEquals(1, taskAbtracts.size());
+			
+			List<TTask> tasks = humanTaskService.getMyTasks(
 					null, "salaboy", null, null, null, null, null, null, null);
 			assertEquals(1, tasks.size());
-
+			assertEquals("salaboy", tasks.get(0).getActualOwner());
+			TTask task = humanTaskService.getTaskInfo(tasks.get(0).getId());
+			assertEquals("salaboy", task.getActualOwner());
+			assertEquals("change nappy", task.getName().toString());
 		} finally {
 			if (humanTaskService != null) {
 				humanTaskService.cleanUpService();
@@ -68,8 +77,6 @@ public class JBPM3SmartTaskAdapterTest {
 						+ "    </task>" + "    <transition to='end' />"
 						+ "  </task-node>" + "  <end-state name='end' />"
 						+ "</process-definition>");
-
-		
 		ctx.deployProcessDefinition(processDefinition);
 		ProcessInstance instance = ctx.newProcessInstance("the baby process");
 		instance.signal();

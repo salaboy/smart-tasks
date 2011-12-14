@@ -5,8 +5,8 @@
 package com.wordpress.salaboy.smarttasks.jbpm3wrapper;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Holder;
@@ -26,7 +26,6 @@ import org.example.ws_ht.api.wsdl.IllegalStateFault;
 import org.example.ws_ht.api.wsdl.RecipientNotAllowed;
 import org.example.ws_ht.api.xsd.TTime;
 import org.jbpm.JbpmContext;
-import org.jbpm.db.TaskMgmtSession;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 
 import com.wordpress.salaboy.api.HumanTaskServiceOperations;
@@ -126,33 +125,7 @@ public class JBPM3HumanTaskServiceOperations implements HumanTaskServiceOperatio
 			Integer maxTasks, Integer fromTaskNumber)
 			throws IllegalArgumentFault, IllegalStateFault {
 		List<TaskInstance> jbpm3Tasks = this.jbpmContext.getTaskList(genericHumanRole);
-		List<TTaskAbstract> tasks = new ArrayList<TTaskAbstract>();
-		
-		//TODO here we should use adapters!
-		for (TaskInstance taskInstance : jbpm3Tasks) {
-			TTaskAbstract task = new TTaskAbstract();
-			task.setName(new QName(taskInstance.getName()));
-			task.setId(String.valueOf(taskInstance.getId()));
-			task.setPresentationName(taskInstance.getName());
-			TStatus st = null;
-			
-			//TODO Use an adapter here!
-			if (taskInstance.isSuspended()) {
-				st = TStatus.SUSPENDED;
-			}
-			else if (taskInstance.getEnd() != null) {
-				st = TStatus.COMPLETED;
-			}
-			else if (taskInstance.getStart() != null) {
-				st = TStatus.RESERVED;
-			}
-			else if (taskInstance.getCreate() != null) {
-				st = TStatus.CREATED;
-			}
-			task.setStatus(st);
-			tasks.add(task);
-		}
-		return tasks;
+		return new JBPM3TaskAbstractAdapter().adaptCollection(jbpm3Tasks);
 	}
 
 	public void skip(String identifier) throws IllegalArgumentFault,
@@ -164,7 +137,15 @@ public class JBPM3HumanTaskServiceOperations implements HumanTaskServiceOperatio
 	public List<TAttachment> getAttachments(String identifier,
 			String attachmentName) throws IllegalArgumentFault,
 			IllegalStateFault, IllegalAccessFault {
-		// TODO Auto-generated method stub
+		TaskInstance task = this.jbpmContext.getTaskInstance(Long.parseLong(identifier));
+		Map vars = task.getVariableInstances();
+		for (Object var : vars.keySet()) {
+			TAttachment att = new TAttachment();
+			TAttachmentInfo info = new TAttachmentInfo();
+			info.setName(var.toString());
+			att.setValue(vars.get(var));
+			att.setAttachmentInfo(info);
+		}
 		return null;
 	}
 
@@ -181,8 +162,8 @@ public class JBPM3HumanTaskServiceOperations implements HumanTaskServiceOperatio
 	}
 
 	public TTask getTaskInfo(String identifier) throws IllegalArgumentFault {
-		// TODO Auto-generated method stub
-		return null;
+		TaskInstance task = this.jbpmContext.getTaskInstance(Long.parseLong(identifier));
+		return new JBPM3TaskAdapter().adapt(task);
 	}
 
 	public void remove(String identifier) throws IllegalArgumentFault,
@@ -202,35 +183,8 @@ public class JBPM3HumanTaskServiceOperations implements HumanTaskServiceOperatio
 			String orderByClause, String createdOnClause, Integer maxTasks,
 			Integer fromTaskNumber) throws IllegalArgumentFault,
 			IllegalStateFault {
-//		List<TaskInstance> jbpm3Tasks = this.taskMgmtSession.findTaskInstances(genericHumanRole);
 		List<TaskInstance> jbpm3Tasks = this.jbpmContext.getTaskList(genericHumanRole);
-		List<TTask> tasks = new ArrayList<TTask>();
-		
-		//TODO here we should use adapters!
-		for (TaskInstance taskInstance : jbpm3Tasks) {
-			TTask task = new TTask();
-			task.setName(new QName(taskInstance.getName()));
-			task.setId(String.valueOf(taskInstance.getId()));
-			task.setPresentationName(taskInstance.getName());
-			TStatus st = null;
-			
-			//TODO Use an adapter here!
-			if (taskInstance.isSuspended()) {
-				st = TStatus.SUSPENDED;
-			}
-			else if (taskInstance.getEnd() != null) {
-				st = TStatus.COMPLETED;
-			}
-			else if (taskInstance.getStart() != null) {
-				st = TStatus.RESERVED;
-			}
-			else if (taskInstance.getCreate() != null) {
-				st = TStatus.CREATED;
-			}
-			task.setStatus(st);
-			tasks.add(task);
-		}
-		return tasks;
+		return new JBPM3TaskAdapter().adaptCollection(jbpm3Tasks);
 	}
 
 	public void setGenericHumanRole(String identifier, String genericHumanRole,

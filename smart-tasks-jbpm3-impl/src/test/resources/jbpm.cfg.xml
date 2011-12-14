@@ -9,7 +9,7 @@
   </jbpm-context>
 
   <!-- configuration resource files pointing to default configuration files in jbpm-{version}.jar -->
-  <string name='resource.hibernate.cfg.xml' value='conf/hibernate.cfg.xml' />
+  <string name='resource.hibernate.cfg.xml' value='hibernate.cfg.xml' />
   <!-- <string name='resource.hibernate.properties' value='hibernate.properties' /> -->
   <string name='resource.business.calendar' value='org/jbpm/calendar/jbpm.business.calendar.properties' />
   <string name='resource.default.modules' value='org/jbpm/graph/def/jbpm.default.modules.properties' />
