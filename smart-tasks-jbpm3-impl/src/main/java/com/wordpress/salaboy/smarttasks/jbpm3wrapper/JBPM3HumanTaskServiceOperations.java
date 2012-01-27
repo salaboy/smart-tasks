@@ -5,6 +5,7 @@
 package com.wordpress.salaboy.smarttasks.jbpm3wrapper;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -138,15 +139,17 @@ public class JBPM3HumanTaskServiceOperations implements HumanTaskServiceOperatio
 			String attachmentName) throws IllegalArgumentFault,
 			IllegalStateFault, IllegalAccessFault {
 		TaskInstance task = this.jbpmContext.getTaskInstance(Long.parseLong(identifier));
-		Map vars = task.getVariableInstances();
+		Map vars = task.getVariables();
+		List<TAttachment> attachments = new ArrayList<TAttachment>();
 		for (Object var : vars.keySet()) {
 			TAttachment att = new TAttachment();
 			TAttachmentInfo info = new TAttachmentInfo();
 			info.setName(var.toString());
 			att.setValue(vars.get(var));
 			att.setAttachmentInfo(info);
+			attachments.add(att);
 		}
-		return null;
+		return attachments;
 	}
 
 	public String getTaskDescription(String identifier, String contentType)

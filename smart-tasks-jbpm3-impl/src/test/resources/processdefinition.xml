@@ -1,0 +1,15 @@
+<process-definition name='document review'>
+     <start-state>
+        <transition name='to review doc' to='t' />
+      </start-state>
+      <task-node name='t'>
+        <task name='review doc jbpm 3'>
+              <controller>
+    			<variable name="doc" access="read" mapped-name="doc" />
+  			</controller>
+          <assignment class='com.wordpress.salaboy.DummyAssignmentHandler' />
+        </task>
+        <transition to='end' />
+      </task-node>
+      <end-state name='end' />
+    </process-definition>

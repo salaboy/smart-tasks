@@ -6,8 +6,12 @@ package com.wordpress.salaboy;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.FileReader;
 import java.util.List;
 
+import junit.framework.Assert;
+
+import org.example.ws_ht.api.TAttachment;
 import org.example.ws_ht.api.TTask;
 import org.example.ws_ht.api.TTaskAbstract;
 import org.jbpm.JbpmConfiguration;
@@ -56,7 +60,10 @@ public class JBPM3SmartTaskAdapterTest {
 			assertEquals("salaboy", tasks.get(0).getActualOwner());
 			TTask task = humanTaskService.getTaskInfo(tasks.get(0).getId());
 			assertEquals("salaboy", task.getActualOwner());
-			assertEquals("change nappy", task.getName().toString());
+			assertEquals("review doc jbpm 3", task.getName().toString());
+			List<TAttachment> attachments = humanTaskService.getAttachments(task.getId(), null);
+			Assert.assertEquals(1, attachments.size());
+			Assert.assertEquals("the doc", attachments.get(0).getValue());
 		} finally {
 			if (humanTaskService != null) {
 				humanTaskService.cleanUpService();
@@ -65,20 +72,10 @@ public class JBPM3SmartTaskAdapterTest {
 	}
 
 	private void addSampleTasks() throws Exception {
-
-		ProcessDefinition processDefinition = ProcessDefinition
-				.parseXmlString("<process-definition name='the baby process'>"
-						+ "  <start-state>"
-						+ "    <transition name='baby cries' to='t' />"
-						+ "  </start-state>"
-						+ "  <task-node name='t'>"
-						+ "    <task name='change nappy'>"
-						+ "      <assignment class='com.wordpress.salaboy.DummyAssignmentHandler' />"
-						+ "    </task>" + "    <transition to='end' />"
-						+ "  </task-node>" + "  <end-state name='end' />"
-						+ "</process-definition>");
+		ProcessDefinition processDefinition = ProcessDefinition.parseXmlResource("processdefinition.xml");
 		ctx.deployProcessDefinition(processDefinition);
-		ProcessInstance instance = ctx.newProcessInstance("the baby process");
+		ProcessInstance instance = ctx.newProcessInstance("document review");
+		instance.getContextInstance().setVariable("doc", "the doc");
 		instance.signal();
 
 	}
