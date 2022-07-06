@@ -16,7 +16,7 @@
 
 
 	<properties>
-		<jbpm.version>5.2.0-SNAPSHOT</jbpm.version>
+		<jbpm.version>6.2.0.Final</jbpm.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
